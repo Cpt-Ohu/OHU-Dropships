@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+
+  <WorldObjectDef>
+    <defName>ShipTracker</defName>
+    <description>Ship Tracker. This shouldn't be visible</description>
+    <worldObjectClass>OHUShips.ShipTracker</worldObjectClass>
+    <canHaveFaction>false</canHaveFaction>
+	<selectable>false</selectable>
+	<neverMultiSelect>true</neverMultiSelect>
+	<useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIcon>false</expandingIcon>
+    <texture>World/WorldObjects/Caravan</texture>
+  </WorldObjectDef>
+
+
+  <WorldObjectDef>
+    <defName>TravelingSuborbitalShip</defName>
+    <label>aircraft</label>
+    <description>Various aircraft in flight.</description>
+    <worldObjectClass>OHUShips.TravelingShips</worldObjectClass>
+    <texture>UI/Images/MovingFleet</texture>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>World/WorldObjects/Expanding/TravelingTransportPods</expandingIconTexture>
+    <expandingIconPriority>6</expandingIconPriority>
+  </WorldObjectDef>
+
+  <WorldObjectDef>
+    <defName>LandedShip</defName>
+    <label>landed ships</label>
+    <description>A group of aircraft.</description>
+    <worldObjectClass>OHUShips.LandedShip</worldObjectClass>
+    <texture>World/WorldObjects/Caravan</texture>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>World/WorldObjects/Expanding/Caravan</expandingIconTexture>
+    <expandingIconPriority>10</expandingIconPriority>
+    <inspectorTabs>
+      <li>WITab_Caravan_Health</li>
+      <li>WITab_Caravan_Needs</li>
+      <li>WITab_Caravan_Gear</li>
+      <li>WITab_Caravan_Social</li>
+      <li>OHUShips.WITab_LandedShip_Cargo</li>
+    </inspectorTabs>
+  </WorldObjectDef>
+
+  <WorldObjectDef>
+    <defName>ShipDropSite</defName>
+    <label>aircraft dropsite</label>
+    <description>A dropsite for aircraft.</description>
+    <worldObjectClass>OHUShips.ShipDropSite</worldObjectClass>
+    <texture>World/WorldObjects/Ambush</texture>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>World/WorldObjects/AircraftDropSpot</expandingIconTexture>
+
+    <expandingIconPriority>8</expandingIconPriority>
+  </WorldObjectDef>
+
+
+  
+</Defs>

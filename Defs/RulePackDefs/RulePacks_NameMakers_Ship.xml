@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<NameMakerDefs>
+
+  <RulePackDef>
+    <defName>NamerShipGeneric</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>name->[ShipNameGeneric]</li>
+        <li>name->[celestialprefix] [ShipNameGeneric]</li>
+        <li>name->[badasscolor] [ShipNameGeneric]</li>
+        <li>name->[color] [ShipNameGeneric]</li>
+      </rulesStrings>
+      <rulesRaw>
+        <li Class="Rule_File">
+          <keyword>ShipNameGeneric</keyword>
+          <path>NameBanks/ShipNames_Generic</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>badasscolor</keyword>
+          <path>Words/Nouns/Colors_Badass</path>
+        </li>        
+	   <li Class="Rule_File">
+          <keyword>color</keyword>
+          <path>Words/Nouns/Colors</path>
+        </li>
+        <li Class="Rule_File">
+          <keyword>celestialprefix</keyword>
+          <path>Names/CelestialPrefix</path>
+        </li>
+      </rulesRaw>
+    </rulePack>
+  </RulePackDef>
+
+
+</NameMakerDefs>

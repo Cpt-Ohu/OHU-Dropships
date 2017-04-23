@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <JobDef>
+    <defName>LeaveInShip</defName>
+    <driverClass>OHUShips.JobDriver_LeaveInShip</driverClass>
+    <reportString>leaving with ship</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <JobDef>
+    <defName>EnterShip</defName>
+    <driverClass>OHUShips.JobDriver_EnterShip</driverClass>
+    <reportString>entering ship</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <JobDef>
+    <defName>LoadContainerMultiplePawns</defName>
+    <driverClass>OHUShips.JobDriver_LoadCargoMultiple</driverClass>
+    <reportString>hauling TargetA.</reportString>
+  </JobDef>
+
+  <JobDef>
+    <defName>InstallShipWeapon</defName>
+    <driverClass>OHUShips.JobDriver_InstallShipWeaponSystem</driverClass>
+    <reportString>Installing TargetA on TargetB</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <JobDef>
+    <defName>UninstallShipWeapon</defName>
+    <driverClass>OHUShips.JobDriver_UninstallShipWeaponSystem</driverClass>
+    <reportString>Uninstalling Ship Weapon</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+
+
+</Defs>

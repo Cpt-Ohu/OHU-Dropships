@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ThingDefs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>ShipTurretTemplate</defName>
+    <label>improvised ship turret</label>
+    <description>An improvised turret that automatically fires at nearby enemies. Explodes when damaged. Its hacked-together AI brain isn't very smart, and can't be directly controlled, so beware of friendly fire.</description>
+    <graphicData>
+      <texPath>Things/ShipWeapons/ShipWeapon_Item</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <MarketValue>1000</MarketValue>
+      <Mass>15</Mass>
+      <Flammability>1.0</Flammability>
+			<DeteriorationRate>0.3</DeteriorationRate>
+		</statBases>
+    <intricate>true</intricate>
+    <thingCategories>
+      <li>Weapons</li>
+    </thingCategories>
+    <recipeMaker>
+      <workSpeedStat>SmithingSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers>
+        <li>ElectricSmithy</li>
+        <li>FueledSmithy</li>
+      </recipeUsers>
+      <unfinishedThingDef>UnfinishedTechArmor</unfinishedThingDef>
+      <researchPrerequisite>GunTurrets</researchPrerequisite>
+    </recipeMaker>
+    <costList>
+      <Component>2</Component>
+      <Steel>150</Steel>
+    </costList>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="OHUShips.CompProperties_ShipWeapon">
+        <compClass>OHUShips.CompShipWeapon</compClass>
+        <availableToShips>
+      	<li>OHUDropShip</li>
+	   </availableToShips>
+        <weaponSystemType>LightCaliber</weaponSystemType>
+        <TurretToInstall>ShipTurret_Turret</TurretToInstall>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!--=============== Improvised turret ===============-->
+  
+  <ThingDef ParentName="BuildingBase">
+    <defName>ShipTurret_Turret</defName>
+    <label>improvised turret</label>
+    <drawerType>RealtimeOnly</drawerType>
+    <thingClass>OHUShips.Building_ShipTurret</thingClass>
+    <graphicData>
+      <texPath>Things/ShipWeapons/LightCaliber_Base</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <damageData>
+        <rect>(0.2,0.2,0.6,0.6)</rect>
+      </damageData>
+    </graphicData>
+    <size>(1,1)</size>
+    <stealable>false</stealable>
+    <rotatable>false</rotatable>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <WorkToBuild>2500</WorkToBuild>
+      <Mass>100</Mass>
+      <Beauty>-60</Beauty>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>3.9</explosiveRadius>
+        <explosiveDamageType>Bomb</explosiveDamageType>
+        <chanceNeverExplodeFromDamage>0.5</chanceNeverExplodeFromDamage>
+      </li>
+    </comps>
+    <description>An improvised turret that automatically fires at nearby enemies. Explodes when damaged. Its hacked-together AI brain isn't very smart, and can't be directly controlled, so beware of friendly fire.</description>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <castEdgeShadows>false</castEdgeShadows>
+    <hasTooltip>true</hasTooltip>
+    <costList>
+      <Steel>100</Steel>
+      <Component>3</Component>
+    </costList>
+    <altitudeLayer>Blueprint</altitudeLayer>
+
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <specialDisplayRadius>25.9</specialDisplayRadius>
+    <building>
+			<ai_combatDangerous>true</ai_combatDangerous>
+      <turretGunDef>Gun_TurretImprovised</turretGunDef>
+      <turretBurstCooldownTime>5.15</turretBurstCooldownTime>
+      <turretTopgraphicPath>Things/Building/Security/TurretImprovised_Top</turretTopgraphicPath>
+	 <isInert>true</isInert>
+      <isEdifice>false</isEdifice>
+
+    </building>
+    <designationHotKey>Misc3</designationHotKey>
+    <researchPrerequisites>
+      <li>GunTurrets</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+
+
+</ThingDefs>

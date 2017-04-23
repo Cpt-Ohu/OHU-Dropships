@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ThingDefs>
+ 
+  <ThingDef ParentName="BuildingBase" Abstract="True" Name="BaseShip">
+    <thingClass>OHUShips.ShipBase</thingClass>
+    <defName>BasicShip</defName>
+    <label>ship</label>
+    <description>A launchable suborbital-ship.</description>
+    <graphicData>
+      <texPath>Things/Special/DropPod</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutFlying</shaderType>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <inspectorTabs>
+      <li>OHUShips.ITab_ShipCargo</li>
+      <li>OHUShips.ITab_Fleet</li>
+    </inspectorTabs>
+    <drawerType>RealtimeOnly</drawerType>
+    <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
+    <rotatable>true</rotatable>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <passability>Impassable</passability>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <fillPercent>1.0</fillPercent>
+    <designationCategory>Ship</designationCategory>
+    <iconDrawScale>1</iconDrawScale>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <WorkToBuild>3000</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <Steel>80</Steel>
+      <Component>1</Component>
+    </costList>
+    <placeWorkers>
+      <li>PlaceWorker_NotUnderRoof</li>
+    </placeWorkers>
+		<researchPrerequisites>
+			<li>ShipBasics</li>
+		</researchPrerequisites>
+    <drawOffscreen>true</drawOffscreen>
+    <building>
+      <claimable>true</claimable>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+    </building>
+
+  </ThingDef>
+
+  <ThingDef ParentName="BaseShip">
+    <thingClass>OHUShips.ShipBase</thingClass>
+    <defName>OHUDropShip</defName>
+    <label>OHU Dropship</label>
+    <description>A small freighter designed primarily for planetary ressource extractions. Durable, easy to manufacture and powerful enough to reach orbital platforms or motherships.
+Not intended as fighter aircraft or assault carrier.
+
+Still the manufacturer boasts that on underdeveloped Rimworlds, this ship can dominate the airspace, and the at the time quite controversial introduction of bombing capabilities makes offensive strikes a feasible option.
+
+
+Manufacturer: OHU (Orbital Hubs United)
+Fuel Capacity: 3000
+Maximum Cargo Capacity: 1000 kg
+Defensive Capabilities: 1x Light Caliber Front Gun
+Offensive Capabilities: 1x Payload Slot
+</description>
+    <graphicData>
+      <texPath>Things/Ships/OHUDropShip</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(9,9)</drawSize>
+    </graphicData>
+    <size>(7,2)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <passability>Impassable</passability>
+    <castEdgeShadows>false</castEdgeShadows>
+    <fillPercent>1.0</fillPercent>
+    <designationCategory>Ship</designationCategory>
+    <iconDrawScale>1</iconDrawScale>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <WorkToBuild>3000</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <comps>
+      <li Class="OHUShips.CompProperties_Ship">
+        <TicksToImpact>200</TicksToImpact>
+        <TicksToDespawn>200</TicksToDespawn>
+        <CanBeStartingShip>true</CanBeStartingShip>
+        <LeavingShipDef>OHUDropShipLeaving</LeavingShipDef>
+        <FuelType>Chemfuel</FuelType>
+        <IncomingAngle>65</IncomingAngle>
+        <ShadowGraphicPath>Things/Ships/OHUDropShipShadow</ShadowGraphicPath>
+        <FleetIconGraphicPath>Things/IoM/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
+
+        <weaponSlots>
+	    <li>
+          <SlotName>Front Gun</SlotName>
+          <slotType>LightCaliber</slotType>
+          <turretPosOffset>(4,0,0)</turretPosOffset>
+          <turretMinSize>(1,1)</turretMinSize>
+	    </li>
+	    <li>
+          <SlotName>Payload</SlotName>
+          <slotType>Bombing</slotType>
+          <turretPosOffset>(0,0,0)</turretPosOffset>
+	    </li>
+	   </weaponSlots>
+
+	 </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>100.0</fuelConsumptionRate>
+        <fuelCapacity>3000.0</fuelCapacity>
+        <fuelFilter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </fuelFilter>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <showFuelGizmo>true</showFuelGizmo>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>200</initialConfigurableTargetFuelLevel>
+        <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
+        <autoRefuelPercent>0.75</autoRefuelPercent>
+      </li>
+    </comps>
+
+    <costList>
+      <Steel>800</Steel>
+      <Plasteel>100</Plasteel>
+      <Component>20</Component>
+    </costList>
+		<researchPrerequisites>
+			<li>ShipBasics</li>
+		</researchPrerequisites>
+  </ThingDef>
+
+
+  <ThingDef>
+    <defName>OHUDropShipLeaving</defName>
+    <label>Dropship(leaving)</label>
+    <category>Skyfaller</category>
+		<thingClass>OHUShips.ShipBase_Traveling</thingClass>
+		<tickerType>Normal</tickerType>
+    <graphicData>
+      <texPath>Things/Special/DropPod</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutFlying</shaderType>
+      <drawSize>1.9</drawSize>
+    </graphicData>
+    <altitudeLayer>FlyingItem</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+    <drawOffscreen>true</drawOffscreen>
+    <selectable>false</selectable>
+  </ThingDef>
+
+  
+</ThingDefs>

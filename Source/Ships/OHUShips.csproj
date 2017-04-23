@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CBF85EFA-5337-4817-A8FE-4674E0CA189F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>OHUShips</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>OHUShips</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\FactionColors_1.3\Assemblies\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Building_ShipTurret.cs" />
+    <Compile Include="CompProperties_Ship.cs" />
+    <Compile Include="CompProperties_ShipWeapon.cs" />
+    <Compile Include="CompShip.cs" />
+    <Compile Include="CompShipWeapon.cs" />
+    <Compile Include="Dialog_LoadShipCargo.cs" />
+    <Compile Include="Dialog_TradeFromShips.cs" />
+    <Compile Include="DropShipUtility.cs" />
+    <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="IncidentWorker_AerialRaid.cs" />
+    <Compile Include="ITab_Fleet.cs" />
+    <Compile Include="ITab_ShipCargo.cs" />
+    <Compile Include="JobDriver_EnterShip.cs" />
+    <Compile Include="JobDriver_InstallShipWeaponSystem.cs" />
+    <Compile Include="JobDriver_LeaveInShip.cs" />
+    <Compile Include="JobDriver_LoadCargoMultiple.cs" />
+    <Compile Include="JobDriver_UninstallShipWeaponSystem.cs" />
+    <Compile Include="JobGiver_EnterShipDuringLoad.cs" />
+    <Compile Include="JobGiver_LeaveInShip.cs" />
+    <Compile Include="JobGiver_LoadShipCargo.cs" />
+    <Compile Include="LandedShip.cs" />
+    <Compile Include="LoadShipCargoUtility.cs" />
+    <Compile Include="LordJob_AerialAssault.cs" />
+    <Compile Include="LordJob_LoadShipCargo.cs" />
+    <Compile Include="LordToil_LeaveInShip.cs" />
+    <Compile Include="LordToil_LoadShipCargo.cs" />
+    <Compile Include="ScenPart_StartWithShip.cs" />
+    <Compile Include="ShipBase.cs" />
+    <Compile Include="ShipBase_Traveling.cs" />
+    <Compile Include="ShipDropSite.cs" />
+    <Compile Include="ShipNamespaceDefOfs.cs" />
+    <Compile Include="ShipState.cs" />
+    <Compile Include="ShipTracker.cs" />
+    <Compile Include="ShipWeaponSlot.cs" />
+    <Compile Include="TravelingShipArrivalAction.cs" />
+    <Compile Include="TravelingShips.cs" />
+    <Compile Include="TravelingShipsUtility.cs" />
+    <Compile Include="WeaponSystem.cs" />
+    <Compile Include="WeaponSystemShipBomb.cs" />
+    <Compile Include="WeaponSystemShipLC.cs" />
+    <Compile Include="WeaponSystemType.cs" />
+    <Compile Include="WITab_LandedShip_Cargo.cs" />
+    <Compile Include="WorkGiver_InstallShipWeapon.cs" />
+    <Compile Include="WorkGiver_UninstallShipWeapon.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".vs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>

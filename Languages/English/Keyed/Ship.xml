@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <TabShipCargo>Ship</TabShipCargo>
+  <ShipPassengers>Passengers</ShipPassengers>
+  <ShipCargo>Cargo Bay</ShipCargo>
+  <ShipWeapons>Weapon Systems</ShipWeapons>
+
+  <GovernorComesQuietly>Surrender yourself</GovernorComesQuietly>
+
+  <EnterShip>Enter ship</EnterShip>
+  <NumberOfHaulers>Min. haulers required</NumberOfHaulers>
+
+  <CommandLaunchShip>Launch Ship</CommandLaunchShip>
+  <CommandLaunchShipDesc>Initiate Launch Sequence and choose the target.</CommandLaunchShipDesc>
+
+  <CommandLaunchFleet>Launch Fleet</CommandLaunchFleet>
+  <CommandLaunchFleetDesc>Launch the fleet this ship is assigned to.</CommandLaunchFleetDesc>
+
+  <CommandLoadShipCargo>Load</CommandLoadShipCargo>
+  <CommandLoadShipCargoDesc>Load Cargo and passengers into the ship</CommandLoadShipCargoDesc>
+
+
+  <Install>Install: </Install>
+  <Uninstall>Uninstall: </Uninstall>
+  <InstallingShipWeapon>Installing {0}</InstallingShipWeapon>
+  <NoneInstalled>None installed</NoneInstalled>
+
+  <MessageShipCargoLoadStarted>Your colonists will now load the assigned cargo into {0} (ship)</MessageShipCargoLoadStarted>
+
+  <MessageFinishedLoadingShipCargo>Loading process for {0} is finished.</MessageFinishedLoadingShipCargo>
+
+  <MessageShipsArrived>Your ships have arrived at their destination.</MessageShipsArrived>
+
+
+
+  <NameFleetMessage>Rename Fleet</NameFleetMessage>
+  <RenamedFleetMessage>Fleet renamed</RenamedFleetMessage>
+  <FleetNameIsInvalid>Fleet name is invalid</FleetNameIsInvalid>
+
+  <MessageFleetLaunchImpossible>Cannot launch as fleet. At least one ship doesn't have enough fuel to reach the target.</MessageFleetLaunchImpossible>
+
+  <BombFactionBase>Bombard settlement</BombFactionBase>
+  <AttackFactionBaseAerial>Assault settlement</AttackFactionBaseAerial>
+
+
+  <TabFleetManagement>Fleet</TabFleetManagement>
+  <FleetManagement>Fleet Management</FleetManagement>
+  <AddFleetEntry>New Fleet</AddFleetEntry>
+  <AssignFleet>Assign Fleet</AssignFleet>
+  <AssignedFleet>Assigned to: </AssignedFleet>
+  <RemoveFleetEntry>Delete Fleet</RemoveFleetEntry>
+
+  <CommandShipTouchdown>Touchdown</CommandShipTouchdown>
+  <CommandShipTouchdownDesc>Temporarily land all aircraft for further planning.</CommandShipTouchdownDesc>
+
+  <CommandLaunchFleetFailDueToNotReady>At least one ship in the fleet isn't ready to launch.</CommandLaunchFleetFailDueToNotReady>
+
+
+</LanguageData>
