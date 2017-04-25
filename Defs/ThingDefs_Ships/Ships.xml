@@ -93,7 +93,7 @@ Offensive Capabilities: 1x Payload Slot
         <FuelType>Chemfuel</FuelType>
         <IncomingAngle>65</IncomingAngle>
         <ShadowGraphicPath>Things/Ships/OHUDropShipShadow</ShadowGraphicPath>
-        <FleetIconGraphicPath>Things/IoM/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
+        <FleetIconGraphicPath>Things/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
 
         <weaponSlots>
 	    <li>
