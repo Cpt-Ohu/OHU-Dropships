@@ -329,6 +329,7 @@ namespace OHUShips
             foreach(ShipBase current in landedShip.ships)
             {
                 travelingShips.AddShip(current, true);
+    //            current.SavePotentialWorldPawns();
                 DropShipUtility.ReimbarkWorldPawnsForLandedShip(current);
             }
             travelingShips.SetFaction(landedShip.Faction);

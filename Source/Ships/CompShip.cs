@@ -145,6 +145,7 @@ namespace OHUShips
             if (!this.AnythingLeftToLoad)
             {
                 ship.compShip.cargoLoadingActive = false;
+                this.TryRemoveLord(this.parent.Map);
                 Messages.Message("MessageFinishedLoadingShipCargo".Translate(), this.parent, MessageSound.Benefit);
             }
         }

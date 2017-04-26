@@ -427,17 +427,18 @@ namespace OHUShips
                 int num = 0;
                 while (!ships.RandomElement().TryAcceptThing(newCargo[i], true))
                 {
+                    Pawn pawn = newCargo[i] as Pawn;
+                    if (pawn != null) Log.Message("loading" + pawn.Label);
                     ships.RandomElement().TryAcceptThing(newCargo[i], true);
                     num++;
                 }
 
                 if (num > ships.Count && !ignoreShipload)
                 {
-                    return false;
+                    break;
                 }
-                return true;
             }
-            return false;
+            return true;
         }
     }
 }

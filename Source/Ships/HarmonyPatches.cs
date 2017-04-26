@@ -45,8 +45,6 @@ namespace OHUShips
             }
         }
 
-
-
         public static void CheckGameOverPostfix()
         {
             List<TravelingShips> travelingShips = Find.WorldObjects.AllWorldObjects.FindAll(x => x is TravelingShips).Cast<TravelingShips>().ToList();

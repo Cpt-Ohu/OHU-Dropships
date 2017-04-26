@@ -16,11 +16,13 @@ namespace OHUShips
 
         public LandedShip()
         {
+            this.ReloadStockIntoShip();
         }
 
         public LandedShip(List<ShipBase> incomingShips)
         {
             this.ships = incomingShips;
+            this.ReloadStockIntoShip();
         }
 
         public override void ExposeData()
@@ -209,7 +211,10 @@ namespace OHUShips
 
         public void ReloadStockIntoShip()
         {
+            Log.Message("ReloadingSTock");
             List<Thing> allCargo = this.allLandedShipCargo.ToList<Thing>();
+            allCargo.AddRange(this.PawnsListForReading.Cast<Thing>().ToList());
+            Log.Message("allcargo " +allCargo.Count.ToString());
             List<Thing> remainingCargo = new List<Thing>();
             for (int i = 0; i < this.PawnsListForReading.Count; i++)
             {
@@ -228,6 +233,22 @@ namespace OHUShips
                 }
                 carrier.RemoveAll(x => this.tmpThingsToRemove.Contains(x));
             }
+
+            List<Thing> stockInShips = new List<Thing>();
+            foreach(ShipBase ship in this.ships)
+            {
+                stockInShips.AddRange(ship.GetInnerContainer());
+            }
+
+            for (int i=0; i < allCargo.Count; i++)
+            {
+                if (!stockInShips.Contains(allCargo[i]))
+                {
+                    remainingCargo.Add(allCargo[i]);
+                }
+            }
+            Log.Message("remaining Cargo: " + remainingCargo.Count.ToString());
+
             DropShipUtility.LoadNewCargoIntoRandomShips(remainingCargo, this.ships);
         }
 

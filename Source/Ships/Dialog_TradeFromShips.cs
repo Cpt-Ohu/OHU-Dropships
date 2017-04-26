@@ -19,8 +19,14 @@ namespace OHUShips
         public Dialog_TradeFromShips(LandedShip landedShip, Pawn playerNegotiator, ITrader trader) : base(playerNegotiator, trader)
         {
             this.landedShip = landedShip;
-        }        
-        
+        }
+
+        public override void PostOpen()
+        {
+            Log.Message("Before " + CaravanInventoryUtility.AllInventoryItems(this.landedShip).Count.ToString());
+            base.PostOpen();
+        }
+
         public override void DoWindowContents(Rect inRect)
         {
             this.RecacheTradeablblesAndMassCapacity();
@@ -38,8 +44,9 @@ namespace OHUShips
         {
             List<Thing> tradeables = new List<Thing>();
 
-            FieldInfo result = typeof(Dialog_TradeFromShips).BaseType.GetField("cachedMassCapacity", BindingFlags.NonPublic | BindingFlags.Instance) ;
-
+            FieldInfo capacity = typeof(Dialog_TradeFromShips).BaseType.GetField("cachedMassCapacity", BindingFlags.NonPublic | BindingFlags.Instance);
+            
+            
             float num = 0;
             if (landedShip != null)
             {
@@ -53,12 +60,13 @@ namespace OHUShips
             {
                 throw new Exception("Tried to trade from landed ship, but ship is null");
             }
-            result.SetValue(this, num);
+            capacity.SetValue(this, num);
         }
 
         private void ResolveTradedItems()
         {
             List<Thing> itemList = CaravanInventoryUtility.AllInventoryItems(this.landedShip);
+            Log.Message("After " +CaravanInventoryUtility.AllInventoryItems(this.landedShip).Count.ToString());
             List<Thing> tmpToRemove = new List<Thing>();
             if (itemList != null)
             {
@@ -88,7 +96,7 @@ namespace OHUShips
                     container.RemoveAll(x => tmpToRemove.Contains(x));
                 }
             }
-
+            Log.Message("Reloading_Dialog");
             this.landedShip.ReloadStockIntoShip();
         }
 

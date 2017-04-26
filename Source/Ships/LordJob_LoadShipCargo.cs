@@ -42,7 +42,7 @@ namespace OHUShips
         {
             this.ship.compShip.CancelLoadCargo(this.Map);
         }
-
+        
         public override void ExposeData()
         {
             base.ExposeData();

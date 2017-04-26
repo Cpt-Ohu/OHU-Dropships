@@ -396,6 +396,7 @@ namespace OHUShips
             this.compShip.TryRemoveLord(this.Map);
             base.DeSpawn();
             this.DeepsaveTurrets = true;
+    //        this.SavePotentialWorldPawns();
             foreach (KeyValuePair<ShipWeaponSlot, Building_ShipTurret> current in this.installedTurrets)
             {
                 if (current.Value != null)
@@ -418,7 +419,7 @@ namespace OHUShips
                 else
                 {
                     Pawn pawn1 = thing as Pawn;
-                    if (pawn1 != null && dropPawns && !pawn1.IsPrisoner && !dropitems)
+                    if (pawn1 != null && dropPawns && !pawn1.IsPrisoner && !dropitems && pawn1.def.race.Humanlike)
                     {
                         GenPlace.TryPlaceThing(thing, base.Position, this.Map, ThingPlaceMode.Near, out thing2, delegate (Thing placedThing, int count)
                         {
@@ -454,15 +455,19 @@ namespace OHUShips
         {
             if (!this.Accepts(thing))
             {
+                Log.Message("A1");
                 return false;
             }
             if (thing is Pawn)
             {
                 Pawn pawn = thing as Pawn;
+                Log.Message(pawn.Label);
                 if (pawn.def.race.Humanlike)
                 {
                     if ((this.innerContainer.ToList<Thing>().Count(x => x is Pawn) >= this.compShip.sProps.maxPassengers))
                     {
+
+                        Log.Message("A3");
                         return false;
                     }
                 }
@@ -475,6 +480,8 @@ namespace OHUShips
                     else
                     {
 
+                        Log.Message("A2");
+                        return false;
                     }
                 }
             }
@@ -489,7 +496,7 @@ namespace OHUShips
                 flag = this.innerContainer.TryAdd(thing, true);
             }
             if (flag)
-            {
+            {                
                 return true;
             }
             else
