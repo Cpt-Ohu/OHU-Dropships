@@ -311,7 +311,6 @@ namespace OHUShips
                 }
                 if (this.timeToLiftoff == 0)
                 {
-                    this.compShip.TryRemoveLord(this.Map);
                     this.shipState = ShipState.Outgoing;
                     this.ActivatedLaunchSequence = false;
                 }
@@ -394,6 +393,7 @@ namespace OHUShips
 
         public override void DeSpawn()
         {
+            this.compShip.TryRemoveLord(this.Map);
             base.DeSpawn();
             this.DeepsaveTurrets = true;
             foreach (KeyValuePair<ShipWeaponSlot, Building_ShipTurret> current in this.installedTurrets)
@@ -458,9 +458,24 @@ namespace OHUShips
             }
             if (thing is Pawn)
             {
-                if ((this.innerContainer.ToList<Thing>().Count(x => x is Pawn) >= this.compShip.sProps.maxPassengers))
+                Pawn pawn = thing as Pawn;
+                if (pawn.def.race.Humanlike)
                 {
-                    return false;
+                    if ((this.innerContainer.ToList<Thing>().Count(x => x is Pawn) >= this.compShip.sProps.maxPassengers))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (this.innerContainer.TryAdd(thing, true))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+
+                    }
                 }
             }
             bool flag;
@@ -476,6 +491,10 @@ namespace OHUShips
             if (flag)
             {
                 return true;
+            }
+            else
+            {
+
             }
             return false;
         }

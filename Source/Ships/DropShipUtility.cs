@@ -420,7 +420,7 @@ namespace OHUShips
         }
 
 
-        public static void LoadNewCargoIntoRandomShips(List<Thing> newCargo, List<ShipBase> ships)
+        public static bool LoadNewCargoIntoRandomShips(List<Thing> newCargo, List<ShipBase> ships, bool ignoreShipload = false)
         {
             for (int i = 0; i < newCargo.Count; i++)
             {
@@ -431,11 +431,13 @@ namespace OHUShips
                     num++;
                 }
 
-                if (num > ships.Count)
+                if (num > ships.Count && !ignoreShipload)
                 {
-                    break;
+                    return false;
                 }
+                return true;
             }
+            return false;
         }
     }
 }

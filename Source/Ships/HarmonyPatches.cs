@@ -19,15 +19,17 @@ namespace OHUShips
 
             harmony.Patch(AccessTools.Method(typeof(RimWorld.FactionGenerator), "GenerateFactionsIntoWorld", new Type[] { typeof(string) }), null, new HarmonyMethod(typeof(HarmonyPatches), "GenerateFactionsIntoWorldPostFix"));
 
-            harmony.Patch(AccessTools.Property(typeof(MapPawns), "AnyColonistTameAnimalOrPrisonerOfColony").GetGetMethod(false), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(AnyColonistTameAnimalOrPrisonerOfColonyPreFix)), null);
-            
+            harmony.Patch(AccessTools.Property(typeof(MapPawns), "AnyColonistTameAnimalOrPrisonerOfColony").GetGetMethod(false), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(AnyColonistTameAnimalOrPrisonerOfColonyPostFix)), null);
+
+            harmony.Patch(AccessTools.Method(typeof(RimWorld.GameEnder), "CheckGameOver"), null, new HarmonyMethod(typeof(HarmonyPatches), "CheckGameOverPostfix"));
+
             harmony.Patch(AccessTools.Method(typeof(RimWorld.Planet.WorldSelector), "AutoOrderToTileNow", new Type[] { typeof(Caravan), typeof(int) }), new HarmonyMethod(typeof(HarmonyPatches), "AutoOrderToTileNowPrefix"), null);
 
             harmony.Patch(AccessTools.Method(typeof(RimWorld.Scenario), "GenerateIntoMap", new Type[] { typeof(Map)}), new HarmonyMethod(typeof(HarmonyPatches), "GenerateIntoMapPreFix"), null);
                         
         }
-
-        public static void AnyColonistTameAnimalOrPrisonerOfColonyPreFix(ref bool __result, MapPawns __instance)
+        
+        public static void AnyColonistTameAnimalOrPrisonerOfColonyPostFix(ref bool __result, MapPawns __instance)
         {
             if (!__result)
             {
@@ -41,7 +43,22 @@ namespace OHUShips
                     }
                 }
             }
-        }        
+        }
+
+
+
+        public static void CheckGameOverPostfix()
+        {
+            List<TravelingShips> travelingShips = Find.WorldObjects.AllWorldObjects.FindAll(x => x is TravelingShips).Cast<TravelingShips>().ToList();
+            for (int i=0; i < travelingShips.Count; i++)
+            {
+                TravelingShips ship = travelingShips[i];
+                if (ship.containsColonists)
+                {
+                    Find.GameEnder.gameEnding = false;
+                }
+            }
+        }
 
         public static void GenerateFactionsIntoWorldPostFix()
         {
@@ -111,5 +128,7 @@ namespace OHUShips
                 }
             }
         }
+        
+        
     }
 }

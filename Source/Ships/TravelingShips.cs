@@ -32,27 +32,7 @@ namespace OHUShips
         private float traveledPct;
         
         public Material cachedMat;
-
-        public List<Pawn> PawnsList
-        {
-            get
-            {
-                List<Pawn> tmp = new List<Pawn>();
-                for (int i=0; i< this.ships.Count; i++)
-                {
-                    ThingContainer container = this.ships[i].GetInnerContainer();
-                    for (int j = 0; j > container.Count; j++)
-                    {
-                        if (container[j] is Pawn)
-                        {
-                            tmp.Add(container[j] as Pawn);
-                        }
-                    }
-                }
-                return tmp;
-            }
-        }
-
+        
         public override Material Material
         {
             get
@@ -164,6 +144,22 @@ namespace OHUShips
                         }
                     }
                 }
+            }
+        }
+
+        public bool containsColonists
+        {
+            get
+            {
+                List<Pawn> pawns = this.Pawns.ToList();
+                for (int i=0; i < pawns.Count; i++)
+                {
+                    if (pawns[i].IsColonist)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
         }
 
