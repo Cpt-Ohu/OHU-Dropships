@@ -243,7 +243,6 @@ namespace OHUShips
                 Map map = Current.Game.FindMap(this.destinationTile);
                 if (map != null)
                 {
-                    Log.Message("Dropping in Existing Map");
                     this.SpawnShipsInMap(map, null);
                 }
                 else if (!this.LandedShipHasCaravanOwner)
@@ -333,7 +332,6 @@ namespace OHUShips
             IntVec3 intVec;
             if (this.destinationCell.IsValid && this.destinationCell.InBounds(map))
             {
-                Log.Message("ValidCell");
                 intVec = this.destinationCell;
             }
             else if (this.arriveMode == PawnsArriveMode.CenterDrop)
@@ -368,7 +366,6 @@ namespace OHUShips
         {
             get
             {
-                Log.Message(this.ships.Count.ToString());
                 for (int i = 0; i < this.ships.Count; i++)
                 {
                     ThingContainer innerContainer = this.ships[i].GetInnerContainer();

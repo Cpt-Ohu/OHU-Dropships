@@ -183,13 +183,11 @@ namespace OHUShips
         {
             for (int i = 0; i < this.ships.Count; i++)
             {
-                Log.Message("checking ship " + this.ships[i].ShipNick);
                 ThingContainer container = this.ships[i].GetInnerContainer();
                 for (int k = 0; k < container.Count; k++)
                 {
                     if (!this.Goods.Contains(container[k]))
                     {
-                        Log.Message("AddingToStock");
                         Pawn pawn = container[k] as Pawn;
                         if (pawn != null)
                         {
@@ -211,10 +209,8 @@ namespace OHUShips
 
         public void ReloadStockIntoShip()
         {
-            Log.Message("ReloadingSTock");
             List<Thing> allCargo = this.allLandedShipCargo.ToList<Thing>();
             allCargo.AddRange(this.PawnsListForReading.Cast<Thing>().ToList());
-            Log.Message("allcargo " +allCargo.Count.ToString());
             List<Thing> remainingCargo = new List<Thing>();
             for (int i = 0; i < this.PawnsListForReading.Count; i++)
             {
@@ -247,7 +243,6 @@ namespace OHUShips
                     remainingCargo.Add(allCargo[i]);
                 }
             }
-            Log.Message("remaining Cargo: " + remainingCargo.Count.ToString());
 
             DropShipUtility.LoadNewCargoIntoRandomShips(remainingCargo, this.ships);
         }

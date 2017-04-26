@@ -23,7 +23,6 @@ namespace OHUShips
 
         public override void PostOpen()
         {
-            Log.Message("Before " + CaravanInventoryUtility.AllInventoryItems(this.landedShip).Count.ToString());
             base.PostOpen();
         }
 
@@ -66,7 +65,6 @@ namespace OHUShips
         private void ResolveTradedItems()
         {
             List<Thing> itemList = CaravanInventoryUtility.AllInventoryItems(this.landedShip);
-            Log.Message("After " +CaravanInventoryUtility.AllInventoryItems(this.landedShip).Count.ToString());
             List<Thing> tmpToRemove = new List<Thing>();
             if (itemList != null)
             {
@@ -78,7 +76,6 @@ namespace OHUShips
                     {
                         if (!itemList.Contains(container[k]))
                         {
-                            Log.Message("RemovingToStock");
                             Pawn pawn = container[k] as Pawn;
                             if (pawn != null)
                             {
@@ -96,7 +93,6 @@ namespace OHUShips
                     container.RemoveAll(x => tmpToRemove.Contains(x));
                 }
             }
-            Log.Message("Reloading_Dialog");
             this.landedShip.ReloadStockIntoShip();
         }
 

@@ -104,10 +104,6 @@ namespace OHUShips
             TransferableOneWay transferableOneWay = new TransferableOneWay();
             this.leftToLoad.Add(transferableOneWay);
             transferableOneWay.things.AddRange(t.things);
-            for (int i=0; i < transferableOneWay.things.Count; i++)
-            {
-                Log.Message(transferableOneWay.things[i].LabelCap);
-            }
             transferableOneWay.countToTransfer = count;
         }
 

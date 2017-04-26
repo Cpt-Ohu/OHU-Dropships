@@ -428,7 +428,6 @@ namespace OHUShips
                 while (!ships.RandomElement().TryAcceptThing(newCargo[i], true))
                 {
                     Pawn pawn = newCargo[i] as Pawn;
-                    if (pawn != null) Log.Message("loading" + pawn.Label);
                     ships.RandomElement().TryAcceptThing(newCargo[i], true);
                     num++;
                 }

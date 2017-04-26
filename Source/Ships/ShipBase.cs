@@ -455,19 +455,16 @@ namespace OHUShips
         {
             if (!this.Accepts(thing))
             {
-                Log.Message("A1");
                 return false;
             }
             if (thing is Pawn)
             {
                 Pawn pawn = thing as Pawn;
-                Log.Message(pawn.Label);
                 if (pawn.def.race.Humanlike)
                 {
                     if ((this.innerContainer.ToList<Thing>().Count(x => x is Pawn) >= this.compShip.sProps.maxPassengers))
                     {
-
-                        Log.Message("A3");
+                        
                         return false;
                     }
                 }
@@ -478,9 +475,7 @@ namespace OHUShips
                         return true;
                     }
                     else
-                    {
-
-                        Log.Message("A2");
+                    {                        
                         return false;
                     }
                 }
@@ -628,7 +623,6 @@ namespace OHUShips
                 IntVec3 drawLoc = this.Position + DropShipUtility.AdjustedIntVecForShip(this, slot.turretPosOffset);
                 GenSpawn.Spawn(turret, drawLoc, this.Map);
                 this.assignedTurrets.Add(turret);
-                Log.Message(this.assignedTurrets.Count.ToString());
                 return true;
             }
             return false;

@@ -221,7 +221,6 @@ namespace OHUShips
                 }
                 else
                 {
-                    Log.Message("uninstalling weapon");
                     Action action = new Action(delegate
                     {
                         ship.TryModifyWeaponSystem(currentWeapon.Key, currentWeapon.Value, false);

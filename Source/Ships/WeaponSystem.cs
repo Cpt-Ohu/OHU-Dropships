@@ -39,7 +39,6 @@ namespace OHUShips
             }
             if (this.isInstalled && this.Spawned)
             {
-                Log.Message("TryingDespawn");
                 this.DeSpawn();
             }
         }
@@ -47,7 +46,6 @@ namespace OHUShips
         public override void SpawnSetup(Map map)
         {
             base.SpawnSetup(map);
-            Log.Message("Spawning: " + this.ToString());
             this.isInstalled = false;
 
         }

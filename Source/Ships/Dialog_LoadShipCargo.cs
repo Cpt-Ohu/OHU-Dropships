@@ -341,7 +341,6 @@ namespace OHUShips
                     //  }
                     if (this.transferables[i].countToTransfer > 0)
                     {
-                    Log.Message(this.transferables[i].countToTransfer.ToString());
                         this.ship.compShip.AddToTheToLoadList(this.transferables[i], this.transferables[i].countToTransfer);
                     }
                 

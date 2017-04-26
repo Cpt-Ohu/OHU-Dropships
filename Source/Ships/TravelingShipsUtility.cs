@@ -347,7 +347,6 @@ namespace OHUShips
                 Pawn pawn = landedShip.PawnsListForReading[i];
                 if (!Find.WorldPawns.Contains(pawn))
                 {
-                    Log.Message("Adding WorldPawn " + pawn.Name);
                     Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Decide);
                 }
             }
