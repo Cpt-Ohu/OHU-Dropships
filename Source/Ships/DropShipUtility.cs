@@ -38,7 +38,13 @@ namespace OHUShips
         {
             get
             {
-                return Find.WorldObjects.AllWorldObjects.FirstOrDefault(x => x.def == ShipNamespaceDefOfs.ShipTracker) as ShipTracker;
+                ShipTracker tracker = Find.WorldObjects.AllWorldObjects.FirstOrDefault(x => x.def == ShipNamespaceDefOfs.ShipTracker) as ShipTracker;
+                if (tracker == null)
+                {
+                    HarmonyPatches.GenerateFactionsIntoWorldPostFix();
+                    return Find.WorldObjects.AllWorldObjects.FirstOrDefault(x => x.def == ShipNamespaceDefOfs.ShipTracker) as ShipTracker;
+                }
+                return tracker;
             }
         }
 
@@ -239,7 +245,7 @@ namespace OHUShips
 
             return tmp;
         }
-
+        
         public static void DropShipGroups(IntVec3 dropCenter, Map map, List<ShipBase> shipsToDrop, TravelingShipArrivalAction arrivalAction)
         {
             foreach (ShipBase current in shipsToDrop)
@@ -263,7 +269,6 @@ namespace OHUShips
                 
                 catch
                 {
-                    throw new Exception("NoDropPointFound");
                 }
             }
         }
