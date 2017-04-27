@@ -46,6 +46,7 @@ namespace OHUShips
         public override void SpawnSetup(Map map)
         {
             base.SpawnSetup(map);
+
             this.isInstalled = false;
 
         }

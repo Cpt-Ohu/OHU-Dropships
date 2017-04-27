@@ -2,3 +2,4 @@ D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHUShips\Assemblies\OHUShips.dll
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHUShips\Assemblies\OHUShips.pdb
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHUShips\Source\Ships\obj\Debug\OHUShips.dll
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHUShips\Source\Ships\obj\Debug\OHUShips.pdb
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHUShips\Source\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache

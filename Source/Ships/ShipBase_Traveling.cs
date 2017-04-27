@@ -73,6 +73,11 @@ namespace OHUShips
             }
             DropShipUtility.DrawDropSpotShadow(this.containingShip, this.containingShip.drawTickOffset, this);
         }
+        public override void SpawnSetup(Map map)
+        {
+            base.SpawnSetup(map);
+            this.containingShip.compShip.TryRemoveLord(map);
+        }
 
         public override void Tick()
         {
