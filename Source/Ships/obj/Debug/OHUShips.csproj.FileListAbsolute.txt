@@ -5,6 +5,5 @@ D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHUShips\Source\Ships\obj\Debug\O
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHUShips\Source\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache
 B:\Modding\Rimworld\OHU-Dropships\Assemblies\OHUShips.dll
 B:\Modding\Rimworld\OHU-Dropships\Assemblies\OHUShips.pdb
-B:\Modding\Rimworld\OHU-Dropships\Source\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache
 B:\Modding\Rimworld\OHU-Dropships\Source\Ships\obj\Debug\OHUShips.dll
 B:\Modding\Rimworld\OHU-Dropships\Source\Ships\obj\Debug\OHUShips.pdb

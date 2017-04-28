@@ -142,7 +142,7 @@ namespace OHUShips
             {
                 ship.compShip.cargoLoadingActive = false;
                 this.TryRemoveLord(this.parent.Map);
-                Messages.Message("MessageFinishedLoadingShipCargo".Translate(), this.parent, MessageSound.Benefit);
+                Messages.Message("MessageFinishedLoadingShipCargo".Translate(new object[] { this.ship.ShipNick }), this.parent, MessageSound.Benefit);
             }
         }
 
