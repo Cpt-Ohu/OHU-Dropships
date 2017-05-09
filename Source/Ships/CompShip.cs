@@ -143,8 +143,11 @@ namespace OHUShips
             {
                 this.cargoLoadingActive = false;
                 this.TryRemoveLord(this.parent.Map);
+<<<<<<< HEAD
                 this.leftToLoad.Clear();
                 this.leftToLoad = new List<TransferableOneWay>();
+=======
+>>>>>>> origin/master
                 Messages.Message("MessageFinishedLoadingShipCargo".Translate(new object[] { this.ship.ShipNick }), this.parent, MessageSound.Benefit);
             }
         }
