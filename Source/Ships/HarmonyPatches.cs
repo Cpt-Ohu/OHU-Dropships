@@ -21,14 +21,18 @@ namespace OHUShips
 
             harmony.Patch(AccessTools.Property(typeof(MapPawns), "AnyColonistTameAnimalOrPrisonerOfColony").GetGetMethod(false), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(AnyColonistTameAnimalOrPrisonerOfColonyPostFix)), null);
 
+            harmony.Patch(AccessTools.Property(typeof(TransferableOneWay), "MaxCount").GetGetMethod(false), new HarmonyMethod(typeof(HarmonyPatches), nameof(MaxCountTransferablePostFix)), null);
+
             harmony.Patch(AccessTools.Method(typeof(RimWorld.GameEnder), "CheckGameOver"), null, new HarmonyMethod(typeof(HarmonyPatches), "CheckGameOverPostfix"));
 
             harmony.Patch(AccessTools.Method(typeof(RimWorld.Planet.WorldSelector), "AutoOrderToTileNow", new Type[] { typeof(Caravan), typeof(int) }), new HarmonyMethod(typeof(HarmonyPatches), "AutoOrderToTileNowPrefix"), null);
 
             harmony.Patch(AccessTools.Method(typeof(RimWorld.Scenario), "GenerateIntoMap", new Type[] { typeof(Map)}), new HarmonyMethod(typeof(HarmonyPatches), "GenerateIntoMapPreFix"), null);
-                        
+
+            harmony.Patch(AccessTools.Method(typeof(RimWorld.TransferableOneWayWidget), "AddSection"), new HarmonyMethod(typeof(HarmonyPatches), "AddSectionPrefix"), null);
+
         }
-        
+
         public static void AnyColonistTameAnimalOrPrisonerOfColonyPostFix(ref bool __result, MapPawns __instance)
         {
             if (!__result)
@@ -42,6 +46,29 @@ namespace OHUShips
                         __result = true;
                     }
                 }
+            }
+        }
+
+        public static void MaxCountTransferablePostFix(TransferableOneWay __instance)
+        {
+            Map map = Find.VisibleMap;
+            List<ShipBase> ships = DropShipUtility.ShipsOnMap(map);
+            for (int i=0; i < ships.Count; i++)
+            {
+                for (int j=0; j < ships[i].GetInnerContainer().Count; j++)
+                {
+                    __instance.things.RemoveAll(x => ships[i].GetInnerContainer().Contains(x));
+                }
+            }            
+        }
+
+        public static void AddSectionPrefix(TransferableOneWayWidget __instance, string title, IEnumerable<TransferableOneWay> transferables)
+        {
+            List<TransferableOneWay> tmp = transferables.ToList();
+            for (int i = 0; i < tmp.Count; i++)
+            {
+                Dialog_LoadShipCargo.RemoveExistingTransferable(tmp[i], Find.VisibleMap);
+                tmp[i].countToTransfer = 0;
             }
         }
 

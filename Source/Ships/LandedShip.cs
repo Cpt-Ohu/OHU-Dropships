@@ -7,12 +7,15 @@ using Verse;
 using UnityEngine;
 using RimWorld;
 using Verse.Sound;
+using System.Reflection;
 
 namespace OHUShips
 {
     public class LandedShip : Caravan
     {
         public List<ShipBase> ships = new List<ShipBase>();
+
+        public bool isTargeting = false;
 
         public LandedShip()
         {
@@ -48,6 +51,18 @@ namespace OHUShips
         public override void Tick()
         {
             base.Tick();
+            if (Find.Targeter.IsTargeting)
+            {
+                if (this.isTargeting)
+                {
+                    GhostDrawer.DrawGhostThing(UI.MouseCell(), this.ships[0].Rotation, this.ships[0].def, null, new Color(0.5f, 1f, 0.6f, 0.4f), AltitudeLayer.Blueprint);
+                }
+            }
+            else
+            {
+                this.isTargeting = false;
+            }
+
         }
         
         public override void PostRemove()

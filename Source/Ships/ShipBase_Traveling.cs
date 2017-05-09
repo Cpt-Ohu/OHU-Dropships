@@ -89,7 +89,7 @@ namespace OHUShips
                 {
                     this.ShipImpact();
                 }
-                this.containingShip.refuelableComp.ConsumeFuel(this.containingShip.refuelableComp.Props.fuelConsumptionRate / 100f);
+                this.containingShip.refuelableComp.ConsumeFuel(this.containingShip.refuelableComp.Props.fuelConsumptionRate / 60f);
             }
             
             if (this.containingShip.shipState == ShipState.Outgoing)

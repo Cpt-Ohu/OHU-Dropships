@@ -78,6 +78,11 @@ namespace OHUShips
             ship.worldPawns.RemoveAll(x => pawnsToMove.Contains(x));
         }
 
+        public static List<ShipBase> ShipsOnMap(Map map)
+        {
+            return map.listerThings.AllThings.FindAll(x => x is ShipBase).Cast<ShipBase>().ToList();
+        }
+
         public static Vector3 DrawPosAt(ShipBase ship, int ticks, ShipBase_Traveling travelingShip = null)
         {
             if (ticks < 0)
@@ -245,8 +250,8 @@ namespace OHUShips
 
             return tmp;
         }
-        
-        public static void DropShipGroups(IntVec3 dropCenter, Map map, List<ShipBase> shipsToDrop, TravelingShipArrivalAction arrivalAction)
+
+        public static void DropShipGroups(IntVec3 dropCenter, Map map, List<ShipBase> shipsToDrop, TravelingShipArrivalAction arrivalAction, bool launchdAsSingleShip = false)
         {
             foreach (ShipBase current in shipsToDrop)
             {
@@ -255,20 +260,29 @@ namespace OHUShips
                 //   if (DropCellFinder.TryFindRaidDropCenterClose(out dropLoc, map))
                 try
                 {
-                    if (!DropShipUtility.TryFindShipDropSpotNear(current, dropCenter, map, out dropLoc, true, true))
+
+                    dropLoc = dropCenter;
+                    if (dropLoc.IsValid && launchdAsSingleShip)
                     {
-                        DropShipUtility.TryFindShipDropSpotNear(current, DropCellFinder.FindRaidDropCenterDistant(map), map, out dropLoc, true, true);
                     }
-                        current.drawTickOffset = current.compShip.sProps.TicksToImpact + Rand.Range(10, 60);
-                        current.ActivatedLaunchSequence = false;
-                        current.shipState = ShipState.Incoming;
-                        ShipBase_Traveling incomingShip = new ShipBase_Traveling(current, false, arrivalAction);
-                        //             Log.Message("Dropping " + incomingShip.containingShip.ShipNick);
-                        GenSpawn.Spawn(incomingShip, dropLoc, map);
+                    else
+                    {
+                        if (!DropShipUtility.TryFindShipDropSpotNear(current, dropCenter, map, out dropLoc, true, true))
+                        {
+                            DropShipUtility.TryFindShipDropSpotNear(current, DropCellFinder.FindRaidDropCenterDistant(map), map, out dropLoc, true, true);
+                        }
                     }
-                
-                catch
+                    current.drawTickOffset = current.compShip.sProps.TicksToImpact + Rand.Range(10, 60);
+                    current.ActivatedLaunchSequence = false;
+                    current.shipState = ShipState.Incoming;
+                    ShipBase_Traveling incomingShip = new ShipBase_Traveling(current, false, arrivalAction);
+                    //             Log.Message("Dropping " + incomingShip.containingShip.ShipNick);
+                    GenSpawn.Spawn(incomingShip, dropLoc, map);
+                }
+
+                catch (Exception ex)
                 {
+                    Log.Error("Couldn't drop ships in map: " + ex.ToString());
                 }
             }
         }
@@ -382,10 +396,18 @@ namespace OHUShips
             return map.listerThings.AllThings.FindAll(x => x.TryGetComp<CompShipWeapon>() != null && x.TryGetComp<CompShipWeapon>().SProps.weaponSystemType == slot.slotType);            
         }
 
+        private static List<TransferableOneWay> tmpTransferables = new List<TransferableOneWay>();
+
         public static float ApproxDaysWorthOfFood_Ship(ShipBase ship, List<TransferableOneWay> transferables)
-        {
-            List<TransferableOneWay> tmp = new List<TransferableOneWay>();
-            tmp.AddRange(transferables);
+        {            
+            tmpTransferables.Clear();
+
+            for (int i=0; i < transferables.Count; i++)
+            {
+                TransferableOneWay oneWay = new TransferableOneWay();
+                oneWay.things.AddRange(transferables[i].things);
+                tmpTransferables.Add(oneWay);
+            }
 
             List<TransferableOneWay> tmpPawns = new List<TransferableOneWay>();
             List<TransferableOneWay> tmpItems = new List<TransferableOneWay>();
@@ -393,18 +415,18 @@ namespace OHUShips
             {
                 if (!current.RaceProps.Eats(FoodTypeFlags.Plant))
                 {
-                    DropShipUtility.AddThingsToTransferables(tmp, current);
+                    DropShipUtility.AddThingsToTransferables(tmpTransferables, current);
                 }
             }
             for (int i = 0; i < ship.GetInnerContainer().Count; i++)
             {
                 if (!(ship.GetInnerContainer()[i] is Pawn))
                 {
-                    DropShipUtility.AddThingsToTransferables(tmp, ship.GetInnerContainer()[i]);
+                    DropShipUtility.AddThingsToTransferables(tmpTransferables, ship.GetInnerContainer()[i]);
                 }
             }
-
-            return DaysWorthOfFoodCalculator.ApproxDaysWorthOfFood(tmp);
+            
+            return DaysWorthOfFoodCalculator.ApproxDaysWorthOfFood(tmpTransferables);            
         }
 
         private static void AddThingsToTransferables(List<TransferableOneWay> transferables, Thing thing)

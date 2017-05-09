@@ -119,6 +119,7 @@ namespace OHUShips
 
         public void Notify_PawnEntered(Pawn p)
         {
+            p.ClearMind(true);
             this.SubtractFromToLoadList(p);
         }
 
@@ -140,9 +141,11 @@ namespace OHUShips
             }
             if (!this.AnythingLeftToLoad)
             {
-                ship.compShip.cargoLoadingActive = false;
+                this.cargoLoadingActive = false;
                 this.TryRemoveLord(this.parent.Map);
-                Messages.Message("MessageFinishedLoadingShipCargo".Translate(), this.parent, MessageSound.Benefit);
+                this.leftToLoad.Clear();
+                this.leftToLoad = new List<TransferableOneWay>();
+                Messages.Message("MessageFinishedLoadingShipCargo".Translate(new object[] { this.ship.ShipNick }), this.parent, MessageSound.Benefit);
             }
         }
 

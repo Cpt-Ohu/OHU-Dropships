@@ -125,9 +125,9 @@ namespace OHUShips
             Rect rect = inRect.ContractedBy(4f);
             GUI.BeginGroup(rect);
             GUI.color = Color.white;
-            Rect totalRect = new Rect(0f, 0f, rect.width-50f, 400f);
+            Rect totalRect = new Rect(0f, 0f, rect.width-50f, 300f);
             Rect viewRect = new Rect(0f, 0f, rect.width, this.scrollViewHeight);
-            Widgets.BeginScrollView(viewRect, ref this.scrollPosition, totalRect);
+            Widgets.BeginScrollView(totalRect, ref this.scrollPosition, viewRect);
             float num = 0f;
             if (this.ship.GetInnerContainer() != null)
             {
@@ -152,10 +152,7 @@ namespace OHUShips
                     }
                 }
             }
-            if (Event.current.type == EventType.Layout)
-            {
-                this.scrollViewHeight = num + 30f;
-            }
+            this.scrollViewHeight = num + 30f;            
             Widgets.EndScrollView();
             GUI.EndGroup();
             GUI.color = Color.white;

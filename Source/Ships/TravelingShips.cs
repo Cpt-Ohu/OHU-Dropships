@@ -52,7 +52,7 @@ namespace OHUShips
                 base.Draw();
             }
         }
-
+        
         public override Texture2D ExpandingIcon
         {
             get
@@ -89,6 +89,39 @@ namespace OHUShips
             }
         }
 
+        private bool isSingularShip
+        {
+            get
+            {
+                if (this.ships.Count == 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        private float maxTravelingSpeed = -1;
+
+        public float MaxTravelingSpeed
+        {
+            get
+            {
+                if (this.maxTravelingSpeed == -1)
+                {
+                    List<float> speedFactors = new List<float>();
+                    foreach (ShipBase ship in this.ships)
+                    {
+                        speedFactors.Add(ship.compShip.sProps.WorldMapTravelSpeedFactor);
+                    }
+                    float chosenFactor = Mathf.Min(speedFactors.ToArray());
+                    maxTravelingSpeed = chosenFactor * 0.0000416f;
+                }
+                
+                return maxTravelingSpeed;
+            }
+        }
+
         private float TraveledPctStepPerTick
         {
             get
@@ -104,7 +137,7 @@ namespace OHUShips
                 {
                     return 1f;
                 }
-                return 0.00010f / num;
+                return MaxTravelingSpeed / num;
             }
         }
 
@@ -356,7 +389,7 @@ namespace OHUShips
             {
                 text = text + " " + extraMessagePart;
             }
-            DropShipUtility.DropShipGroups(intVec, map, this.ships, this.arrivalAction);
+            DropShipUtility.DropShipGroups(intVec, map, this.ships, this.arrivalAction, this.isSingularShip);
             Messages.Message(text, new TargetInfo(intVec, map, false), MessageSound.Benefit);
             this.RemoveAllPods();
             Find.WorldObjects.Remove(this);

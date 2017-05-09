@@ -88,9 +88,11 @@ Offensive Capabilities: 1x Payload Slot
       <li Class="OHUShips.CompProperties_Ship">
         <TicksToImpact>200</TicksToImpact>
         <TicksToDespawn>200</TicksToDespawn>
+        <WorldMapTravelSpeedFactor>1</WorldMapTravelSpeedFactor>
+        <maxCargo>1000</maxCargo>
+        <maxPassengers>5</maxPassengers>
         <CanBeStartingShip>true</CanBeStartingShip>
         <LeavingShipDef>OHUDropShipLeaving</LeavingShipDef>
-        <FuelType>Chemfuel</FuelType>
         <IncomingAngle>65</IncomingAngle>
         <ShadowGraphicPath>Things/Ships/OHUDropShipShadow</ShadowGraphicPath>
         <FleetIconGraphicPath>Things/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
@@ -111,7 +113,7 @@ Offensive Capabilities: 1x Payload Slot
 
 	 </li>
       <li Class="CompProperties_Refuelable">
-        <fuelConsumptionRate>100.0</fuelConsumptionRate>
+        <fuelConsumptionRate>10.0</fuelConsumptionRate>
         <fuelCapacity>3000.0</fuelCapacity>
         <fuelFilter>
           <thingDefs>
