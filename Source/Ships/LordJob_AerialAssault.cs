@@ -9,7 +9,7 @@ namespace OHUShips
 {
     public class LordJob_AerialAssault : LordJob_AssaultColony
     {
-        private List<ShipBase> ships;
+        public List<ShipBase> ships;
 
         public  LordJob_AerialAssault(List<ShipBase> ships,  Faction assaulterFaction, bool canKidnap = true, bool canTimeoutOrFlee = true, bool sappers = false, bool useAvoidGridSmart = false, bool canSteal = true) : base(assaulterFaction, canKidnap, canTimeoutOrFlee, sappers, useAvoidGridSmart, canSteal)
         {
@@ -19,15 +19,21 @@ namespace OHUShips
         public override StateGraph CreateGraph()
         {
             StateGraph graph = base.CreateGraph();
-            List<Transition> leaveTransitions = graph.transitions.FindAll(x => x.target.GetType() == typeof(LordToil_ExitMapBest));
+            List<Transition> leaveTransitions = graph.transitions.FindAll(x => x.target.GetType() == typeof(LordToil_ExitMapAndEscortCarriers));
             for (int i=0; i < leaveTransitions.Count; i++)
             {
-                leaveTransitions[i].target = new LordToil_LeaveInShip();
+                LordToil_LeaveInShip lordToil = new LordToil_LeaveInShip();
+                leaveTransitions[i].target = lordToil;
 
-                Transition transition = new Transition(leaveTransitions[i].target, new LordToil_ExitMapBest());
+                graph.AddToil(lordToil);
+                Transition transition = new Transition(leaveTransitions[i].target, new LordToil_ExitMapAndEscortCarriers());
                 transition.AddTrigger(new Trigger_Custom((TriggerSignal x) => !this.ships.Any(y => y.Map == this.Map)));
                 graph.transitions.Add(transition);
             }
+            Transition stealTransitions = graph.transitions.FirstOrDefault(x => x.target.GetType() == typeof(LordToil_StealCover));
+            LordToil_StealForShip stealToil = new LordToil_StealForShip();
+            graph.AddToil(stealToil);
+            stealTransitions.target = stealToil;
 
             return graph;
 

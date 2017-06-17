@@ -25,6 +25,7 @@ namespace OHUShips
         public static JobDef LeaveInShip;
 
         public static DutyDef LeaveInShipDuty;
+        public static DutyDef StealForShipDuty;
 
         public static DutyDef LoadShipCargo;
         

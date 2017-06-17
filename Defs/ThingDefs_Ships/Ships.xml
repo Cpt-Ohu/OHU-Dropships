@@ -9,7 +9,7 @@
     <graphicData>
       <texPath>Things/Special/DropPod</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <shaderType>CutoutFlying</shaderType>
+      <shaderType>Cutout</shaderType>
       <drawSize>(2,2)</drawSize>
     </graphicData>
     <inspectorTabs>
@@ -69,6 +69,7 @@ Offensive Capabilities: 1x Payload Slot
     <graphicData>
       <texPath>Things/Ships/OHUDropShip</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Cutout</shaderType>
       <drawSize>(9,9)</drawSize>
     </graphicData>
     <size>(7,2)</size>
@@ -92,10 +93,14 @@ Offensive Capabilities: 1x Payload Slot
         <maxCargo>1000</maxCargo>
         <maxPassengers>5</maxPassengers>
         <CanBeStartingShip>true</CanBeStartingShip>
+        <availableToFactions>
+		<li>Outlander</li>
+		<li>Pirate</li>
+	   </availableToFactions>
         <LeavingShipDef>OHUDropShipLeaving</LeavingShipDef>
         <IncomingAngle>65</IncomingAngle>
         <ShadowGraphicPath>Things/Ships/OHUDropShipShadow</ShadowGraphicPath>
-        <FleetIconGraphicPath>Things/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
+        <FleetIconGraphicPath>Things/IoM/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
 
         <weaponSlots>
 	    <li>
@@ -113,7 +118,7 @@ Offensive Capabilities: 1x Payload Slot
 
 	 </li>
       <li Class="CompProperties_Refuelable">
-        <fuelConsumptionRate>10.0</fuelConsumptionRate>
+        <fuelConsumptionRate>5.0</fuelConsumptionRate>
         <fuelCapacity>3000.0</fuelCapacity>
         <fuelFilter>
           <thingDefs>
@@ -137,6 +142,14 @@ Offensive Capabilities: 1x Payload Slot
 		<researchPrerequisites>
 			<li>ShipBasics</li>
 		</researchPrerequisites>
+    <colorGenerator Class="ColorGenerator_Options">
+      <options>
+        <li>
+          <weight>10</weight>
+          <only>RGBA(1.00,1.00,1.00,1)</only>
+        </li>
+      </options>
+    </colorGenerator>
   </ThingDef>
 
 
@@ -157,6 +170,5 @@ Offensive Capabilities: 1x Payload Slot
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
   </ThingDef>
-
   
 </ThingDefs>

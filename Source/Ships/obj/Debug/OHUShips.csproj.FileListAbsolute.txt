@@ -7,7 +7,6 @@ B:\Modding\Rimworld\OHU-Dropships\Assemblies\OHUShips.dll
 B:\Modding\Rimworld\OHU-Dropships\Assemblies\OHUShips.pdb
 B:\Modding\Rimworld\OHU-Dropships\Source\Ships\obj\Debug\OHUShips.dll
 B:\Modding\Rimworld\OHU-Dropships\Source\Ships\obj\Debug\OHUShips.pdb
-<<<<<<< HEAD
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.05 - Kopie\Assemblies\OHUShips.dll
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.05 - Kopie\Assemblies\OHUShips.pdb
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.05 - Kopie\Source\Ships\obj\Debug\OHUShips.dll
@@ -16,5 +15,21 @@ D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.05-Van\Assemblies
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.05-Van\Assemblies\OHUShips.pdb
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.05-Van\Source\Ships\obj\Debug\OHUShips.dll
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.05-Van\Source\Ships\obj\Debug\OHUShips.pdb
-=======
->>>>>>> origin/master
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - 40k\Source\Ships\obj\Debug\OHUShips.dll
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - 40k\Source\Ships\obj\Debug\OHUShips.pdb
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - 40k\Assemblies\OHUShips.dll
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - 40k\Assemblies\OHUShips.pdb
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - 40k\Source\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - 40k_A17\Source\Ships\obj\Debug\OHUShips.dll
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - 40k_A17\Source\Ships\obj\Debug\OHUShips.pdb
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - 40k_A17\Assemblies\OHUShips.dll
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - 40k_A17\Assemblies\OHUShips.pdb
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Assemblies\OHUShips.dll
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Assemblies\OHUShips.pdb
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Source\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Source\Ships\obj\Debug\OHUShips.dll
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Source\Ships\obj\Debug\OHUShips.pdb
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - Vanilla\Assemblies\OHUShips.dll
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - Vanilla\Assemblies\OHUShips.pdb
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - Vanilla\Source\Ships\obj\Debug\OHUShips.dll
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - Vanilla\Source\Ships\obj\Debug\OHUShips.pdb

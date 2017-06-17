@@ -43,7 +43,7 @@ namespace OHUShips
                     {
                         if (ship.TryInstallTurret(comp.slotToInstall, comp))
                         {
-                            this.pawn.carryTracker.GetInnerContainer().Remove(TargetA.Thing);
+                            this.pawn.carryTracker.GetDirectlyHeldThings().Remove(TargetA.Thing);
                             ship.weaponsToInstall.Remove(comp.slotToInstall);
                         }
                     };

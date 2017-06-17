@@ -46,7 +46,7 @@ namespace OHUShips
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.LookReference<ShipBase>(ref this.ship, "ship");
+            Scribe_References.Look<ShipBase>(ref this.ship, "ship");
         }
     }
 }

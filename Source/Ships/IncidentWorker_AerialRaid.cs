@@ -32,6 +32,14 @@ namespace OHUShips
             return false;
         }
 
+        protected override void ResolveRaidPoints(IncidentParms parms)
+        {
+            if (parms.points < 700)
+            {
+                parms.points = Rand.Range(700, 1500);
+            }
+        }
+
         protected override bool TryResolveRaidFaction(IncidentParms parms)
         {
             if (base.TryResolveRaidFaction(parms))
@@ -65,6 +73,13 @@ namespace OHUShips
             {
                 return false;
             }
+
+            IntVec3 dropCenter;
+            if (!DropCellFinder.TryFindRaidDropCenterClose(out dropCenter, map))
+            {
+                dropCenter = DropCellFinder.FindRaidDropCenterDistant(map);
+            }
+
             this.ResolveRaidStrategy(parms);
             this.ResolveRaidArriveMode(parms);
             this.ResolveRaidSpawnCenter(parms);
@@ -79,7 +94,7 @@ namespace OHUShips
             TargetInfo target = TargetInfo.Invalid;
             List<ShipBase> ships = DropShipUtility.CreateDropShips(list, parms.faction);
 
-            DropShipUtility.DropShipGroups(parms.spawnCenter, map, ships, TravelingShipArrivalAction.EnterMapAssault);
+            DropShipUtility.DropShipGroups(dropCenter, map, ships, TravelingShipArrivalAction.EnterMapAssault);
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("Points = " + parms.points.ToString("F0"));
@@ -91,23 +106,24 @@ namespace OHUShips
             string letterLabel = this.GetLetterLabel(parms);
             string letterText = this.GetLetterText(parms, list);
             PawnRelationUtility.Notify_PawnsSeenByPlayer(list, ref letterLabel, ref letterText, this.GetRelatedPawnsInfoLetterText(parms), true);
-            Find.LetterStack.ReceiveLetter(letterLabel, letterText, this.GetLetterType(), target, stringBuilder.ToString());
-            if (this.GetLetterType() == LetterType.BadUrgent)
+            Find.LetterStack.ReceiveLetter(letterLabel, letterText, this.GetLetterDef(), target, stringBuilder.ToString());
+            if (this.GetLetterDef() == LetterDefOf.BadUrgent)
             {
                 TaleRecorder.RecordTale(TaleDefOf.RaidArrived, new object[0]);
             }
             this.ResolveRaidParmOptions(parms);
             Lord lord = LordMaker.MakeNewLord(parms.faction, new LordJob_AerialAssault(ships, parms.faction, this.Kidnappers(parms.faction), true, this.UseSappers, this.SmartGrid, this.Stealers(parms.faction)), map, list);
+            //Lord lord = LordMaker.MakeNewLord(parms.faction, new LordJob_AssaultColony(parms.faction, true, true, true, true, true), map, list);
             AvoidGridMaker.RegenerateAvoidGridsFor(parms.faction, map);
             LessonAutoActivator.TeachOpportunity(ConceptDefOf.EquippingWeapons, OpportunityType.Critical);
-            if (!PlayerKnowledgeDatabase.IsComplete(ConceptDefOf.PersonalShields))
+            if (!PlayerKnowledgeDatabase.IsComplete(ConceptDefOf.ShieldBelts))
             {
                 for (int i = 0; i < list.Count; i++)
                 {
                     Pawn pawn = list[i];
-                    if (pawn.apparel.WornApparel.Any((Apparel ap) => ap is PersonalShield))
+                    if (pawn.apparel.WornApparel.Any((Apparel ap) => ap is ShieldBelt))
                     {
-                        LessonAutoActivator.TeachOpportunity(ConceptDefOf.PersonalShields, OpportunityType.Critical);
+                        LessonAutoActivator.TeachOpportunity(ConceptDefOf.ShieldBelts, OpportunityType.Critical);
                         break;
                     }
                 }

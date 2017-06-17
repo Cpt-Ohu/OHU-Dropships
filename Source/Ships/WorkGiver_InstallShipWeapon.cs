@@ -20,7 +20,7 @@ namespace OHUShips
             }
         }
 
-        public override Job JobOnThing(Pawn pawn, Thing t)
+        public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             ShipBase ship = (ShipBase)t;
             KeyValuePair<ShipWeaponSlot, Thing> weaponSpecs = ship.weaponsToInstall.RandomElement();
@@ -37,7 +37,7 @@ namespace OHUShips
             return null;
         }
 
-        public override bool HasJobOnThing(Pawn pawn, Thing t)
+        public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             if (t is ShipBase)
             {

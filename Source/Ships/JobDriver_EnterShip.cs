@@ -13,7 +13,7 @@ namespace OHUShips
         [DebuggerHidden]
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            yield return Toils_Reserve.Reserve(TargetIndex.A, 10);
+            yield return Toils_Reserve.Reserve(TargetIndex.A, 10, 1);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
             Toil toil = new Toil();
             toil.defaultCompleteMode = ToilCompleteMode.Delay;
@@ -27,6 +27,10 @@ namespace OHUShips
                     ShipBase ship = (ShipBase)TargetA.Thing;
                     Action action = delegate
                     {
+                        if (pawn.carryTracker.CarriedThing != null)
+                        {
+                            ship.TryAcceptThing(pawn.carryTracker.CarriedThing);
+                        }
                         ship.TryAcceptThing(pawn, true);
                     };
 

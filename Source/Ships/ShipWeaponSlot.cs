@@ -27,7 +27,7 @@ namespace OHUShips
 
         public virtual void ExposeData()
         {
-            Scribe_Values.LookValue<string>(ref this.SlotName, "SlotName", "");
+            Scribe_Values.Look<string>(ref this.SlotName, "SlotName", "");
         }
     }
 }

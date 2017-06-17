@@ -23,6 +23,20 @@
     </thinkNode>
   </DutyDef>
 
+  <DutyDef>
+    <defName>StealForShipDuty</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="JobGiver_Steal" />
+        <li Class="OHUShips.JobGiver_LeaveInShip" />
+        <li Class="OHUShips.JobGiver_FleeIfShipDestroyed">
+          <defaultLocomotion>Jog</defaultLocomotion>
+          <jobMaxDuration>200</jobMaxDuration>
+          <forceCanDig>true</forceCanDig>
+	   </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
 
 
 </Defs>

@@ -39,17 +39,9 @@ namespace OHUShips
             {
                 if (this.cachedMat == null)
                 {
-                    this.cachedMat = MaterialPool.MatFrom(ships[0].def.graphicData.texPath, ShaderDatabase.WorldOverlayTransparentLit, ships[0].DrawColor);
+                    this.cachedMat = MaterialPool.MatFrom(ships[0].def.graphicData.texPath, ShaderDatabase.WorldOverlayCutout, ships[0].DrawColor, WorldMaterials.WorldObjectRenderQueue);
                 }
                 return cachedMat;
-            }
-        }
-
-        public override void Draw()
-        {
-            if (this.ships.Count > 0)
-            {
-                base.Draw();
             }
         }
         
@@ -147,7 +139,7 @@ namespace OHUShips
             {
                 for (int i = 0; i < this.ships.Count; i++)
                 {
-                    ThingContainer innerContainer = this.ships[i].GetInnerContainer();
+                    ThingOwner innerContainer = this.ships[i].GetDirectlyHeldThings();
                     for (int j = 0; j < innerContainer.Count; j++)
                     {
                         Pawn pawn = innerContainer[j] as Pawn;
@@ -167,7 +159,7 @@ namespace OHUShips
             {
                 for (int i = 0; i < this.ships.Count; i++)
                 {
-                    ThingContainer things = this.ships[i].GetInnerContainer();
+                    ThingOwner things = this.ships[i].GetDirectlyHeldThings();
                     for (int j = 0; j < things.Count; j++)
                     {
                         Pawn p = things[j] as Pawn;
@@ -199,15 +191,14 @@ namespace OHUShips
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Collections.LookList<ShipBase>(ref this.ships, "ships", LookMode.Deep, new object[0]);
-            Scribe_Values.LookValue<int>(ref this.destinationTile, "destinationTile", 0, false);
-            Scribe_Values.LookValue<IntVec3>(ref this.destinationCell, "destinationCell", default(IntVec3), false);
-            Scribe_Values.LookValue<PawnsArriveMode>(ref this.arriveMode, "arriveMode", PawnsArriveMode.Undecided, false);
-            Scribe_Values.LookValue<bool>(ref this.arrived, "arrived", false, false);
-            Scribe_Values.LookValue<int>(ref this.initialTile, "initialTile", 0, false);
-            Scribe_Values.LookValue<float>(ref this.traveledPct, "traveledPct", 0f, false);
-            Scribe_Values.LookValue<TravelingShipArrivalAction>(ref this.arrivalAction, "arrivalAction", TravelingShipArrivalAction.StayOnWorldMap, false);
-            
+            Scribe_Collections.Look<ShipBase>(ref this.ships, "ships", LookMode.Deep, new object[0]);
+            Scribe_Values.Look<int>(ref this.destinationTile, "destinationTile", 0, false);
+            Scribe_Values.Look<IntVec3>(ref this.destinationCell, "destinationCell", default(IntVec3), false);
+            Scribe_Values.Look<PawnsArriveMode>(ref this.arriveMode, "arriveMode", PawnsArriveMode.Undecided, false);
+            Scribe_Values.Look<bool>(ref this.arrived, "arrived", false, false);
+            Scribe_Values.Look<int>(ref this.initialTile, "initialTile", 0, false);
+            Scribe_Values.Look<float>(ref this.traveledPct, "traveledPct", 0f, false);
+            Scribe_Values.Look<TravelingShipArrivalAction>(ref this.arrivalAction, "arrivalAction", TravelingShipArrivalAction.StayOnWorldMap, false);            
         }
 
         public override void PostAdd()
@@ -239,7 +230,7 @@ namespace OHUShips
         {
             for (int i = 0; i < this.ships.Count; i++)
             {
-                if (this.ships[i].GetInnerContainer().Contains(p))
+                if (this.ships[i].GetDirectlyHeldThings().Contains(p))
                 {
                     return true;
                 }
@@ -282,7 +273,7 @@ namespace OHUShips
                 {
                     for (int i = 0; i < this.ships.Count; i++)
                     {
-                        this.ships[i].GetInnerContainer().ClearAndDestroyContentsOrPassToWorld(DestroyMode.Vanish);
+                        this.ships[i].GetDirectlyHeldThings().ClearAndDestroyContentsOrPassToWorld(DestroyMode.Vanish);
                     }
                     this.RemoveAllPods();
                     Find.WorldObjects.Remove(this);
@@ -296,7 +287,7 @@ namespace OHUShips
                     {
                         LongEventHandler.QueueLongEvent(delegate
                         {
-                            Map map2 = AttackCaravanArrivalActionUtility.GenerateFactionBaseMap(factionBase);
+                            Map map2 = GetOrGenerateMapUtility.GetOrGenerateMap(factionBase.Tile, Find.World.info.initialMapSize, null); ;
                             
                             string extraMessagePart = null;
                             if (this.arrivalAction == TravelingShipArrivalAction.EnterMapAssault && !factionBase.Faction.HostileTo(Faction.OfPlayer))
@@ -309,7 +300,7 @@ namespace OHUShips
                             }
                             Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
                             Current.Game.VisibleMap = map2;
-                            Find.CameraDriver.JumpTo(map2.Center);
+                            Find.CameraDriver.JumpToVisibleMapLoc(map2.Center);
                             this.SpawnShipsInMap(map2, extraMessagePart);
                         }, "GeneratingMapForNewEncounter", false, null);
                     }
@@ -326,7 +317,7 @@ namespace OHUShips
             TravelingShipsUtility.tmpPawns.Clear();
             for (int i = 0; i < this.ships.Count; i++)
             {
-                ThingContainer innerContainer = this.ships[i].GetInnerContainer();
+                ThingOwner innerContainer = this.ships[i].GetDirectlyHeldThings();
             //    Log.Message("SpawningCaravan");
             //    TravelingShipsUtility.MakepawnInfos(innerContainer);
                 for (int j = 0; j < innerContainer.Count; j++)
@@ -401,7 +392,7 @@ namespace OHUShips
             {
                 for (int i = 0; i < this.ships.Count; i++)
                 {
-                    ThingContainer innerContainer = this.ships[i].GetInnerContainer();
+                    ThingOwner innerContainer = this.ships[i].GetDirectlyHeldThings();
                     for (int j = 0; j < innerContainer.Count; j++)
                     {
                         Pawn pawn = innerContainer[j] as Pawn;
@@ -422,7 +413,7 @@ namespace OHUShips
         {
             for (int i = 0; i < this.ships.Count; i++)
             {
-                ThingContainer innerContainer = this.ships[i].GetInnerContainer();
+                ThingOwner innerContainer = this.ships[i].GetDirectlyHeldThings();
                 for (int j = 0; j < innerContainer.Count; j++)
                 {
                     Pawn pawn = innerContainer[j] as Pawn;

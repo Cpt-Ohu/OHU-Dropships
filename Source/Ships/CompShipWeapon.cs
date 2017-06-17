@@ -21,7 +21,7 @@ namespace OHUShips
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_References.LookReference<ShipWeaponSlot>(ref this.slotToInstall, "slotToInstall");
+            Scribe_References.Look<ShipWeaponSlot>(ref this.slotToInstall, "slotToInstall");
         }
     }
 }

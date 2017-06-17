@@ -20,7 +20,7 @@ namespace OHUShips
             Thing thing = LoadShipCargoUtility.FindThingToLoad(p, ship);
             return new Job(ShipNamespaceDefOfs.LoadContainerMultiplePawns, thing, ship)
             {
-                count = Mathf.Min(TransferableUtility.TransferableMatching<TransferableOneWay>(thing, ship.compShip.leftToLoad).countToTransfer, thing.stackCount),
+                count = Mathf.Min(TransferableUtility.TransferableMatching<TransferableOneWay>(thing, ship.compShip.leftToLoad).CountToTransfer, thing.stackCount),
                 ignoreForbidden = true
             };
         }
@@ -34,12 +34,11 @@ namespace OHUShips
                 for (int i = 0; i < leftToLoad.Count; i++)
                 {
                     TransferableOneWay transferableOneWay = leftToLoad[i];
-                    if (transferableOneWay.countToTransfer > 0)
+                    if (transferableOneWay.CountToTransfer > 0)
                     {
                         for (int j = 0; j < transferableOneWay.things.Count; j++)
                         {
                             LoadShipCargoUtility.neededThings.Add(transferableOneWay.things[j]);
-                          //  Log.Message(transferableOneWay.things[j].Label);
                         }
                     }
                 }
@@ -49,7 +48,7 @@ namespace OHUShips
                 return null;
             }
             Predicate<Thing> validator = (Thing x) => LoadShipCargoUtility.neededThings.Contains(x) && p.CanReserve(x, 1);
-            Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map, ThingRequest.ForGroup(ThingRequestGroup.HaulableEver), PathEndMode.Touch, TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn, false), 9999f, validator, null, -1, false);
+            Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map, ThingRequest.ForGroup(ThingRequestGroup.HaulableEver), PathEndMode.Touch, TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn, false), 9999f, validator, null);
             if (thing == null)
             {
                 foreach (Thing current in LoadShipCargoUtility.neededThings)

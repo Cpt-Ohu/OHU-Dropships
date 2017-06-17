@@ -14,8 +14,6 @@ namespace OHUShips
     {
         public LandedShip landedShip;
 
-
-
         public Dialog_TradeFromShips(LandedShip landedShip, Pawn playerNegotiator, ITrader trader) : base(playerNegotiator, trader)
         {
             this.landedShip = landedShip;
@@ -30,6 +28,10 @@ namespace OHUShips
         {
             this.RecacheTradeablblesAndMassCapacity();
             base.DoWindowContents(inRect);
+        }
+
+        private void LoadShipTradeables()
+        {
 
         }
 
@@ -37,6 +39,14 @@ namespace OHUShips
         {
             this.ResolveTradedItems();
             base.PostClose();
+        }
+
+        private bool EnvironmentAllowsEatingVirtualPlantsNow
+        {
+            get
+            {
+                return VirtualPlantsUtility.EnvironmentAllowsEatingVirtualPlantsNowAt(this.landedShip.Tile);
+            }
         }
 
         private void RecacheTradeablblesAndMassCapacity()
@@ -70,7 +80,7 @@ namespace OHUShips
             {
                 for (int i = 0; i < landedShip.ships.Count; i++)
                 {
-                    ThingContainer container = landedShip.ships[i].GetInnerContainer();
+                    ThingOwner container = landedShip.ships[i].GetDirectlyHeldThings();
                     tmpToRemove.Clear();
                     for (int k = 0; k < container.Count; k++)
                     {
@@ -93,8 +103,22 @@ namespace OHUShips
                     container.RemoveAll(x => tmpToRemove.Contains(x));
                 }
             }
-            this.landedShip.ReloadStockIntoShip();
+            this.LoadNewCargo();
         }
 
+        private void LoadNewCargo()
+        {
+            List<Pawn> pawns = this.landedShip.PawnsListForReading;
+            for (int i=0; i < pawns.Count; i++)
+            {
+                ThingOwner<Thing> innerContainer = pawns[i].inventory.innerContainer;
+                innerContainer.TryTransferAllToContainer(this.landedShip.ships.RandomElement().GetDirectlyHeldThings());
+                //for (int j = 0; j < inventory.Count; j++)
+                //{
+                //    Thing thing = inventory[j];
+                //    thingsToRemove.Add(thing);
+                //}
+            }
+        }
     }
 }

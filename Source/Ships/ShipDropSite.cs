@@ -32,7 +32,7 @@ namespace OHUShips
 
         public override bool ShouldRemoveMapNow(out bool alsoRemoveWorldObject)
         {
-            if (!base.Map.mapPawns.AnyColonistTameAnimalOrPrisonerOfColony && timePresent > timeToRemove && !this.Map.listerThings.AllThings.Any(x => x.Faction == Faction.OfPlayer || x is ShipBase_Traveling))
+            if (!base.Map.mapPawns.AnyPawnBlockingMapRemoval && timePresent > timeToRemove && !this.Map.listerThings.AllThings.Any(x => x.Faction == Faction.OfPlayer || x is ShipBase_Traveling))
             {
                 alsoRemoveWorldObject = true;
                 return true;
