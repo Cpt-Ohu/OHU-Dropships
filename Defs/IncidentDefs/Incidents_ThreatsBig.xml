@@ -7,7 +7,7 @@
     <label>enemy raid</label>
     <targetType>MapPlayerHome</targetType>
     <workerClass>OHUShips.IncidentWorker_AerialRaid</workerClass>
-    <baseChance>3.0</baseChance>
+    <baseChance>0.5</baseChance>
     <category>ThreatBig</category>
     <pointsScaleable>true</pointsScaleable>
   </IncidentDef>
