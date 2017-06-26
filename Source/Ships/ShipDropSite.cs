@@ -15,7 +15,7 @@ namespace OHUShips
         private const int timeToRemove = 2000;
 
         private bool forcedRemoval = false;
-
+        
         private int timePresent = 0;
 
         private Material cachedMat;
@@ -46,7 +46,8 @@ namespace OHUShips
                 alsoRemoveWorldObject = true;
                 return true;
             }
-            alsoRemoveWorldObject = false;
+
+            alsoRemoveWorldObject = false ;
             return false;
         }
 
