@@ -30,11 +30,5 @@ D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - Vanilla\Sourc
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.2 - Vanilla\Source\Ships\obj\Debug\OHUShips.pdb
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Assemblies\OHUShips.dll
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Assemblies\OHUShips.pdb
-D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Source\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Source\Ships\obj\Debug\OHUShips.dll
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Source\Ships\obj\Debug\OHUShips.pdb
-D:\Modding\rimworld\Wh40k\DropShips\Assemblies\OHUShips.dll
-D:\Modding\rimworld\Wh40k\DropShips\Assemblies\OHUShips.pdb
-D:\Modding\rimworld\Wh40k\DropShips\OHU-Dropships\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache
-D:\Modding\rimworld\Wh40k\DropShips\OHU-Dropships\Ships\obj\Debug\OHUShips.dll
-D:\Modding\rimworld\Wh40k\DropShips\OHU-Dropships\Ships\obj\Debug\OHUShips.pdb
