@@ -47,14 +47,14 @@ namespace OHUShips
             {
                 return null;
             }
-            Predicate<Thing> validator = (Thing x) => LoadShipCargoUtility.neededThings.Contains(x) && p.CanReserve(x, 1);
+            Predicate<Thing> validator = (Thing x) => LoadShipCargoUtility.neededThings.Contains(x) && p.CanReserve(x, 10);
             Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map, ThingRequest.ForGroup(ThingRequestGroup.HaulableEver), PathEndMode.Touch, TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn, false), 9999f, validator, null);
             if (thing == null)
             {
                 foreach (Thing current in LoadShipCargoUtility.neededThings)
                 {
                     Pawn pawn = current as Pawn;
-                    if (pawn != null && (!pawn.IsColonist || pawn.Downed) && p.CanReserveAndReach(pawn, PathEndMode.Touch, Danger.Deadly, 1))
+                    if (pawn != null && (!pawn.IsColonist || pawn.Downed) && p.CanReserveAndReach(pawn, PathEndMode.Touch, Danger.Deadly, 10))
                     {
                         return pawn;
                     }

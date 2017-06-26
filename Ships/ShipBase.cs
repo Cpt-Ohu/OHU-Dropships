@@ -1,5 +1,4 @@
-﻿
-using RimWorld;
+﻿using RimWorld;
 using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
@@ -25,7 +24,7 @@ namespace OHUShips
         public Dictionary<ShipWeaponSlot, WeaponSystemShipBomb> Payload = new Dictionary<ShipWeaponSlot, WeaponSystemShipBomb>();
         public Dictionary<ShipWeaponSlot, Thing> weaponsToInstall = new Dictionary<ShipWeaponSlot, Thing>();
         public Dictionary<ShipWeaponSlot, Thing> weaponsToUninstall = new Dictionary<ShipWeaponSlot, Thing>();
-
+                
         public bool shouldSpawnTurrets = false;
         //public bool shouldDeepSave = true;
 
@@ -441,9 +440,11 @@ namespace OHUShips
 
         public void ShipUnload(bool wasDestroyed = false, bool dropPawns = true, bool dropitems = false)
         {
-            for (int i = 0; i < this.innerContainer.Count; i++)
+            List<Thing> allCargo = new List<Thing>();
+            allCargo.AddRange(this.GetDirectlyHeldThings());
+            for (int i = 0; i < allCargo.Count; i++)
             {
-                Thing thing = this.innerContainer[i];
+                Thing thing = allCargo[i];
                 Thing thing2;
                 if (wasDestroyed && Rand.Range(0, 1f) < 0.3f)
                 {
@@ -454,31 +455,30 @@ namespace OHUShips
                     Pawn pawn1 = thing as Pawn;
                     if (pawn1 != null && dropPawns && !pawn1.IsPrisoner && pawn1.def.race.Humanlike || (dropitems && thing.GetType() != typeof(Pawn)))
                     {
-                        if(innerContainer.TryDrop(thing, base.Position, this.Map, ThingPlaceMode.Near, out thing2, delegate (Thing placedThing, int count)
+                        if(this.GetDirectlyHeldThings().TryDrop(thing, base.Position, this.Map, ThingPlaceMode.Near, out thing2, delegate (Thing placedThing, int count)
                         {
                             if (Find.TickManager.TicksGame < 1200 && TutorSystem.TutorialMode && placedThing.def.category == ThingCategory.Item)
                             {
                                 Find.TutorialState.AddStartingItem(placedThing);
                             }
-                        }))
-                            
+                        }))                            
                         {
 
                         Pawn pawn2 = thing2 as Pawn;
-                        if (pawn2 != null)
-                        {
-                            if (pawn2.RaceProps.Humanlike)
+                            if (pawn2 != null)
                             {
-                                TaleRecorder.RecordTale(TaleDefOf.LandedInPod, new object[]
+                                if (pawn2.RaceProps.Humanlike)
                                 {
+                                    TaleRecorder.RecordTale(TaleDefOf.LandedInPod, new object[]
+                                    {
                             pawn2
-                                });
-                            }
-                            if (pawn2.IsColonist && pawn2.Spawned && !base.Map.IsPlayerHome)
-                            {
-                                pawn2.drafter.Drafted = true;
-                            }
-                            }
+                                    });
+                                }
+                                if (pawn2.IsColonist && pawn2.Spawned && !base.Map.IsPlayerHome)
+                                {
+                                    pawn2.drafter.Drafted = true;
+                                }
+                            }                            
                         }
                     }
                     else
@@ -487,6 +487,7 @@ namespace OHUShips
                     }
                 }
             }
+            allCargo.Clear();
          
             SoundDef.Named("DropPodOpen").PlayOneShot(new TargetInfo(base.Position, base.Map, false));
         }
@@ -890,10 +891,10 @@ namespace OHUShips
                 return true;
             }
             
-            if (target.WorldObject is FactionBase && target.WorldObject.Faction != Faction.OfPlayer)
+            if (target.WorldObject is Settlement || target.WorldObject is Site )
             {
                 Find.WorldTargeter.closeWorldTabWhenFinished = false;
-                FactionBase factionBase = target.WorldObject as FactionBase;
+                MapParent localMapParent = target.WorldObject as MapParent;
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
                 if (!target.WorldObject.Faction.HostileTo(Faction.OfPlayer))
                 {
@@ -919,15 +920,15 @@ namespace OHUShips
                     this.TryLaunch(target, PawnsArriveMode.EdgeDrop, TravelingShipArrivalAction.EnterMapFriendly);
                     CameraJumper.TryHideWorld();
                 }, MenuOptionPriority.Default, null, null, 0f, null, null));
-                list.Add(new FloatMenuOption("DropInCenter".Translate(), delegate
-                {
-                    if (!this.ReadyForTakeoff || this.LaunchAsFleet && DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID).Any(s => !s.ReadyForTakeoff))
-                    {
-                        return;
-                    }
-                    this.TryLaunch(target, PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly);
-                    CameraJumper.TryHideWorld();
-                }, MenuOptionPriority.Default, null, null, 0f, null, null));
+                //list.Add(new FloatMenuOption("DropInCenter".Translate(), delegate
+                //{
+                //    if (!this.ReadyForTakeoff || this.LaunchAsFleet && DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID).Any(s => !s.ReadyForTakeoff))
+                //    {
+                //        return;
+                //    }
+                //    this.TryLaunch(target, PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly);
+                //    CameraJumper.TryHideWorld();
+                //}, MenuOptionPriority.Default, null, null, 0f, null, null));
 
                     list.Add(new FloatMenuOption("AttackFactionBaseAerial".Translate(), delegate
                     {

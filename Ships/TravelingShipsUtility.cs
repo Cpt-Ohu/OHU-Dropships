@@ -80,7 +80,7 @@ namespace OHUShips
             for (int i = 0; i < allWorldObjects.Count; i++)
             {
                 WorldObject worldObject = allWorldObjects[i];
-                if (worldObject.Tile == landedShip.Tile && worldObject != landedShip)
+                if (worldObject.Tile == landedShip.Tile && worldObject != landedShip && settlePermanent)
                 {
                     flag = true;
                     break;
@@ -113,16 +113,26 @@ namespace OHUShips
                 return;
             }
             MapParent newWorldObject;
+            Map mapToDropIn;
+            bool foundMapParent = false;
             if (settlePermanent)
             {
                 newWorldObject = SettleUtility.AddNewHome(landedShip.Tile, faction);
             }
             else
             {
-                newWorldObject = (ShipDropSite)WorldObjectMaker.MakeWorldObject(ShipNamespaceDefOfs.ShipDropSite);
-                newWorldObject.SetFaction(faction);
-                newWorldObject.Tile = landedShip.Tile;
-                Find.WorldObjects.Add(newWorldObject);
+                newWorldObject = Find.WorldObjects.MapParentAt(landedShip.Tile);
+                if (newWorldObject != null)
+                {
+                    foundMapParent = true;
+                }
+                else
+                {
+                    newWorldObject = (ShipDropSite)WorldObjectMaker.MakeWorldObject(ShipNamespaceDefOfs.ShipDropSite);
+                    newWorldObject.SetFaction(faction);
+                    newWorldObject.Tile = landedShip.Tile;
+                    Find.WorldObjects.Add(newWorldObject);
+                }
             }
             LongEventHandler.QueueLongEvent(delegate
             {
@@ -130,13 +140,18 @@ namespace OHUShips
                 if (settlePermanent)
                 {
                     vec3 = Find.World.info.initialMapSize;
+                    mapToDropIn = MapGenerator.GenerateMap(vec3, newWorldObject, MapGeneratorDefOf.MainMap, null, null);
+                }
+                else if (newWorldObject != null && foundMapParent)
+                {
+                    mapToDropIn = GetOrGenerateMapUtility.GetOrGenerateMap(landedShip.Tile, SiteCoreWorker.MapSize, null);
                 }
                 else
                 {
                     vec3 = new IntVec3(100, 1, 100);
+                    mapToDropIn = MapGenerator.GenerateMap(vec3, newWorldObject, MapGeneratorDefOf.MainMap, null, null);
                 }
-                Map visibleMap = MapGenerator.GenerateMap(vec3, newWorldObject, MapGeneratorDefOf.MainMap, null, null);
-                Current.Game.VisibleMap = visibleMap;
+                Current.Game.VisibleMap = mapToDropIn;
             }, "GeneratingMap", true, new Action<Exception>(GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap));
             LongEventHandler.QueueLongEvent(delegate
             {
@@ -174,7 +189,7 @@ namespace OHUShips
         {
             List<ShipBase> ships = caravan.ships;
             DropShipUtility.DropShipGroups(TravelingShipsUtility.CenterCell(map), map, ships, TravelingShipArrivalAction.EnterMapFriendly);            
-            caravan.RemoveAllPawns();
+            //caravan.RemoveAllPawns();
             if (caravan.Spawned)
             {
                 Find.WorldObjects.Remove(caravan);
@@ -212,7 +227,6 @@ namespace OHUShips
             }
         }
 
-
         public static void InitializePayloadAndTurrets(List<ShipBase> ships, List<Building_ShipTurret> turrets, List<WeaponSystemShipBomb> bombs)
         {
             for (int i = 0; i < ships.Count; i++)
@@ -226,11 +240,14 @@ namespace OHUShips
         {
             foreach (KeyValuePair<ShipBase, List<string>> entry in landedShip.shipsPassengerList)
             {
-                for (int i=0; i < landedShip.PawnsListForReading.Count; i++)
+                List<Pawn> caravanPassengers = new List<Pawn>();
+                caravanPassengers.AddRange(landedShip.PawnsListForReading);
+
+                for (int i=0; i < caravanPassengers.Count; i++)
                 {
-                    if (entry.Value.Contains(landedShip.PawnsListForReading[i].ThingID))
+                    if (entry.Value.Contains(caravanPassengers[i].ThingID))
                     {
-                        landedShip.PawnsListForReading[i].holdingOwner = entry.Key.GetDirectlyHeldThings();
+                        entry.Key.TryAcceptThing(caravanPassengers[i]);
                     }
                 }
             }
@@ -238,7 +255,6 @@ namespace OHUShips
 
         public static LandedShip MakeLandedShip(TravelingShips incomingShips, Faction faction, int startingTile, bool addToWorldPawnsIfNotAlready)
         {
-        //    Log.Message("Making LandedShip");
        //     TravelingShipsUtility.MakepawnInfos(incomingShips.ships[0].GetDirectlyHeldThings());
             if (startingTile < 0 && addToWorldPawnsIfNotAlready)
             {
@@ -262,6 +278,7 @@ namespace OHUShips
             {
                // current.shouldDeepSave = false;
                 List<Thing> passengers = current.GetDirectlyHeldThings().ToList();
+                
                 List<string> passengerIDs = new List<string>();
                 for (int i = 0; i < passengers.Count; i++)
                 {

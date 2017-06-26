@@ -81,7 +81,7 @@ namespace OHUShips
 
             if (travelingShip != null)
             {
-                result = Gen.TrueCenter(travelingShip.Position, travelingShip.containingShip.Rotation, travelingShip.containingShip.def.size, Altitudes.AltitudeFor(AltitudeLayer.FlyingItem));
+                result = Gen.TrueCenter(travelingShip.Position, travelingShip.containingShip.Rotation, travelingShip.containingShip.def.size, Altitudes.AltitudeFor(AltitudeLayer.MetaOverlays));
             }
             result += DropShipUtility.drawOffsetFor(ship, ticks, false);
 
@@ -238,9 +238,27 @@ namespace OHUShips
             return tmp;
         }
 
+        public static bool ShipIsAlreadyDropping(ShipBase ship, Map map)
+        {
+            if(ship.Spawned)
+            {
+                return true;
+            }
+            IEnumerator<Thing> enumerator = map.listerThings.AllThings.Where(x => x is ShipBase_Traveling).GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                ShipBase_Traveling current = enumerator.Current as ShipBase_Traveling;
+                if (current.containingShip == ship)
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
         public static void DropShipGroups(IntVec3 dropCenter, Map map, List<ShipBase> shipsToDrop, TravelingShipArrivalAction arrivalAction, bool launchdAsSingleShip = false)
         {
-            foreach (ShipBase current in shipsToDrop)
+            foreach (ShipBase current in shipsToDrop.Where(x => !DropShipUtility.ShipIsAlreadyDropping(x, map)))
             {
                 current.shouldSpawnTurrets = true;
                 IntVec3 dropLoc;

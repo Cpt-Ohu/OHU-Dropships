@@ -13,7 +13,7 @@ namespace OHUShips
         protected override Job TryGiveJob(Pawn pawn)
         {
             ShipBase ship = this.FindAppropriateShipToEnter(pawn);
-            if (ship == null || !pawn.CanReserveAndReach(ship, PathEndMode.Touch, Danger.Deadly, 1))
+            if (ship == null || !pawn.CanReserveAndReach(ship, PathEndMode.Touch, Danger.Deadly, 10))
             {
                 return null;
             }
