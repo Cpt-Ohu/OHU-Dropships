@@ -54,7 +54,12 @@
   <CommandShipTouchdown>Touchdown</CommandShipTouchdown>
   <CommandShipTouchdownDesc>Temporarily land all aircraft for further planning.</CommandShipTouchdownDesc>
 
+  <CommandRemoveDropsite>Remove</CommandRemoveDropsite>
+  <CommandRemoveDropsiteDesc>Forcefully removes this site. May take a few seconds to kick in.</CommandRemoveDropsiteDesc>
+
+
   <CommandLaunchFleetFailDueToNotReady>At least one ship in the fleet isn't ready to launch.</CommandLaunchFleetFailDueToNotReady>
 
+  <CantAssignZeroHaulers>Cannot start shiploading with no haulers assigned.</CantAssignZeroHaulers>
 
 </LanguageData>
