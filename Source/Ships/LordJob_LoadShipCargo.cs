@@ -19,7 +19,7 @@ namespace OHUShips
         {
             this.ship = ship;
         }
-
+        
         public override StateGraph CreateGraph()
         {
             StateGraph stateGraph = new StateGraph();

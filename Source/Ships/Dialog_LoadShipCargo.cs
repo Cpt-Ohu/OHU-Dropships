@@ -367,7 +367,6 @@ namespace OHUShips
 
             if (list.Any<Pawn>())
             {
-                LordMaker.MakeNewLord(Faction.OfPlayer, new LordJob_LoadShipCargo(this.ship), this.map, list);
                 foreach (Pawn current in enumerable)
                 {
                     if (current.Spawned)
@@ -375,6 +374,7 @@ namespace OHUShips
                         current.jobs.EndCurrentJob(JobCondition.InterruptForced, true);
                     }
                 }
+               Lord newLord = LordMaker.MakeNewLord(Faction.OfPlayer, new LordJob_LoadShipCargo(this.ship), this.map, list);
             }
             ship.compShip.cargoLoadingActive = true;
             Messages.Message("MessageShipCargoLoadStarted".Translate( new object[] { ship.ShipNick }), ship, MessageSound.Benefit);

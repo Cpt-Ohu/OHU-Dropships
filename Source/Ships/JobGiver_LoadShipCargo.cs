@@ -16,9 +16,12 @@ namespace OHUShips
 
             if (LoadShipCargoUtility.HasJobOnShip(pawn, ship))
             {
-                return LoadShipCargoUtility.JobLoadShipCargo(pawn, ship);
+                Job job = LoadShipCargoUtility.JobLoadShipCargo(pawn, ship);
+                if (job != null)
+                {
+                    return job;
+                }                
             }
-
             return null;
         }
     }

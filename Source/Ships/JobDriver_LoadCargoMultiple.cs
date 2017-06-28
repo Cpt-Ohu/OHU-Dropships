@@ -15,12 +15,12 @@ namespace OHUShips
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDestroyedOrNull(TargetIndex.A);
-            this.FailOnDestroyedNullOrForbidden(TargetIndex.B);
+            this.FailOnDespawnedOrNull(TargetIndex.B);
             ShipBase ship = (ShipBase)TargetB;
-            yield return Toils_Reserve.Reserve(TargetIndex.A, 1);
-            yield return Toils_Reserve.ReserveQueue(TargetIndex.A, 1);
-            yield return Toils_Reserve.Reserve(TargetIndex.B, 10, 1);
-            yield return Toils_Reserve.ReserveQueue(TargetIndex.B, 10, 1);
+            yield return Toils_Reserve.Reserve(TargetIndex.A, 1, 1, null);
+            yield return Toils_Reserve.ReserveQueue(TargetIndex.A, 1, 1, null);
+            //yield return Toils_Reserve.Reserve(TargetIndex.B, 10, 1, null);
+            //yield return Toils_Reserve.ReserveQueue(TargetIndex.B, 10, 1, null);
             Toil toil = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).FailOnSomeonePhysicallyInteracting(TargetIndex.A);
             yield return toil;
             yield return Toils_Construct.UninstallIfMinifiable(TargetIndex.A).FailOnSomeonePhysicallyInteracting(TargetIndex.A);
@@ -38,5 +38,6 @@ namespace OHUShips
             yield return Toils_Haul.JumpToCarryToNextContainerIfPossible(toil2, TargetIndex.C);
             yield break;
         }
+ 
     }
 }

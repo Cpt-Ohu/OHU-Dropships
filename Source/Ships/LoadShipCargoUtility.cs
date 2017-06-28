@@ -21,7 +21,9 @@ namespace OHUShips
             return new Job(ShipNamespaceDefOfs.LoadContainerMultiplePawns, thing, ship)
             {
                 count = Mathf.Min(TransferableUtility.TransferableMatching<TransferableOneWay>(thing, ship.compShip.leftToLoad).CountToTransfer, thing.stackCount),
-                ignoreForbidden = true
+                ignoreForbidden = true,
+                playerForced = true
+                
             };
         }
 
@@ -66,7 +68,7 @@ namespace OHUShips
 
         public static bool HasJobOnShip(Pawn pawn, ShipBase ship)
         {
-            return !ship.IsForbidden(pawn) && ship.compShip.AnythingLeftToLoad && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && pawn.CanReserveAndReach(ship, PathEndMode.Touch, pawn.NormalMaxDanger(), 10) && LoadShipCargoUtility.FindThingToLoad(pawn, ship) != null;
+            return ship.compShip.AnythingLeftToLoad && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && pawn.CanReserveAndReach(ship, PathEndMode.Touch, pawn.NormalMaxDanger(), 10, 1, ReservationLayerDefOf.Floor, true) && LoadShipCargoUtility.FindThingToLoad(pawn, ship) != null;
         }
 
         public static Lord FindLoadLord(ShipBase ship, Map map)

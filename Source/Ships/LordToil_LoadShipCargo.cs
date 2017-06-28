@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Verse;
 using Verse.AI;
 using Verse.AI.Group;
 
@@ -28,7 +29,7 @@ namespace OHUShips
         {
             for (int i = 0; i < this.lord.ownedPawns.Count; i++)
             {
-                PawnDuty pawnDuty = new PawnDuty(ShipNamespaceDefOfs.LoadShipCargo, ship);
+                PawnDuty pawnDuty = new PawnDuty(ShipNamespaceDefOfs.LoadShipCargoDuty, ship);
                 this.lord.ownedPawns[i].mindState.duty = pawnDuty;
             }
         }

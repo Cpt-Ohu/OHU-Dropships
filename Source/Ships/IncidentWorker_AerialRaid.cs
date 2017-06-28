@@ -75,10 +75,7 @@ namespace OHUShips
             }
 
             IntVec3 dropCenter;
-            if (!DropCellFinder.TryFindRaidDropCenterClose(out dropCenter, map))
-            {
-                dropCenter = DropCellFinder.FindRaidDropCenterDistant(map);
-            }
+            dropCenter = DropCellFinder.FindRaidDropCenterDistant(map);
 
             this.ResolveRaidStrategy(parms);
             this.ResolveRaidArriveMode(parms);
