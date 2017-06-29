@@ -124,7 +124,6 @@ namespace OHUShips
                 newWorldObject = Find.WorldObjects.MapParentAt(landedShip.Tile);
                 if (newWorldObject != null)
                 {
-                    Log.Message("Found WOrld Objects");
                     foundMapParent = true;
                 }
                 else
@@ -145,7 +144,7 @@ namespace OHUShips
                 }
                 else if (newWorldObject != null && foundMapParent)
                 {
-                    Log.Message("Creating Parent Map");
+                    Site site = newWorldObject as Site;
                     mapToDropIn = GetOrGenerateMapUtility.GetOrGenerateMap(landedShip.Tile, SiteCoreWorker.MapSize, newWorldObject.def);
                 }
                 else

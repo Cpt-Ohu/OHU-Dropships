@@ -18,9 +18,14 @@ namespace OHUShips
         public static Job JobLoadShipCargo(Pawn p, ShipBase ship)
         {
             Thing thing = LoadShipCargoUtility.FindThingToLoad(p, ship);
+            int thingCount = Mathf.Min(TransferableUtility.TransferableMatching<TransferableOneWay>(thing, ship.compShip.leftToLoad).CountToTransfer, thing.stackCount);
+            if (thingCount < 0)
+            {
+                thingCount = 1;
+            }
             return new Job(ShipNamespaceDefOfs.LoadContainerMultiplePawns, thing, ship)
             {
-                count = Mathf.Min(TransferableUtility.TransferableMatching<TransferableOneWay>(thing, ship.compShip.leftToLoad).CountToTransfer, thing.stackCount),
+                count = thingCount,
                 ignoreForbidden = true,
                 playerForced = true
                 
