@@ -3,7 +3,7 @@
 
 
   <DutyDef>
-    <defName>LoadShipCargo</defName>
+    <defName>LoadShipCargoDuty</defName>
     <alwaysShowWeapon>false</alwaysShowWeapon>
     <thinkNode Class="ThinkNode_Priority">
       <subNodes>
