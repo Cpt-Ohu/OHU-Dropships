@@ -32,7 +32,6 @@ D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Assemblies\OH
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Assemblies\OHUShips.pdb
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Source\Ships\obj\Debug\OHUShips.dll
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Source\Ships\obj\Debug\OHUShips.pdb
-D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\YaWH40Km-Public_A17\Source\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache
 D:\Modding\rimworld\Wh40k\DropShips\OHU-Dropships\Assemblies\OHUShips.dll
 D:\Modding\rimworld\Wh40k\DropShips\OHU-Dropships\Assemblies\OHUShips.pdb
 D:\Modding\rimworld\Wh40k\DropShips\OHU-Dropships\Source\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache

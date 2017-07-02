@@ -26,10 +26,15 @@ namespace OHUShips
             {
                 if (this.cachedMat == null)
                 {
-                    this.cachedMat = MaterialPool.MatFrom("World/WorldObjects/AircraftDropSpot", ShaderDatabase.WorldOverlayTransparentLit, base.Faction.Color);
+                    this.cachedMat = MaterialPool.MatFrom("World/WorldObjects/AircraftDropSpot", ShaderDatabase.WorldOverlayTransparentLit, base.Faction.Color, WorldMaterials.WorldObjectRenderQueue);
                 }
                 return this.cachedMat;
             }
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
         }
 
         public override void ExposeData()
