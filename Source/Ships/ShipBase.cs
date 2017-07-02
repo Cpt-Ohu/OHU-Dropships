@@ -24,8 +24,7 @@ namespace OHUShips
         public Dictionary<ShipWeaponSlot, WeaponSystemShipBomb> Payload = new Dictionary<ShipWeaponSlot, WeaponSystemShipBomb>();
         public Dictionary<ShipWeaponSlot, Thing> weaponsToInstall = new Dictionary<ShipWeaponSlot, Thing>();
         public Dictionary<ShipWeaponSlot, Thing> weaponsToUninstall = new Dictionary<ShipWeaponSlot, Thing>();
-        
-        
+                        
         public bool shouldSpawnTurrets = false;
         //public bool shouldDeepSave = true;
 
@@ -98,14 +97,14 @@ namespace OHUShips
         private bool isTargeting = false;
         
         public bool keepShipReference;
-
-        public KeyValuePair<Map, IntVec3> fixedPosition;
-        
+                
         public int fleetID = -1;
 
         public bool LaunchAsFleet;
 
         public bool performBombingRun;
+
+        public Pair<Map, IntVec3> shipParkingSpot = new Pair<Map, IntVec3>(null,IntVec3.Zero);
 
         private LandedShip landedShipCached;
 
@@ -751,17 +750,45 @@ namespace OHUShips
                     };
                     yield return command_Action2;
                 }
-                if (1 > 2)
                 {
                     Command_Action command_Action3 = new Command_Action();
                     command_Action3.defaultLabel = "CommandSetParkingPosition".Translate();
                     command_Action3.defaultDesc = "CommandSetParkingPositionDesc".Translate();
-                    command_Action3.icon = DropShipUtility.LoadCommandTex;
+                    command_Action3.icon = DropShipUtility.ParkingSingle;
                     command_Action3.action = delegate
                     {
-                        this.fixedPosition = new KeyValuePair<Map, IntVec3>(this.Map, this.Position);
+                        this.shipParkingSpot = new Pair<Map, IntVec3>(this.Map, this.Position);
                     };
                     yield return command_Action3;
+                }
+                if (this.shipParkingSpot.First != null && this.ReadyForTakeoff)
+                {
+                    this.LaunchAsFleet = true;
+                    Command_Action command_Action4 = new Command_Action();
+                    command_Action4.defaultLabel = "CommandTravelParkingPosition".Translate();
+                    command_Action4.defaultDesc = "CommandTravelParkingPositionDesc".Translate();
+                    command_Action4.icon = DropShipUtility.ReturnParkingSingle;
+                    command_Action4.action = delegate
+                    {
+                        foreach (ShipBase ship in DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID))
+                        {
+                            ship.TryLaunch(new GlobalTargetInfo(ship.shipParkingSpot.Second, ship.shipParkingSpot.First), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
+                        }
+                    };
+                    yield return command_Action4;
+                }
+
+                if (this.shipParkingSpot.First != null && !DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID).Any(x => x.shipParkingSpot != null || !x.ReadyForTakeoff))
+                {
+                    Command_Action command_Action5 = new Command_Action();
+                    command_Action5.defaultLabel = "CommandTravelParkingPositionFleet".Translate();
+                    command_Action5.defaultDesc = "CommandTravelParkingPositionFleetDesc".Translate();
+                    command_Action5.icon = DropShipUtility.ReturnParkingFleet;
+                    command_Action5.action = delegate
+                    {
+                        this.TryLaunch(new GlobalTargetInfo(this.shipParkingSpot.Second, this.shipParkingSpot.First), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
+                    };
+                    yield return command_Action5;
                 }
             }
 
@@ -1009,6 +1036,8 @@ namespace OHUShips
             Scribe_Values.Look<int>(ref this.timeToLiftoff, "timeToLiftoff", 200, false);
             Scribe_Values.Look<int>(ref this.drawTickOffset, "drawTickOffset", 0, false);
             Scribe_Values.Look<int>(ref this.timeWaited, "timeWaited", 200, false);
+
+            Scribe_Values.Look<Pair<Map, IntVec3>>(ref this.shipParkingSpot, "shipParkingSpot", new Pair<Map, IntVec3>(null, IntVec3.Zero), false);
 
 
             Scribe_Values.Look<bool>(ref this.DeepsaveTurrets, "DeepsaveTurrets", false, false);

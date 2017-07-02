@@ -24,6 +24,10 @@ namespace OHUShips
         public static readonly Texture2D Rename = ContentFinder<Texture2D>.Get("UI/Buttons/Rename", true);
         public static readonly Texture2D shipButton = ContentFinder<Texture2D>.Get("UI/Buttons/ButtonShip", true);
         public static readonly Texture2D DropTexture = ContentFinder<Texture2D>.Get("UI/Buttons/UnloadShip", true);
+        public static readonly Texture2D ParkingSingle = ContentFinder<Texture2D>.Get("UI/Commands/CommandParkingShipSingle", true);
+        public static readonly Texture2D ParkingFleet = ContentFinder<Texture2D>.Get("UI/Commands/CommandParkingShipFleet", true);
+        public static readonly Texture2D ReturnParkingSingle = ContentFinder<Texture2D>.Get("UI/Commands/CommandLaunchParkingSingle", true);
+        public static readonly Texture2D ReturnParkingFleet = ContentFinder<Texture2D>.Get("UI/Commands/CommandLaunchParkingFleet", true);
 
         public static readonly Texture2D TouchDownCommandTex = ContentFinder<Texture2D>.Get("UI/Commands/CommandTouchDown", true);
 

@@ -87,11 +87,11 @@ Offensive Capabilities: 1x Payload Slot
     </statBases>
     <comps>
       <li Class="OHUShips.CompProperties_Ship">
-        <TicksToImpact>200</TicksToImpact>
-        <TicksToDespawn>200</TicksToDespawn>
+        <TicksToImpact>900</TicksToImpact>
+        <TicksToDespawn>300</TicksToDespawn>
         <WorldMapTravelSpeedFactor>1</WorldMapTravelSpeedFactor>
         <maxCargo>1000</maxCargo>
-        <maxPassengers>5</maxPassengers>
+        <maxPassengers>8</maxPassengers>
         <CanBeStartingShip>true</CanBeStartingShip>
         <availableToFactions>
 		<li>Outlander</li>

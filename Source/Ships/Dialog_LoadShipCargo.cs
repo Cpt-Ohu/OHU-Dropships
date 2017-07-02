@@ -481,11 +481,24 @@ namespace OHUShips
             }
         }
 
+        private bool isPlayerBase
+        {
+            get
+            {
+                FactionBase mapParent = Find.WorldObjects.FactionBaseAt(this.ship.Tile);
+                if (mapParent != null)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
         private void AddItemsToTransferables()
         {
            // List<Thing> list = CaravanFormingUtility.AllReachableColonyItems(this.map, false, false);
 
-            List<Thing> list = CaravanFormingUtility.AllReachableColonyItems(this.map, false, false);
+            List<Thing> list = CaravanFormingUtility.AllReachableColonyItems(this.map, isPlayerBase, isPlayerBase);
             for (int i = 0; i < list.Count; i++)
             {
                 int alreadyIn = 0;
