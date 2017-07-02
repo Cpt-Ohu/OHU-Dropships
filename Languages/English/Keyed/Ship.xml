@@ -62,4 +62,18 @@
 
   <CantAssignZeroHaulers>Cannot start shiploading with no haulers assigned.</CantAssignZeroHaulers>
 
+  <CommandSetParkingPosition>Set Parking</CommandSetParkingPosition>
+
+  <CommandSetParkingPositionDesc>Set the ships current position as a parking spot to return to.</CommandSetParkingPositionDesc>
+
+  <CommandTravelParkingPosition>Return ship</CommandTravelParkingPosition>
+
+  <CommandTravelParkingPositionDesc>Return this ship to its parking position.</CommandTravelParkingPositionDesc>
+
+  <CommandTravelParkingPositionFleet>Return fleet</CommandTravelParkingPositionFleet>
+
+  <CommandTravelParkingPositionFleetDesc>Return every ship in the fleet to its parking position.</CommandTravelParkingPositionFleetDesc>
+
+
+
 </LanguageData>
