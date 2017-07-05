@@ -25,7 +25,7 @@ namespace OHUShips
             get
             {
                 if (this.cachedMat == null)
-                {
+                { 
                     this.cachedMat = MaterialPool.MatFrom("World/WorldObjects/AircraftDropSpot", ShaderDatabase.WorldOverlayTransparentLit, base.Faction.Color, WorldMaterials.WorldObjectRenderQueue);
                 }
                 return this.cachedMat;

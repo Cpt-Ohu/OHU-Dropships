@@ -488,6 +488,7 @@ namespace OHUShips
                 FactionBase mapParent = Find.WorldObjects.FactionBaseAt(this.ship.Tile);
                 if (mapParent != null)
                 {
+                    if (mapParent.Faction != Faction.OfPlayer)
                     return true;
                 }
                 return false;
@@ -498,7 +499,7 @@ namespace OHUShips
         {
            // List<Thing> list = CaravanFormingUtility.AllReachableColonyItems(this.map, false, false);
 
-            List<Thing> list = CaravanFormingUtility.AllReachableColonyItems(this.map, isPlayerBase, isPlayerBase);
+            List<Thing> list = CaravanFormingUtility.AllReachableColonyItems(this.map, false, isPlayerBase);
             for (int i = 0; i < list.Count; i++)
             {
                 int alreadyIn = 0;

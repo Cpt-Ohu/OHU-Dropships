@@ -221,7 +221,7 @@ namespace OHUShips
                     yield return CaravanJourneyDestinationUtility.TakeOffCommand(base.Tile);
                 }
 
-                if (!this.ships.Any(x => x.shipParkingSpot == null))
+                if (!this.ships.Any(x => x.ParkingMap == null))
                 {
                     Command_Action command_Action4 = new Command_Action();
                     command_Action4.defaultLabel = "CommandTravelParkingPosition".Translate();
@@ -231,7 +231,7 @@ namespace OHUShips
                     {
                         foreach (ShipBase ship in this.ships)
                         {
-                            ship.TryLaunch(new GlobalTargetInfo(ship.shipParkingSpot.Second, ship.shipParkingSpot.First), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
+                            ship.TryLaunch(new GlobalTargetInfo(ship.ParkingPosition, ship.ParkingMap), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
                         }
                     };
                     yield return command_Action4;

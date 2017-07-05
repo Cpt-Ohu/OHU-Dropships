@@ -1,4 +1,5 @@
-﻿using RimWorld;
+﻿
+using RimWorld;
 using RimWorld.Planet;
 using System;
 using System.Collections.Generic;
@@ -105,7 +106,9 @@ namespace OHUShips
 
         public bool performBombingRun;
 
-        public Pair<Map, IntVec3> shipParkingSpot = new Pair<Map, IntVec3>(null,IntVec3.Zero);
+        public Map ParkingMap;
+
+        public IntVec3 ParkingPosition;
 
         private LandedShip landedShipCached;
 
@@ -758,11 +761,13 @@ namespace OHUShips
                     command_Action3.icon = DropShipUtility.ParkingSingle;
                     command_Action3.action = delegate
                     {
-                        this.shipParkingSpot = new Pair<Map, IntVec3>(this.Map, this.Position);
+                        this.ParkingMap = this.Map;
+                        this.ParkingPosition = this.Position;
+
                     };
                     yield return command_Action3;
                 }
-                if (this.shipParkingSpot.First != null && this.ReadyForTakeoff)
+                if (this.ParkingMap != null && this.ReadyForTakeoff)
                 {
                     this.LaunchAsFleet = true;
                     Command_Action command_Action4 = new Command_Action();
@@ -773,13 +778,13 @@ namespace OHUShips
                     {
                         foreach (ShipBase ship in DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID))
                         {
-                            ship.TryLaunch(new GlobalTargetInfo(ship.shipParkingSpot.Second, ship.shipParkingSpot.First), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
+                            ship.TryLaunch(new GlobalTargetInfo(ship.ParkingPosition, ship.ParkingMap), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
                         }
                     };
                     yield return command_Action4;
                 }
 
-                if (this.shipParkingSpot.First != null && !DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID).Any(x => x.shipParkingSpot != null || !x.ReadyForTakeoff))
+                if (this.ParkingMap != null && !DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID).Any(x => x.ParkingMap != null || !x.ReadyForTakeoff))
                 {
                     Command_Action command_Action5 = new Command_Action();
                     command_Action5.defaultLabel = "CommandTravelParkingPositionFleet".Translate();
@@ -787,7 +792,7 @@ namespace OHUShips
                     command_Action5.icon = DropShipUtility.ReturnParkingFleet;
                     command_Action5.action = delegate
                     {
-                        this.TryLaunch(new GlobalTargetInfo(this.shipParkingSpot.Second, this.shipParkingSpot.First), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
+                        this.TryLaunch(new GlobalTargetInfo(this.ParkingPosition, this.ParkingMap), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
                     };
                     yield return command_Action5;
                 }
@@ -1038,7 +1043,10 @@ namespace OHUShips
             Scribe_Values.Look<int>(ref this.drawTickOffset, "drawTickOffset", 0, false);
             Scribe_Values.Look<int>(ref this.timeWaited, "timeWaited", 200, false);
 
-            Scribe_Values.Look<Pair<Map, IntVec3>>(ref this.shipParkingSpot, "shipParkingSpot", new Pair<Map, IntVec3>(null, IntVec3.Zero), false);
+
+            Scribe_References.Look(ref this.ParkingMap, "ParkingMap");
+            Scribe_Values.Look<IntVec3>(ref this.ParkingPosition, "ParkingMap", IntVec3.Zero , false);
+
 
 
             Scribe_Values.Look<bool>(ref this.DeepsaveTurrets, "DeepsaveTurrets", false, false);
