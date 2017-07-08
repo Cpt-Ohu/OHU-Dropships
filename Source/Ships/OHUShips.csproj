@@ -36,7 +36,11 @@
       <HintPath>..\..\..\FactionColors_1.3\Assemblies\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
+<<<<<<< HEAD
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
+=======
+      <HintPath>..\..\..\..\..\..\..\Spiele\Steam\SteamApps\common\RimWorld\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
+>>>>>>> origin/master
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -47,7 +51,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
+<<<<<<< HEAD
       <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
+=======
+      <HintPath>..\..\..\..\..\..\..\Spiele\Steam\SteamApps\common\RimWorld\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
+>>>>>>> origin/master
       <Private>False</Private>
     </Reference>
   </ItemGroup>

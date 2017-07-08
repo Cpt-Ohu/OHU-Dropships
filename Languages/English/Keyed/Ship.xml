@@ -74,6 +74,7 @@
 
   <CommandTravelParkingPositionFleetDesc>Return every ship in the fleet to its parking position.</CommandTravelParkingPositionFleetDesc>
 
+<<<<<<< HEAD
   <MessagePassengersFull>{0} tried to enter {1}, but there were no empty seats.</MessagePassengersFull>
 
   <ShipSeatsFull>Too many pawns assigned as passengers.</ShipSeatsFull>
@@ -84,6 +85,8 @@
   <DrawPassengerUse>{0}/{1} passengers</DrawPassengerUse>
 
   <TooBigShipMassUsage>The assigned passengers and cargo are too heavy for this ship.</TooBigShipMassUsage>
+=======
+>>>>>>> origin/master
 
 
 </LanguageData>

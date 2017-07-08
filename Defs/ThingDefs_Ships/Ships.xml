@@ -89,7 +89,11 @@ Offensive Capabilities: 1x Payload Slot
     </statBases>
     <comps>
       <li Class="OHUShips.CompProperties_Ship">
+<<<<<<< HEAD
         <TicksToImpact>600</TicksToImpact>
+=======
+        <TicksToImpact>900</TicksToImpact>
+>>>>>>> origin/master
         <TicksToDespawn>300</TicksToDespawn>
         <WorldMapTravelSpeedFactor>1</WorldMapTravelSpeedFactor>
         <maxCargo>1000</maxCargo>
@@ -102,7 +106,7 @@ Offensive Capabilities: 1x Payload Slot
         <LeavingShipDef>OHUDropShipLeaving</LeavingShipDef>
         <IncomingAngle>65</IncomingAngle>
         <ShadowGraphicPath>Things/Ships/OHUDropShipShadow</ShadowGraphicPath>
-        <FleetIconGraphicPath>Things/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
+        <FleetIconGraphicPath>Things/IoM/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
 
         <weaponSlots>
 	    <li>
@@ -172,6 +176,7 @@ Offensive Capabilities: 1x Payload Slot
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
   </ThingDef>
+<<<<<<< HEAD
 
   <!--=============== Kestrel ===============-->
 
@@ -386,5 +391,7 @@ Maximum Cargo Capacity: 80 kg
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
   </ThingDef>
+=======
+>>>>>>> origin/master
   
 </ThingDefs>

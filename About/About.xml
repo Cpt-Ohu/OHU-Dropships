@@ -3,5 +3,9 @@
   <name>OHU Ships</name>
   <author>Ohu</author>
   <targetVersion>0.17.1546</targetVersion>
+<<<<<<< HEAD
   <description>1.34 A mod that adds aircraft for suborbital jumps to the game. </description>
+=======
+  <description>1.33 A mod that adds aircraft for suborbital jumps to the game. </description>
+>>>>>>> origin/master
 </ModMetaData>
