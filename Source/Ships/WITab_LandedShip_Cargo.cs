@@ -74,7 +74,8 @@ namespace OHUShips
         private void UpdateItemsList()
         {
             this.items.Clear();
-            this.items.AddRange(landedShip.allLandedShipCargo);
+            this.items.AddRange(landedShip.AllLandedShipCargo);
+            this.items.AddRange(landedShip.PawnsListForReading.Cast<Thing>());
         }
     }
 }

@@ -18,10 +18,17 @@ namespace OHUShips
         public static Job JobLoadShipCargo(Pawn p, ShipBase ship)
         {
             Thing thing = LoadShipCargoUtility.FindThingToLoad(p, ship);
+            int thingCount = Mathf.Min(TransferableUtility.TransferableMatching<TransferableOneWay>(thing, ship.compShip.leftToLoad).CountToTransfer, thing.stackCount);
+            if (thingCount < 0)
+            {
+                thingCount = 1;
+            }
             return new Job(ShipNamespaceDefOfs.LoadContainerMultiplePawns, thing, ship)
             {
-                count = Mathf.Min(TransferableUtility.TransferableMatching<TransferableOneWay>(thing, ship.compShip.leftToLoad).countToTransfer, thing.stackCount),
-                ignoreForbidden = true
+                count = thingCount,
+                ignoreForbidden = true,
+                playerForced = true
+                
             };
         }
 
@@ -34,12 +41,11 @@ namespace OHUShips
                 for (int i = 0; i < leftToLoad.Count; i++)
                 {
                     TransferableOneWay transferableOneWay = leftToLoad[i];
-                    if (transferableOneWay.countToTransfer > 0)
+                    if (transferableOneWay.CountToTransfer > 0)
                     {
                         for (int j = 0; j < transferableOneWay.things.Count; j++)
                         {
                             LoadShipCargoUtility.neededThings.Add(transferableOneWay.things[j]);
-                          //  Log.Message(transferableOneWay.things[j].Label);
                         }
                     }
                 }
@@ -48,14 +54,14 @@ namespace OHUShips
             {
                 return null;
             }
-            Predicate<Thing> validator = (Thing x) => LoadShipCargoUtility.neededThings.Contains(x) && p.CanReserve(x, 1);
-            Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map, ThingRequest.ForGroup(ThingRequestGroup.HaulableEver), PathEndMode.Touch, TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn, false), 9999f, validator, null, -1, false);
+            Predicate<Thing> validator = (Thing x) => LoadShipCargoUtility.neededThings.Contains(x) && p.CanReserve(x, 10);
+            Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map, ThingRequest.ForGroup(ThingRequestGroup.HaulableEver), PathEndMode.Touch, TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn, false), 9999f, validator, null);
             if (thing == null)
             {
                 foreach (Thing current in LoadShipCargoUtility.neededThings)
                 {
                     Pawn pawn = current as Pawn;
-                    if (pawn != null && (!pawn.IsColonist || pawn.Downed) && p.CanReserveAndReach(pawn, PathEndMode.Touch, Danger.Deadly, 1))
+                    if (pawn != null && (!pawn.IsColonist || pawn.Downed) && p.CanReserveAndReach(pawn, PathEndMode.Touch, Danger.Deadly, 10))
                     {
                         return pawn;
                     }
@@ -67,7 +73,7 @@ namespace OHUShips
 
         public static bool HasJobOnShip(Pawn pawn, ShipBase ship)
         {
-            return !ship.IsForbidden(pawn) && ship.compShip.AnythingLeftToLoad && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && pawn.CanReserveAndReach(ship, PathEndMode.Touch, pawn.NormalMaxDanger(), 10) && LoadShipCargoUtility.FindThingToLoad(pawn, ship) != null;
+            return ship.compShip.AnythingLeftToLoad && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && pawn.CanReserveAndReach(ship, PathEndMode.Touch, pawn.NormalMaxDanger(), 10, 1, ReservationLayerDefOf.Floor, true) && LoadShipCargoUtility.FindThingToLoad(pawn, ship) != null;
         }
 
         public static Lord FindLoadLord(ShipBase ship, Map map)

@@ -134,9 +134,9 @@ namespace OHUShips
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.LookValue<int>(ref this.nextFleetID, "nextFleetID");
-            Scribe_Collections.LookDictionary<int, string>(ref this.PlayerFleetManager, "PlayerFleetManager", LookMode.Value, LookMode.Value);
-            Scribe_Collections.LookList<ShipBase>(ref this.AllWorldShips, "AllWorldShips", LookMode.Reference, new object[0]);            
+            Scribe_Values.Look<int>(ref this.nextFleetID, "nextFleetID");
+            Scribe_Collections.Look<int, string>(ref this.PlayerFleetManager, "PlayerFleetManager", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look<ShipBase>(ref this.AllWorldShips, "AllWorldShips", LookMode.Reference, new object[0]);            
         }
     }
 }

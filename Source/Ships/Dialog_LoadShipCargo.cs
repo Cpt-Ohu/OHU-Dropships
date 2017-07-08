@@ -49,7 +49,7 @@ namespace OHUShips
 
         private bool daysWorthOfFoodDirty = true;
 
-        private float cachedDaysWorthOfFood;
+        private Pair<float, float> cachedDaysWorthOfFood;
 
         private readonly Vector2 BottomButtonSize = new Vector2(160f, 40f);
 
@@ -110,7 +110,7 @@ namespace OHUShips
                 if (this.massUsageDirty)
                 {
                     this.massUsageDirty = false;
-                    this.cachedMassUsage = CollectionsMassCalculator.MassUsageTransferables(this.transferables, false, true, false);
+                    this.cachedMassUsage = CollectionsMassCalculator.MassUsageTransferables(this.transferables, IgnorePawnsInventoryMode.DontIgnore, true, false);
                     this.cachedMassUsage += MassAlreadyStored();
                 }
                 return this.cachedMassUsage;
@@ -120,21 +120,22 @@ namespace OHUShips
         public float MassAlreadyStored()
         {
             float num = 0f;
-            for (int i=0; i < this.ship.GetInnerContainer().Count; i++)
+            for (int i=0; i < this.ship.GetDirectlyHeldThings().Count; i++)
             {
-                num += this.ship.GetInnerContainer()[i].stackCount * this.ship.GetInnerContainer()[i].GetStatValue(StatDefOf.Mass);
+                num += this.ship.GetDirectlyHeldThings()[i].stackCount * this.ship.GetDirectlyHeldThings()[i].GetStatValue(StatDefOf.Mass);
             }
             return num;
         }
 
-        private float DaysWorthOfFood
+        private Pair<float, float> DaysWorthOfFood
         {
             get
             {
                 if (this.daysWorthOfFoodDirty)
                 {
                     this.daysWorthOfFoodDirty = false;
-                    this.cachedDaysWorthOfFood = DropShipUtility.ApproxDaysWorthOfFood_Ship(ship, this.transferables);
+                    float first = DropShipUtility.ApproxDaysWorthOfFood_Ship(ship, this.transferables, this.EnvironmentAllowsEatingVirtualPlantsNow);
+                    this.cachedDaysWorthOfFood = new Pair<float, float>(first, DaysUntilRotCalculator.ApproxDaysUntilRot(this.transferables, this.map.Tile, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload));
                 }
                 return this.cachedDaysWorthOfFood;
             }
@@ -153,6 +154,62 @@ namespace OHUShips
         {
             base.PostOpen();
             this.CalculateAndRecacheTransferables();
+        }
+
+        private bool EnvironmentAllowsEatingVirtualPlantsNow
+        {
+            get
+            {
+                return VirtualPlantsUtility.EnvironmentAllowsEatingVirtualPlantsNowAt(this.map.Tile);
+            }
+        }
+
+        public static void RemoveExistingTransferable(TransferableOneWay transferable, Map map = null, ShipBase ship = null)
+        {
+            List<Thing> thingsInCargoToRemov = new List<Thing>();
+            List<ShipBase> tmpShips = new List<ShipBase>();
+            if (ship != null)
+            {
+                tmpShips.Add(ship);
+            }
+            else if (map != null)
+            {
+                tmpShips = DropShipUtility.ShipsOnMap(map);
+            }
+            else
+            {
+                Log.Error("Tried removing transferables with neither ship nor map specified");
+            }
+
+                for (int j = 0; j < transferable.things.Count; j++)
+            {
+                for (int k = 0; k < tmpShips.Count; k++)
+                {
+                    Thing thing = tmpShips[k].GetDirectlyHeldThings().FirstOrDefault(x => x == (transferable.things[j]));
+                    if (thing != null)
+                    {
+                        thingsInCargoToRemov.Add(transferable.things[j]);
+                        //                  transferable.CountToTransfer -= transferable.things[j].stackCount;
+                    }
+                }
+            }
+            transferable.things.RemoveAll(x => thingsInCargoToRemov.Contains(x));
+        }
+
+        private int PawnsToTransfer
+        {
+            get
+            {
+                return this.transferables.Where(x => x.AnyThing is Pawn && x.CountToTransfer > 0).Count();
+            }
+        }
+
+        private string PassengerUse
+        {
+            get
+            {
+                return this.PawnsToTransfer + "/" + this.PassengerCapacity + " " +"ShipPassengers".Translate();
+            }
         }
 
         public override void DoWindowContents(Rect inRect)
@@ -185,7 +242,9 @@ namespace OHUShips
             rect3.xMin += rect2.width - this.pawnsTransfer.TotalNumbersColumnsWidths;
             rect3.y += 32f;
             TransferableUIUtility.DrawMassInfo(rect3, this.MassUsage, this.MassCapacity, "TransportersMassUsageTooltip".Translate(), this.lastMassFlashTime, true);
-            CaravanUIUtility.DrawDaysWorthOfFoodInfo(new Rect(rect3.x, rect3.y + 22f, rect3.width, rect3.height), this.DaysWorthOfFood, true);
+            CaravanUIUtility.DrawDaysWorthOfFoodInfo(new Rect(rect3.x, rect3.y + 22f, rect3.width, rect3.height), this.DaysWorthOfFood.First, this.DaysWorthOfFood.Second, this.EnvironmentAllowsEatingVirtualPlantsNow, true, 3.40282347E+38f);
+            this.DrawPassengerCapacity(rect3);
+
             this.DoBottomButtons(rect2);
             Rect inRect2 = rect2;
             inRect2.yMax -= 59f;
@@ -214,7 +273,7 @@ namespace OHUShips
             return true;
         }
 
-        private void AddToTransferables(Thing t)
+        private void AddToTransferables(Thing t, int countAlreadyIn = 0)
         {
             TransferableOneWay transferableOneWay = TransferableUtility.TransferableMatching<TransferableOneWay>(t, this.transferables);
             if (transferableOneWay == null)
@@ -222,14 +281,19 @@ namespace OHUShips
                 transferableOneWay = new TransferableOneWay();
                 this.transferables.Add(transferableOneWay);
             }
+
+            // Dialog_LoadShipCargo.RemoveExistingTransferable(transferableOneWay, null, this.ship);
+
             transferableOneWay.things.Add(t);
+            transferableOneWay.AdjustBy(-countAlreadyIn);
+
         }
 
         private void DoBottomButtons(Rect rect)
         {
             Rect rect0 = new Rect(0f, rect.height - 55f, 300f, 30f);
             
-            Widgets.TextFieldNumericLabeled(rect0, "NumberOfHaulers".Translate(), ref this.numOfHaulers, ref this.numOfHaulersString, 0, 10 );
+            Widgets.TextFieldNumericLabeled(rect0, "NumberOfHaulers".Translate(), ref this.numOfHaulers, ref this.numOfHaulersString, 0, map.mapPawns.FreeColonistsSpawned.ToList().FindAll(x => x.GetLord() == null).Count);
 
             Rect rect2 = new Rect(rect.width / 2f - this.BottomButtonSize.x / 2f, rect.height - 55f, this.BottomButtonSize.x, this.BottomButtonSize.y);
             if (Widgets.ButtonText(rect2, "AcceptButton".Translate(), true, false, true) && this.TryAccept())
@@ -267,26 +331,37 @@ namespace OHUShips
             }
         }
 
+        private void DrawPassengerCapacity(Rect rect3)
+        {
+            GUI.color = this.PawnsToTransfer > this.PassengerCapacity ? Color.red : Color.gray;
+            Vector3 vector = Text.CalcSize(this.PassengerUse);
+            Rect rect2 = new Rect(rect3.xMax - vector.x, rect3.y + 44f, vector.x, vector.y);
+            Widgets.Label(rect2, this.PassengerUse);
+            GUI.color = Color.white;
+        }
+
         private void CalculateAndRecacheTransferables()
         {
             this.transferables = new List<TransferableOneWay>();
             this.AddPawnsToTransferables();
             this.AddItemsToTransferables();
-            this.pawnsTransfer = new TransferableOneWayWidget(null, Faction.OfPlayer.Name, this.TransportersLabelShort, "FormCaravanColonyThingCountTip".Translate(), true, false, true, () => this.MassCapacity - this.MassUsage, 24f, false, true);
+        //    this.RemoveExistingTransferables();
+            this.pawnsTransfer = new TransferableOneWayWidget(null, Faction.OfPlayer.Name, this.TransportersLabelShort, "FormCaravanColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, () => this.MassCapacity - this.MassUsage, 24f, false, true);
             CaravanUIUtility.AddPawnsSections(this.pawnsTransfer, this.transferables);
+
             this.itemsTransfer = new TransferableOneWayWidget(from x in this.transferables
                                                               where x.ThingDef.category != ThingCategory.Pawn
-                                                              select x, Faction.OfPlayer.Name, this.TransportersLabelShort, "FormCaravanColonyThingCountTip".Translate(), true, false, true, () => this.MassCapacity - this.MassUsage, 24f, false, true);
-            this.CountToTransferChanged();
+                                                              select x, Faction.OfPlayer.Name, this.TransportersLabelShort, "FormCaravanColonyThingCountTip".Translate(), true, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, () => this.MassCapacity - this.MassUsage, 24f, false, true);
+            this.CountToTransferChanged();            
         }
 
         private bool DebugTryLoadInstantly()
         {
             for (int i = 0; i < this.transferables.Count; i++)
             {
-                TransferableUtility.Transfer(this.transferables[i].things, this.transferables[i].countToTransfer, delegate (Thing splitPiece, Thing originalThing)
+                TransferableUtility.Transfer(this.transferables[i].things, this.transferables[i].CountToTransfer, delegate (Thing splitPiece, IThingHolder originalThing)
                 {
-                    this.ship.GetInnerContainer().TryAdd(splitPiece, true);
+                    this.ship.GetDirectlyHeldThings().TryAdd(splitPiece, true);
                 });
             }
             return true;
@@ -299,7 +374,10 @@ namespace OHUShips
             {
                 return false;
             }
-            this.AssignTransferablesToShip();
+            if (!this.AssignTransferablesToShip())
+            {
+                return false;
+            }
             IEnumerable<Pawn> enumerable = from x in pawnsFromTransferables
                                            where x.IsColonist && !x.Downed
                                            select x;
@@ -308,7 +386,7 @@ namespace OHUShips
             {
                 Pawn pawn = map.mapPawns.FreeColonistsSpawned.RandomElement();
 
-                if (pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && !list.Contains(pawn))
+                if (pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) && !list.Contains(pawn) && pawn.GetLord() == null)
                 {
                     list.Add(pawn);
                 }
@@ -316,7 +394,6 @@ namespace OHUShips
 
             if (list.Any<Pawn>())
             {
-                LordMaker.MakeNewLord(Faction.OfPlayer, new LordJob_LoadShipCargo(this.ship), this.map, list);
                 foreach (Pawn current in enumerable)
                 {
                     if (current.Spawned)
@@ -324,40 +401,52 @@ namespace OHUShips
                         current.jobs.EndCurrentJob(JobCondition.InterruptForced, true);
                     }
                 }
+               Lord newLord = LordMaker.MakeNewLord(Faction.OfPlayer, new LordJob_LoadShipCargo(this.ship), this.map, list);
             }
             ship.compShip.cargoLoadingActive = true;
             Messages.Message("MessageShipCargoLoadStarted".Translate( new object[] { ship.ShipNick }), ship, MessageSound.Benefit);
             return true;
         }
 
-        private void AssignTransferablesToShip()
+        private bool AssignTransferablesToShip()
         {
-      //      TransferableOneWay transferableOneWay = this.transferables.MaxBy((TransferableOneWay x) => x.countToTransfer);
+            this.ship.compShip.leftToLoad = new List<TransferableOneWay>();
+            this.ship.compShip.leftToLoad.Clear();
+
+       //     this.RemoveExistingTransferables();
             for (int i = 0; i < this.transferables.Count; i++)
             {
-                    //  for (int j=0; j < this.transferables[i].things.Count; j++)
-                    //  {
-                    //      Log.Message(this.transferables[i].things[j].Label);
-                    //  }
-                    if (this.transferables[i].countToTransfer > 0)
-                    {
-                        this.ship.compShip.AddToTheToLoadList(this.transferables[i], this.transferables[i].countToTransfer);
-                    }
-                
+                Dialog_LoadShipCargo.RemoveExistingTransferable(this.transferables[i], null, this.ship);
+                if (this.transferables[i].CountToTransfer > 0)
+                {
+                    this.ship.compShip.AddToTheToLoadList(this.transferables[i], this.transferables[i].CountToTransfer);
+ //                   TransferableUIUtility.ClearEditBuffer(this.transferables[i]);
+                }             
             }
+            return true;
         }        
 
         private bool CheckForErrors(List<Pawn> pawns)
         {
-            if (!this.transferables.Any((TransferableOneWay x) => x.countToTransfer != 0))
+            if (!this.transferables.Any((TransferableOneWay x) => x.CountToTransfer != 0))
             {
                 Messages.Message("CantSendEmptyTransportPods".Translate(), MessageSound.RejectInput);
+                return false;
+            }
+            if (this.numOfHaulers <= 0 && pawns.Count <= 0)
+            {
+                Messages.Message("CantAssignZeroHaulers".Translate(), MessageSound.RejectInput);
                 return false;
             }
             if (this.MassUsage > this.MassCapacity)
             {
                 this.FlashMass();
-                Messages.Message("TooBigTransportersMassUsage".Translate(), MessageSound.RejectInput);
+                Messages.Message("TooBigShipMassUsage".Translate(), MessageSound.RejectInput);
+                return false;
+            }
+            if (this.PawnsToTransfer > this.PassengerCapacity)
+            {
+                Messages.Message("ShipSeatsFull".Translate(), MessageSound.RejectInput);
                 return false;
             }
             Pawn pawn = pawns.Find((Pawn x) => !x.MapHeld.reachability.CanReach(x.PositionHeld, this.ship, PathEndMode.Touch, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)));
@@ -374,9 +463,9 @@ namespace OHUShips
             {
                 if (this.transferables[i].ThingDef.category == ThingCategory.Item)
                 {
-                    int countToTransfer = this.transferables[i].countToTransfer;
+                    int CountToTransfer = this.transferables[i].CountToTransfer;
                     int num = 0;
-                    if (countToTransfer > 0)
+                    if (CountToTransfer > 0)
                     {
                         for (int j = 0; j < this.transferables[i].things.Count; j++)
                         {
@@ -384,15 +473,15 @@ namespace OHUShips
                             if (map.reachability.CanReach(thing.Position, this.ship, PathEndMode.Touch, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)))
                             {
                                 num += thing.stackCount;
-                                if (num >= countToTransfer)
+                                if (num >= CountToTransfer)
                                 {
                                     break;
                                 }
                             }
                         }
-                        if (num < countToTransfer)
+                        if (num < CountToTransfer)
                         {
-                            if (countToTransfer == 1)
+                            if (CountToTransfer == 1)
                             {
                                 Messages.Message("TransporterItemIsUnreachableSingle".Translate(new object[]
                                 {
@@ -403,7 +492,7 @@ namespace OHUShips
                             {
                                 Messages.Message("TransporterItemIsUnreachableMulti".Translate(new object[]
                                 {
-                                    countToTransfer,
+                                    CountToTransfer,
                                     this.transferables[i].ThingDef.label
                                 }), MessageSound.RejectInput);
                             }
@@ -424,12 +513,34 @@ namespace OHUShips
             }
         }
 
+        private bool isPlayerBase
+        {
+            get
+            {
+                FactionBase mapParent = Find.WorldObjects.FactionBaseAt(this.ship.Tile);
+                if (mapParent != null)
+                {
+                    if (mapParent.Faction != Faction.OfPlayer)
+                    return true;
+                }
+                return false;
+            }
+        }
+
         private void AddItemsToTransferables()
         {
-            List<Thing> list = CaravanFormingUtility.AllReachableColonyItems(this.map, false, false);
+           // List<Thing> list = CaravanFormingUtility.AllReachableColonyItems(this.map, false, false);
+
+            List<Thing> list = CaravanFormingUtility.AllReachableColonyItems(this.map, false, isPlayerBase);
             for (int i = 0; i < list.Count; i++)
             {
-                this.AddToTransferables(list[i]);
+                int alreadyIn = 0;
+                Thing thingAlreadyIn = this.ship.GetDirectlyHeldThings().FirstOrDefault(x => x == list[i]);
+                if (thingAlreadyIn != null)
+                {
+                    alreadyIn = thingAlreadyIn.stackCount;
+                }
+                this.AddToTransferables(list[i], alreadyIn);
             }
         }
 
@@ -442,8 +553,10 @@ namespace OHUShips
         {
             for (int i = 0; i < this.transferables.Count; i++)
             {
-                this.transferables[i].SetToTransferMaxToDest();
-                TransferableUIUtility.ClearEditBuffer(this.transferables[i]);
+                TransferableUtility.Transfer(this.transferables[i].things, this.transferables[i].CountToTransfer, delegate (Thing splitPiece, IThingHolder originalThing)
+                {
+                    this.ship.GetDirectlyHeldThings().TryAdd(splitPiece, true);
+                });
             }
             this.CountToTransferChanged();
         }

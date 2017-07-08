@@ -51,11 +51,11 @@
     <label>aircraft dropsite</label>
     <description>A dropsite for aircraft.</description>
     <worldObjectClass>OHUShips.ShipDropSite</worldObjectClass>
-    <texture>World/WorldObjects/Ambush</texture>
+    <texture>World/WorldObjects/AircraftDropSpot</texture>
     <expandingIcon>true</expandingIcon>
     <expandingIconTexture>World/WorldObjects/AircraftDropSpot</expandingIconTexture>
-
-    <expandingIconPriority>8</expandingIconPriority>
+    <useDynamicDrawer>true</useDynamicDrawer>
+    <expandingIconPriority>20</expandingIconPriority>
   </WorldObjectDef>
 
 

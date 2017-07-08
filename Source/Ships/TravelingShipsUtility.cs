@@ -40,17 +40,18 @@ namespace OHUShips
             command_Action.icon = DropShipUtility.TradeCommandTex;
             command_Action.action = delegate
             {
-                FactionBase factionBase = CaravanVisitUtility.FactionBaseVisitedNow(caravan);
+                Settlement factionBase = CaravanVisitUtility.SettlementVisitedNow(caravan);
                 if (factionBase != null && factionBase.CanTradeNow)
                 {
                     caravan.UnloadCargoForTrading();
+                    //Find.WindowStack.Add(new Dialog_TradeFromShips(caravan, bestNegotiator, factionBase));
                     Find.WindowStack.Add(new Dialog_TradeFromShips(caravan, bestNegotiator, factionBase));
                     string empty = string.Empty;
                     string empty2 = string.Empty;
                     PawnRelationUtility.Notify_PawnsSeenByPlayer(factionBase.Goods.OfType<Pawn>(), ref empty, ref empty2, "LetterRelatedPawnsTradingWithFactionBase".Translate(), false);
                     if (!empty2.NullOrEmpty())
                     {
-                        Find.LetterStack.ReceiveLetter(empty, empty2, LetterType.Good, factionBase, null);
+                        Find.LetterStack.ReceiveLetter(empty, empty2, LetterDefOf.Good, factionBase, null);
                     }
                 }
             };
@@ -79,7 +80,7 @@ namespace OHUShips
             for (int i = 0; i < allWorldObjects.Count; i++)
             {
                 WorldObject worldObject = allWorldObjects[i];
-                if (worldObject.Tile == landedShip.Tile && worldObject != landedShip)
+                if (worldObject.Tile == landedShip.Tile && worldObject != landedShip && settlePermanent)
                 {
                     flag = true;
                     break;
@@ -112,16 +113,26 @@ namespace OHUShips
                 return;
             }
             MapParent newWorldObject;
+            Map mapToDropIn;
+            bool foundMapParent = false;
             if (settlePermanent)
             {
                 newWorldObject = SettleUtility.AddNewHome(landedShip.Tile, faction);
             }
             else
             {
-                newWorldObject = (ShipDropSite)WorldObjectMaker.MakeWorldObject(ShipNamespaceDefOfs.ShipDropSite);
-                newWorldObject.SetFaction(faction);
-                newWorldObject.Tile = landedShip.Tile;
-                Find.WorldObjects.Add(newWorldObject);
+                newWorldObject = Find.WorldObjects.MapParentAt(landedShip.Tile);
+                if (newWorldObject != null)
+                {
+                    foundMapParent = true;
+                }
+                else
+                {
+                    newWorldObject = (ShipDropSite)WorldObjectMaker.MakeWorldObject(ShipNamespaceDefOfs.ShipDropSite);
+                    newWorldObject.SetFaction(faction);
+                    newWorldObject.Tile = landedShip.Tile;
+                    Find.WorldObjects.Add(newWorldObject);
+                }
             }
             LongEventHandler.QueueLongEvent(delegate
             {
@@ -129,27 +140,34 @@ namespace OHUShips
                 if (settlePermanent)
                 {
                     vec3 = Find.World.info.initialMapSize;
+                    mapToDropIn = MapGenerator.GenerateMap(vec3, newWorldObject, MapGeneratorDefOf.MainMap, null, null);
+                }
+                else if (newWorldObject != null && foundMapParent)
+                {
+                    Site site = newWorldObject as Site;
+                    mapToDropIn = GetOrGenerateMapUtility.GetOrGenerateMap(landedShip.Tile, SiteCoreWorker.MapSize, newWorldObject.def);
                 }
                 else
                 {
                     vec3 = new IntVec3(100, 1, 100);
+                    mapToDropIn = MapGenerator.GenerateMap(vec3, newWorldObject, MapGeneratorDefOf.MainMap, null, null);
                 }
-                Map visibleMap = MapGenerator.GenerateMap(vec3, landedShip.Tile, newWorldObject, null, null);
-                Current.Game.VisibleMap = visibleMap;
+                Current.Game.VisibleMap = mapToDropIn;
             }, "GeneratingMap", true, new Action<Exception>(GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap));
             LongEventHandler.QueueLongEvent(delegate
             {
                 Map map = newWorldObject.Map;
                 Pawn pawn = landedShip.PawnsListForReading[0];
                 Predicate<IntVec3> extraCellValidator = (IntVec3 x) => x.GetRegion(map).CellCount >= 600;
-                TravelingShipsUtility.EnterMapWithShip(landedShip, map, CaravanEnterMode.Center);
-                Find.CameraDriver.JumpTo(map.Center);
+                TravelingShipsUtility.EnterMapWithShip(landedShip, map);
+                Find.CameraDriver.JumpToVisibleMapLoc(map.Center);
                 Find.MainTabsRoot.EscapeCurrentTab(false);
             }, "SpawningColonists", true, new Action<Exception>(GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap));
         }
 
-        public static void EnterMapWithShip(LandedShip caravan, Map map, CaravanEnterMode enterMode)
+        public static void EnterMapWithShip(LandedShip caravan, Map map)
         {
+            TravelingShipsUtility.ReimbarkPawnsFromLandedShip(caravan);
             IntVec3 enterCell = TravelingShipsUtility.CenterCell(map);
             Func<ShipBase, IntVec3> spawnCellGetter = (ShipBase p) => CellFinder.RandomSpawnCellForPawnNear(enterCell, map);
             TravelingShipsUtility.Enter(caravan, map, spawnCellGetter);
@@ -171,12 +189,8 @@ namespace OHUShips
         public static void Enter(LandedShip caravan, Map map, Func<ShipBase, IntVec3> spawnCellGetter)
         {
             List<ShipBase> ships = caravan.ships;
-            foreach (ShipBase ship in ships)
-            {
-                DropShipUtility.ReimbarkWorldPawnsForLandedShip(ship);
-            }
             DropShipUtility.DropShipGroups(TravelingShipsUtility.CenterCell(map), map, ships, TravelingShipArrivalAction.EnterMapFriendly);            
-            caravan.RemoveAllPawns();
+            //caravan.RemoveAllPawns();
             if (caravan.Spawned)
             {
                 Find.WorldObjects.Remove(caravan);
@@ -185,10 +199,6 @@ namespace OHUShips
 
         public static void Enter(List<ShipBase> ships, Map map, bool centerDrop = true)
         {
-            foreach (ShipBase ship in ships)
-            {
-                DropShipUtility.ReimbarkWorldPawnsForLandedShip(ship);
-            }
             IntVec3 loc;
             if (centerDrop)
             {
@@ -206,7 +216,7 @@ namespace OHUShips
             return (pawn.Name + " of " + pawn.Faction.ToString());
         }
 
-        public static void MakepawnInfos(ThingContainer container)
+        public static void MakepawnInfos(ThingOwner container)
         {
             foreach (Thing t in container)
             {
@@ -218,7 +228,6 @@ namespace OHUShips
             }
         }
 
-
         public static void InitializePayloadAndTurrets(List<ShipBase> ships, List<Building_ShipTurret> turrets, List<WeaponSystemShipBomb> bombs)
         {
             for (int i = 0; i < ships.Count; i++)
@@ -228,10 +237,26 @@ namespace OHUShips
             }
         }
 
+        public static void ReimbarkPawnsFromLandedShip(LandedShip landedShip)
+        {
+            foreach (KeyValuePair<ShipBase, List<string>> entry in landedShip.shipsPassengerList)
+            {
+                List<Pawn> caravanPassengers = new List<Pawn>();
+                caravanPassengers.AddRange(landedShip.PawnsListForReading);
+
+                for (int i=0; i < caravanPassengers.Count; i++)
+                {
+                    if (entry.Value.Contains(caravanPassengers[i].ThingID))
+                    {
+                        entry.Key.TryAcceptThing(caravanPassengers[i]);
+                    }
+                }
+            }
+        }
+
         public static LandedShip MakeLandedShip(TravelingShips incomingShips, Faction faction, int startingTile, bool addToWorldPawnsIfNotAlready)
         {
-        //    Log.Message("Making LandedShip");
-       //     TravelingShipsUtility.MakepawnInfos(incomingShips.ships[0].GetInnerContainer());
+       //     TravelingShipsUtility.MakepawnInfos(incomingShips.ships[0].GetDirectlyHeldThings());
             if (startingTile < 0 && addToWorldPawnsIfNotAlready)
             {
                 Log.Warning("Tried to create a caravan but chose not to spawn a caravan but pass pawns to world. This can cause bugs because pawns can be discarded.");
@@ -249,25 +274,40 @@ namespace OHUShips
             {
                 Find.WorldObjects.Add(caravan);
             }
-            for (int i = 0; i < TravelingShipsUtility.tmpPawns.Count; i++)
+
+            foreach (ShipBase current in incomingShips.ships)
             {
-                Pawn pawn = TravelingShipsUtility.tmpPawns[i];
-                if (pawn.Dead)
+               // current.shouldDeepSave = false;
+                List<Thing> passengers = current.GetDirectlyHeldThings().ToList();
+                
+                List<string> passengerIDs = new List<string>();
+                for (int i = 0; i < passengers.Count; i++)
                 {
-                    Log.Warning("Tried to form a caravan with a dead pawn " + pawn);
-                }
-                else
-                {
-                    caravan.AddPawn(pawn, addToWorldPawnsIfNotAlready);
-                    if (addToWorldPawnsIfNotAlready && !pawn.IsWorldPawn())
+                    Pawn pawn = passengers[i] as Pawn;
+                    if (pawn != null)
                     {
-                        if (pawn.Spawned)
+                        if (pawn.Dead)
                         {
-                            pawn.DeSpawn();
+                            Log.Warning("Tried to form a caravan with a dead pawn " + pawn);
                         }
-                        Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Decide);
+                        else
+                        {
+                            passengerIDs.Add(pawn.ThingID);
+                            //pawn.holdingOwner = null;
+                            current.GetDirectlyHeldThings().Remove(pawn);
+                            caravan.AddPawn(pawn, addToWorldPawnsIfNotAlready);
+                            if (addToWorldPawnsIfNotAlready && !pawn.IsWorldPawn())
+                            {
+                                if (pawn.Spawned)
+                                {
+                                    pawn.DeSpawn();
+                                }
+                                Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Decide);
+                            }
+                        }
                     }
                 }
+                caravan.shipsPassengerList.Add(current, passengerIDs);
             }
             string name;
             if (incomingShips.ships[0].fleetID != -1 && DropShipUtility.currentShipTracker.PlayerFleetManager.ContainsKey(incomingShips.ships[0].fleetID))
@@ -283,7 +323,7 @@ namespace OHUShips
             caravan.ships.AddRange(incomingShips.ships);
             foreach (ShipBase ship in caravan.ships)
             {
-                DropShipUtility.PassWorldPawnsForLandedShip(ship);
+                //DropShipUtility.PassWorldPawnsForLandedShip(ship);
             }
             return caravan;
         }
@@ -329,25 +369,25 @@ namespace OHUShips
             foreach(ShipBase current in landedShip.ships)
             {
                 travelingShips.AddShip(current, true);
-    //            current.SavePotentialWorldPawns();
-                DropShipUtility.ReimbarkWorldPawnsForLandedShip(current);
             }
+            TravelingShipsUtility.ReimbarkPawnsFromLandedShip(landedShip);
             travelingShips.SetFaction(landedShip.Faction);
-            TravelingShipsUtility.AddAllLandedPawnsToWorld(landedShip);
+            TravelingShipsUtility.RemoveLandedShipPawns(landedShip);
+            landedShip.ReloadStockIntoShip();
             if (Find.World.worldObjects.Contains(landedShip))
             {
                 Find.World.worldObjects.Remove(landedShip);
             }
         }
 
-        public static void AddAllLandedPawnsToWorld(LandedShip landedShip)
+        public static void RemoveLandedShipPawns(LandedShip landedShip)
         {
             for (int i = 0; i< landedShip.PawnsListForReading.Count; i++)
             {
                 Pawn pawn = landedShip.PawnsListForReading[i];
-                if (!Find.WorldPawns.Contains(pawn))
+                if (Find.WorldPawns.Contains(pawn))
                 {
-                    Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Decide);
+                    Find.WorldPawns.RemovePawn(pawn);
                 }
             }
         }
@@ -360,7 +400,7 @@ namespace OHUShips
                 allPawns = DropShipUtility.AllPawnsInShip(current);
                 for (int k = 0; k < allPawns.Count; k++)
                 {
-                    ThingContainer innerContainer2 = current.GetInnerContainer();
+                    ThingOwner innerContainer2 = current.GetDirectlyHeldThings();
                     for (int l = 0; l < innerContainer2.Count; l++)
                     {
                         if (!(innerContainer2[l] is Pawn))

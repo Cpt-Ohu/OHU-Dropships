@@ -54,7 +54,36 @@
   <CommandShipTouchdown>Touchdown</CommandShipTouchdown>
   <CommandShipTouchdownDesc>Temporarily land all aircraft for further planning.</CommandShipTouchdownDesc>
 
+  <CommandRemoveDropsite>Remove</CommandRemoveDropsite>
+  <CommandRemoveDropsiteDesc>Forcefully removes this site. May take a few seconds to kick in.</CommandRemoveDropsiteDesc>
+
+
   <CommandLaunchFleetFailDueToNotReady>At least one ship in the fleet isn't ready to launch.</CommandLaunchFleetFailDueToNotReady>
+
+  <CantAssignZeroHaulers>Cannot start shiploading with no haulers assigned.</CantAssignZeroHaulers>
+
+  <CommandSetParkingPosition>Set Parking</CommandSetParkingPosition>
+
+  <CommandSetParkingPositionDesc>Set the ships current position as a parking spot to return to.</CommandSetParkingPositionDesc>
+
+  <CommandTravelParkingPosition>Return ship</CommandTravelParkingPosition>
+
+  <CommandTravelParkingPositionDesc>Return this ship to its parking position.</CommandTravelParkingPositionDesc>
+
+  <CommandTravelParkingPositionFleet>Return fleet</CommandTravelParkingPositionFleet>
+
+  <CommandTravelParkingPositionFleetDesc>Return every ship in the fleet to its parking position.</CommandTravelParkingPositionFleetDesc>
+
+  <MessagePassengersFull>{0} tried to enter {1}, but there were no empty seats.</MessagePassengersFull>
+
+  <ShipSeatsFull>Too many pawns assigned as passengers.</ShipSeatsFull>
+
+
+  <ShipPassengersFull>Enter ship (No free seats).</ShipPassengersFull>
+
+  <DrawPassengerUse>{0}/{1} passengers</DrawPassengerUse>
+
+  <TooBigShipMassUsage>The assigned passengers and cargo are too heavy for this ship.</TooBigShipMassUsage>
 
 
 </LanguageData>

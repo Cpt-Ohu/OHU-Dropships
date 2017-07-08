@@ -3,7 +3,7 @@
 
   <ThingDef ParentName="ResourceBase">
     <defName>ShipTurretTemplate</defName>
-    <label>improvised ship turret</label>
+    <label>improvised ship turret(boxed)</label>
     <description>An improvised turret that automatically fires at nearby enemies. Explodes when damaged. Its hacked-together AI brain isn't very smart, and can't be directly controlled, so beware of friendly fire.</description>
     <graphicData>
       <texPath>Things/ShipWeapons/ShipWeapon_Item</texPath>
@@ -72,7 +72,7 @@
     <stealable>false</stealable>
     <rotatable>false</rotatable>
     <statBases>
-      <MaxHitPoints>100</MaxHitPoints>
+      <MaxHitPoints>350</MaxHitPoints>
       <Flammability>1.0</Flammability>
       <WorkToBuild>2500</WorkToBuild>
       <Mass>100</Mass>

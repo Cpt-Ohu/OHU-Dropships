@@ -29,7 +29,13 @@ namespace OHUShips
         {
             this.Rotation = Rot4.North;
             this.containingShip = new ShipBase();
+        }
 
+        public ShipBase_Traveling(ShipBase ship)
+        {
+            this.Rotation = Rot4.North;
+            this.containingShip = ship;
+            this.leavingForTarget = false;
         }
 
         public ShipBase_Traveling(ShipBase ship, bool launchAsFleet = false, TravelingShipArrivalAction arrivalAction = TravelingShipArrivalAction.StayOnWorldMap)
@@ -73,9 +79,9 @@ namespace OHUShips
             }
             DropShipUtility.DrawDropSpotShadow(this.containingShip, this.containingShip.drawTickOffset, this);
         }
-        public override void SpawnSetup(Map map)
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            base.SpawnSetup(map);
+            base.SpawnSetup(map, respawningAfterLoad);
             this.containingShip.compShip.TryRemoveLord(map);
         }
 
@@ -89,7 +95,7 @@ namespace OHUShips
                 {
                     this.ShipImpact();
                 }
-                this.containingShip.refuelableComp.ConsumeFuel(this.containingShip.refuelableComp.Props.fuelConsumptionRate / 100f);
+                this.containingShip.refuelableComp.ConsumeFuel(this.containingShip.refuelableComp.Props.fuelConsumptionRate / 60f);
             }
             
             if (this.containingShip.shipState == ShipState.Outgoing)
@@ -103,6 +109,11 @@ namespace OHUShips
                     }
                     else
                     {
+                        List<Pawn> pawns = DropShipUtility.AllPawnsInShip(this.containingShip);
+                        for (int i=0; i < pawns.Count; i++)
+                        {
+                            Find.WorldPawns.PassToWorld(pawns[i]);
+                        }                        
                         this.Destroy();
                     }
                 }
@@ -135,8 +146,8 @@ namespace OHUShips
                     }
                 }
             }
-
             GenSpawn.Spawn(this.containingShip, base.Position, this.Map, this.containingShip.Rotation);
+
             this.containingShip.ShipUnload(false, this.dropPawnsOnTochdown, this.dropItemsOnTouchdown);
             this.DeSpawn();
         }
@@ -185,7 +196,8 @@ namespace OHUShips
             }
             travelingShips.AddShip(this.containingShip, true);
             travelingShips.SetFaction(this.containingShip.Faction);
-            
+
+            foreach (ShipBase ship in travelingShips.ships)
             this.Destroy(DestroyMode.Vanish);
         }
 
@@ -193,15 +205,15 @@ namespace OHUShips
         {
             base.ExposeData();
 
-            Scribe_Values.LookValue<int>(ref this.fleetID, "fleetID", 0, false);
-            Scribe_Values.LookValue<int>(ref this.destinationTile, "destinationTile", 0, false);
-            Scribe_Values.LookValue<IntVec3>(ref this.destinationCell, "destinationCell", default(IntVec3), false);
-            Scribe_Values.LookValue<TravelingShipArrivalAction>(ref this.arrivalAction, "arrivalAction", TravelingShipArrivalAction.StayOnWorldMap, false);
-            Scribe_Values.LookValue<PawnsArriveMode>(ref this.pawnArriveMode, "pawnArriveMode", PawnsArriveMode.Undecided, false);
+            Scribe_Values.Look<int>(ref this.fleetID, "fleetID", 0, false);
+            Scribe_Values.Look<int>(ref this.destinationTile, "destinationTile", 0, false);
+            Scribe_Values.Look<IntVec3>(ref this.destinationCell, "destinationCell", default(IntVec3), false);
+            Scribe_Values.Look<TravelingShipArrivalAction>(ref this.arrivalAction, "arrivalAction", TravelingShipArrivalAction.StayOnWorldMap, false);
+            Scribe_Values.Look<PawnsArriveMode>(ref this.pawnArriveMode, "pawnArriveMode", PawnsArriveMode.Undecided, false);
 
-            Scribe_Values.LookValue<bool>(ref this.leavingForTarget, "leavingForTarget", true, false);
-            Scribe_Values.LookValue<bool>(ref this.alreadyLeft, "alreadyLeft", false, false);
-            Scribe_Deep.LookDeep<ShipBase>(ref this.containingShip, "containingShip", new object[0]);
+            Scribe_Values.Look<bool>(ref this.leavingForTarget, "leavingForTarget", true, false);
+            Scribe_Values.Look<bool>(ref this.alreadyLeft, "alreadyLeft", false, false);
+            Scribe_Deep.Look<ShipBase>(ref this.containingShip, "containingShip", new object[0]);
         }
     }
 }

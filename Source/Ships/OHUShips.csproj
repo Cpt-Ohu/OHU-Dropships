@@ -36,7 +36,7 @@
       <HintPath>..\..\..\FactionColors_1.3\Assemblies\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>C:\Spiele\Steam\SteamApps\common\RimWorld\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\RimWorldWin_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>C:\Spiele\Steam\SteamApps\common\RimWorld\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -70,14 +70,17 @@
     <Compile Include="JobDriver_LoadCargoMultiple.cs" />
     <Compile Include="JobDriver_UninstallShipWeaponSystem.cs" />
     <Compile Include="JobGiver_EnterShipDuringLoad.cs" />
+    <Compile Include="JobGiver_FleeIfShipDestroyed.cs" />
     <Compile Include="JobGiver_LeaveInShip.cs" />
     <Compile Include="JobGiver_LoadShipCargo.cs" />
     <Compile Include="LandedShip.cs" />
     <Compile Include="LoadShipCargoUtility.cs" />
     <Compile Include="LordJob_AerialAssault.cs" />
     <Compile Include="LordJob_LoadShipCargo.cs" />
+    <Compile Include="LordJob_StealForShip.cs" />
     <Compile Include="LordToil_LeaveInShip.cs" />
     <Compile Include="LordToil_LoadShipCargo.cs" />
+    <Compile Include="LordToil_StealForShip.cs" />
     <Compile Include="ScenPart_StartWithShip.cs" />
     <Compile Include="ShipBase.cs" />
     <Compile Include="ShipBase_Traveling.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="ShipState.cs" />
     <Compile Include="ShipTracker.cs" />
     <Compile Include="ShipWeaponSlot.cs" />
+    <Compile Include="Transferable_Ship.cs" />
     <Compile Include="TravelingShipArrivalAction.cs" />
     <Compile Include="TravelingShips.cs" />
     <Compile Include="TravelingShipsUtility.cs" />

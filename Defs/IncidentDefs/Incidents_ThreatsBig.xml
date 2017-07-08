@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+
+  <IncidentDef>
+    <defName>AerialRaid</defName>
+    <label>enemy raid</label>
+    <targetType>MapPlayerHome</targetType>
+    <workerClass>OHUShips.IncidentWorker_AerialRaid</workerClass>
+    <baseChance>0.1</baseChance>
+    <category>ThreatBig</category>
+    <pointsScaleable>true</pointsScaleable>
+  </IncidentDef>
+
+
+</Defs>

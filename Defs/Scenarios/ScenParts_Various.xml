@@ -9,6 +9,9 @@
     <category>Misc</category>
     <scenPartClass>OHUShips.ScenPart_StartWithShip</scenPartClass>
     <maxUses>1</maxUses>
+    <selectionWeight>0.0001</selectionWeight>
+    <summaryPriority>100</summaryPriority>
   </ScenPartDef>
 
 </Defs>
+

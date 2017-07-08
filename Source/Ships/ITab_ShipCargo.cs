@@ -125,16 +125,16 @@ namespace OHUShips
             Rect rect = inRect.ContractedBy(4f);
             GUI.BeginGroup(rect);
             GUI.color = Color.white;
-            Rect totalRect = new Rect(0f, 0f, rect.width-50f, 400f);
+            Rect totalRect = new Rect(0f, 0f, rect.width-50f, 300f);
             Rect viewRect = new Rect(0f, 0f, rect.width, this.scrollViewHeight);
-            Widgets.BeginScrollView(viewRect, ref this.scrollPosition, totalRect);
+            Widgets.BeginScrollView(totalRect, ref this.scrollPosition, viewRect);
             float num = 0f;
-            if (this.ship.GetInnerContainer() != null)
+            if (this.ship.GetDirectlyHeldThings() != null)
             {
                 Text.Font = GameFont.Small;
-                for (int i = 0; i < this.ship.GetInnerContainer().Count; i++)
+                for (int i = 0; i < this.ship.GetDirectlyHeldThings().Count; i++)
                 {
-                    Thing thing = this.ship.GetInnerContainer()[i];
+                    Thing thing = this.ship.GetDirectlyHeldThings()[i];
                     Pawn pawn = thing as Pawn;
                     if (nonPawn)
                     {
@@ -152,10 +152,7 @@ namespace OHUShips
                     }
                 }
             }
-            if (Event.current.type == EventType.Layout)
-            {
-                this.scrollViewHeight = num + 30f;
-            }
+            this.scrollViewHeight = num + 30f;            
             Widgets.EndScrollView();
             GUI.EndGroup();
             GUI.color = Color.white;
@@ -205,7 +202,6 @@ namespace OHUShips
                 if (currentWeapon.Value == null)
                 {
                     List<Thing> list = DropShipUtility.availableWeaponsForSlot(this.ship.Map, currentWeapon.Key);
-                    //         Log.Message("List of potentials  " + list.Count.ToString());
                     list.OrderBy(x => x.Position.DistanceToSquared(this.ship.Position));
                     for (int i = 0; i < list.Count; i++)
                     {
@@ -373,7 +369,7 @@ namespace OHUShips
 
         private void InterfaceDrop(Thing thing, ShipBase ship)
         {
-            ship.GetInnerContainer().TryDrop(thing, ThingPlaceMode.Near, out thing);
+            ship.GetDirectlyHeldThings().TryDrop(thing, ThingPlaceMode.Near, out thing);
             if (thing is Pawn)
             {
                 Pawn pawn = (Pawn)thing;

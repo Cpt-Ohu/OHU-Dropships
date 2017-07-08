@@ -26,7 +26,7 @@ namespace OHUShips
             Toil leaving = JobDriver_LeaveInShip.EnterShip(this.GetActor(), ship);
             leaving.AddFinishAction(delegate
             {
-                if (!ship.pilotPresent)
+                if (ship.pilotPresent)
                 {
                     ship.PrepareForLaunchIn(1000);
                 }
@@ -42,7 +42,11 @@ namespace OHUShips
             {
                 initAction = delegate
                 {
-                   ship.TryAcceptThing(pawn, true);                    
+                    if (pawn.carryTracker.CarriedThing != null)
+                    {
+                        ship.TryAcceptThing(pawn.carryTracker.CarriedThing);
+                    }
+                    ship.TryAcceptThing(pawn, true);
                 },
                 defaultCompleteMode = ToilCompleteMode.Instant
             };

@@ -22,6 +22,13 @@ namespace OHUShips
             this.startingCargo.Add(newCargo);
         }
 
+        public ScenPart_StartWithShip()
+        {
+            this.shipDefs = DefDatabase<ThingDef>.AllDefsListForReading.FindAll(x => this.shipValidator(x));
+        }
+            
+
+
         public void AddToStartingCargo(IEnumerable<Thing> newCargo)
         {
             this.startingCargo.AddRange(newCargo);
@@ -38,14 +45,17 @@ namespace OHUShips
 
         public override void GenerateIntoMap(Map map)
         {
-            ShipBase newShip = (ShipBase)ThingMaker.MakeThing(this.ShipDef);
-            newShip.SetFaction(Faction.OfPlayer);
-            Thing initialFuel = ThingMaker.MakeThing(ShipNamespaceDefOfs.Chemfuel);
-            initialFuel.stackCount = 500;
-            newShip.refuelableComp.Refuel(initialFuel);
-            this.StartingShips.Add(newShip);
-            DropShipUtility.LoadNewCargoIntoRandomShips(this.PlayerStartingThings().ToList(), this.StartingShips);
-            DropShipUtility.DropShipGroups(map.Center, map, this.StartingShips, TravelingShipArrivalAction.EnterMapFriendly);
+            if (Find.TickManager.TicksGame < 1000)
+            {
+                ShipBase newShip = (ShipBase)ThingMaker.MakeThing(this.ShipDef);
+                newShip.SetFaction(Faction.OfPlayer);
+                Thing initialFuel = ThingMaker.MakeThing(ShipNamespaceDefOfs.Chemfuel);
+                initialFuel.stackCount = 500;
+                newShip.refuelableComp.Refuel(initialFuel);
+                this.StartingShips.Add(newShip);
+                DropShipUtility.LoadNewCargoIntoRandomShips(this.PlayerStartingThings().ToList(), this.StartingShips);
+                DropShipUtility.DropShipGroups(map.Center, map, this.StartingShips, TravelingShipArrivalAction.EnterMapFriendly);
+            }
         }
 
         private Predicate<ThingDef> shipValidator = delegate (ThingDef t)
@@ -64,21 +74,21 @@ namespace OHUShips
             return false;
         };
 
+        private List<ThingDef> shipDefs = new List<ThingDef>();
+
         public override void DoEditInterface(Listing_ScenEdit listing)
         {
             Rect scenPartRect = listing.GetScenPartRect(this, ScenPart.RowHeight);
             if (Widgets.ButtonText(scenPartRect, this.ShipDef.label, true, false, true))
             {
-                List<FloatMenuOption> list = new List<FloatMenuOption>();
+                List<FloatMenuOption> list = new List<FloatMenuOption>();                
 
-                
-
-                List<ThingDef> listThings = DefDatabase<ThingDef>.AllDefsListForReading.FindAll(x => this.shipValidator(x));
-                for (int i=0; i < listThings.Count; i++)
+                for (int i=0; i < shipDefs.Count; i++)
                 {
-                    list.Add(new FloatMenuOption(listThings[i].label, delegate
+                    ThingDef def = shipDefs[i];
+                    list.Add(new FloatMenuOption(shipDefs[i].label, delegate
                     {
-                       this.ShipDef = listThings[i];
+                        this.ShipDef = def;
                     }, MenuOptionPriority.Default, null, null, 0f, null, null));
                 }                    
                 
@@ -90,8 +100,7 @@ namespace OHUShips
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Defs.LookDef<ThingDef>(ref this.ShipDef, "ShipDef");
-
+            Scribe_Defs.Look<ThingDef>(ref this.ShipDef, "ShipDef");
         }
 
 

@@ -19,7 +19,7 @@ namespace OHUShips
         {
             this.ship = ship;
         }
-
+        
         public override StateGraph CreateGraph()
         {
             StateGraph stateGraph = new StateGraph();
@@ -46,7 +46,7 @@ namespace OHUShips
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_References.LookReference<ShipBase>(ref this.ship, "ship");
+            Scribe_References.Look<ShipBase>(ref this.ship, "ship");
         }
     }
 }

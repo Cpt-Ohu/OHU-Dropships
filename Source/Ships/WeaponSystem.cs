@@ -43,9 +43,9 @@ namespace OHUShips
             }
         }
 
-        public override void SpawnSetup(Map map)
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            base.SpawnSetup(map);
+            base.SpawnSetup(map, respawningAfterLoad);
 
             this.isInstalled = false;
 
@@ -54,14 +54,14 @@ namespace OHUShips
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Deep.LookDeep<StunHandler>(ref this.stunner, "stunner", new object[]
+            Scribe_Deep.Look<StunHandler>(ref this.stunner, "stunner", new object[]
             {
                 this
             });
 
-            Scribe_Values.LookValue<bool>(ref this.isInstalled, "isInstalled", false, false);
-            Scribe_Values.LookValue<string>(ref this.assignedSlotName, "assignedSlotName");
-            Scribe_References.LookReference<ShipWeaponSlot>(ref this.slotToInstall, "slotToInstall");
+            Scribe_Values.Look<bool>(ref this.isInstalled, "isInstalled", false, false);
+            Scribe_Values.Look<string>(ref this.assignedSlotName, "assignedSlotName");
+            Scribe_References.Look<ShipWeaponSlot>(ref this.slotToInstall, "slotToInstall");
         }
 
         public override void PreApplyDamage(DamageInfo dinfo, out bool absorbed)

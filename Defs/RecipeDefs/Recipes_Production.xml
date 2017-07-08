@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RecipeDefs>
+
+	
+  <RecipeDef>
+    <defName>MakeShipTurretImprovised</defName>
+    <label>make improvised ship turret</label>
+    <description>Craft a turret for installation on a ship.</description>
+    <jobString>Making ship turret.</jobString>
+    <workSpeedStat>SmithingSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <workAmount>800</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>150</count>
+      </li>
+			<li>
+				<filter>
+          <thingDefs>
+            <li>Component</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+			</li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+	  <li>Component</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <ShipTurretTemplate>1</ShipTurretTemplate>
+    </products>
+    <workSkill>Crafting</workSkill>
+  </RecipeDef>
+</RecipeDefs>
