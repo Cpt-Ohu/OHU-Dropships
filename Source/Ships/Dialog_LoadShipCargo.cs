@@ -196,7 +196,6 @@ namespace OHUShips
             transferable.things.RemoveAll(x => thingsInCargoToRemov.Contains(x));
         }
 
-<<<<<<< HEAD
         private int PawnsToTransfer
         {
             get
@@ -213,8 +212,6 @@ namespace OHUShips
             }
         }
 
-=======
->>>>>>> origin/master
         public override void DoWindowContents(Rect inRect)
         {
             Rect rect = new Rect(0f, 0f, inRect.width, 40f);
@@ -246,11 +243,8 @@ namespace OHUShips
             rect3.y += 32f;
             TransferableUIUtility.DrawMassInfo(rect3, this.MassUsage, this.MassCapacity, "TransportersMassUsageTooltip".Translate(), this.lastMassFlashTime, true);
             CaravanUIUtility.DrawDaysWorthOfFoodInfo(new Rect(rect3.x, rect3.y + 22f, rect3.width, rect3.height), this.DaysWorthOfFood.First, this.DaysWorthOfFood.Second, this.EnvironmentAllowsEatingVirtualPlantsNow, true, 3.40282347E+38f);
-<<<<<<< HEAD
             this.DrawPassengerCapacity(rect3);
 
-=======
->>>>>>> origin/master
             this.DoBottomButtons(rect2);
             Rect inRect2 = rect2;
             inRect2.yMax -= 59f;
