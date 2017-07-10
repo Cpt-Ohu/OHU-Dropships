@@ -196,6 +196,22 @@ namespace OHUShips
             transferable.things.RemoveAll(x => thingsInCargoToRemov.Contains(x));
         }
 
+        private int PawnsToTransfer
+        {
+            get
+            {
+                return this.transferables.Where(x => x.AnyThing is Pawn && x.CountToTransfer > 0).Count();
+            }
+        }
+
+        private string PassengerUse
+        {
+            get
+            {
+                return this.PawnsToTransfer + "/" + this.PassengerCapacity + " " +"ShipPassengers".Translate();
+            }
+        }
+
         public override void DoWindowContents(Rect inRect)
         {
             Rect rect = new Rect(0f, 0f, inRect.width, 40f);
@@ -227,6 +243,8 @@ namespace OHUShips
             rect3.y += 32f;
             TransferableUIUtility.DrawMassInfo(rect3, this.MassUsage, this.MassCapacity, "TransportersMassUsageTooltip".Translate(), this.lastMassFlashTime, true);
             CaravanUIUtility.DrawDaysWorthOfFoodInfo(new Rect(rect3.x, rect3.y + 22f, rect3.width, rect3.height), this.DaysWorthOfFood.First, this.DaysWorthOfFood.Second, this.EnvironmentAllowsEatingVirtualPlantsNow, true, 3.40282347E+38f);
+            this.DrawPassengerCapacity(rect3);
+
             this.DoBottomButtons(rect2);
             Rect inRect2 = rect2;
             inRect2.yMax -= 59f;
@@ -311,6 +329,15 @@ namespace OHUShips
                     this.SetToLoadEverything();
                 }
             }
+        }
+
+        private void DrawPassengerCapacity(Rect rect3)
+        {
+            GUI.color = this.PawnsToTransfer > this.PassengerCapacity ? Color.red : Color.gray;
+            Vector3 vector = Text.CalcSize(this.PassengerUse);
+            Rect rect2 = new Rect(rect3.xMax - vector.x, rect3.y + 44f, vector.x, vector.y);
+            Widgets.Label(rect2, this.PassengerUse);
+            GUI.color = Color.white;
         }
 
         private void CalculateAndRecacheTransferables()
@@ -414,7 +441,12 @@ namespace OHUShips
             if (this.MassUsage > this.MassCapacity)
             {
                 this.FlashMass();
-                Messages.Message("TooBigTransportersMassUsage".Translate(), MessageSound.RejectInput);
+                Messages.Message("TooBigShipMassUsage".Translate(), MessageSound.RejectInput);
+                return false;
+            }
+            if (this.PawnsToTransfer > this.PassengerCapacity)
+            {
+                Messages.Message("ShipSeatsFull".Translate(), MessageSound.RejectInput);
                 return false;
             }
             Pawn pawn = pawns.Find((Pawn x) => !x.MapHeld.reachability.CanReach(x.PositionHeld, this.ship, PathEndMode.Touch, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)));

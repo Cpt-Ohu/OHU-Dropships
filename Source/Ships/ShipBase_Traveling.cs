@@ -196,8 +196,7 @@ namespace OHUShips
             }
             travelingShips.AddShip(this.containingShip, true);
             travelingShips.SetFaction(this.containingShip.Faction);
-
-            foreach (ShipBase ship in travelingShips.ships)
+            
             this.Destroy(DestroyMode.Vanish);
         }
 

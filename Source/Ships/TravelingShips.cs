@@ -210,11 +210,25 @@ namespace OHUShips
         public override void Tick()
         {
             base.Tick();
+            this.BurnFuel();
             this.traveledPct += this.TraveledPctStepPerTick;
             if (this.traveledPct >= 1f)
             {                
                 this.traveledPct = 1f;
                 this.Arrived();
+            }
+        }
+
+        private void BurnFuel()
+        {
+            foreach (ShipBase ship in this.ships)
+            {
+                ship.refuelableComp.ConsumeFuel(ship.refuelableComp.Props.fuelConsumptionRate / 60f);
+                if (!ship.refuelableComp.HasFuel)
+                {
+                    ship.Destroy();
+                    Messages.Message("ShipOutOfFuelCrash".Translate(new object[] { ship.ShipNick, DropShipUtility.AllPawnsInShip(ship) }), MessageSound.SeriousAlert);
+                }
             }
         }
 

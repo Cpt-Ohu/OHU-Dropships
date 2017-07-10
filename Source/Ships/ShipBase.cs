@@ -1,4 +1,4 @@
-﻿
+﻿using FactionColors;
 using RimWorld;
 using RimWorld.Planet;
 using System;
@@ -26,6 +26,77 @@ namespace OHUShips
         public Dictionary<ShipWeaponSlot, Thing> weaponsToInstall = new Dictionary<ShipWeaponSlot, Thing>();
         public Dictionary<ShipWeaponSlot, Thing> weaponsToUninstall = new Dictionary<ShipWeaponSlot, Thing>();
                 
+        #region FactionColorStuff
+
+
+        public Color Col1 = Color.white;
+        public Color Col2 = Color.magenta;
+
+        public override Color DrawColor
+        {
+            get
+            {
+                return Col1;
+            }
+            set
+            {
+                this.SetColor(value, true);
+            }
+        }
+
+        public override Color DrawColorTwo
+        {
+            get
+            {
+                return Col2;
+            }
+        }
+        
+        private void InitiateColors()
+        {
+            if (FirstSpawned)
+            {
+
+                if (this.Faction == null) this.factionInt = Faction.OfPlayer;
+                CompFactionColor compF = this.GetComp<CompFactionColor>();
+                if (compF != null)
+                {
+
+                    if (this.Faction != null)
+                    {
+                        FactionDefUniform udef = this.Faction.def as FactionDefUniform;
+                        if (udef != null)
+                        {
+                            Col1 = udef.FactionColor1;
+                            Col2 = udef.FactionColor2;
+                        }
+                        if (this.Faction == Faction.OfPlayer)
+                        {
+                            Col1 = FactionColors.FactionColorUtilities.currentPlayerStoryTracker.PlayerColorOne;
+                            Col2 = FactionColors.FactionColorUtilities.currentPlayerStoryTracker.PlayerColorTwo;
+                        }
+                    }
+                    else
+                    {
+                        CompColorable comp = this.GetComp<CompColorable>();
+                        if (comp != null && comp.Active)
+                        {
+                            Col1 = comp.Color;
+                            Col2 = comp.Color;
+                        }
+
+
+                    }
+                    if ((compF != null && compF.CProps.UseCamouflageColor))
+                    {
+                        Col1 = CamouflageColorsUtility.CamouflageColors[0];
+                        Col2 = CamouflageColorsUtility.CamouflageColors[1];
+                    }
+                }
+                FirstSpawned = false;
+            }
+        }
+        #endregion
         
         public bool shouldSpawnTurrets = false;
         //public bool shouldDeepSave = true;
@@ -175,6 +246,7 @@ namespace OHUShips
         {
             base.PostMake();
             this.InitiateShipProperties();
+            this.InitiateColors();
         }
         
         public int MaxLaunchDistance(bool LaunchAsFleet)
@@ -520,7 +592,7 @@ namespace OHUShips
                 {
                     if ((this.innerContainer.ToList<Thing>().Count(x => x is Pawn) >= this.compShip.sProps.maxPassengers))
                     {
-                        
+                        Messages.Message("MessagePassengersFull".Translate(new object[] { pawn.NameStringShort, this.ShipNick }), this, MessageSound.RejectInput);
                         return false;
                     }
                 }
@@ -653,8 +725,14 @@ namespace OHUShips
                         selPawn.jobs.TryTakeOrderedJob(job);
                     }
                 };
+            if (DropShipUtility.AllPawnsInShip(this).Count < this.compShip.sProps.maxPassengers +1)
+            {
                 yield return new FloatMenuOption("EnterShip".Translate(), action, MenuOptionPriority.Default, null, null, 0f, null, null);
-            
+            }
+            else
+            {
+                yield return new FloatMenuOption("ShipPassengersFull".Translate(), null, MenuOptionPriority.Default, null, null, 0f, null, null);
+            }
         }
 
         public bool TryInstallTurret(ShipWeaponSlot slot, CompShipWeapon comp)
@@ -943,7 +1021,7 @@ namespace OHUShips
                 List<FloatMenuOption> list = new List<FloatMenuOption>();
                 if (!target.WorldObject.Faction.HostileTo(Faction.OfPlayer))
                 {
-                    list.Add(new FloatMenuOption("VisitFactionBase".Translate(new object[]
+                    list.Add(new FloatMenuOption("VisitSettlement".Translate(new object[]
                     {
                         target.WorldObject.Label
                     }), delegate

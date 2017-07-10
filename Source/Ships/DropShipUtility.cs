@@ -94,11 +94,11 @@ namespace OHUShips
 
         public static Vector3 drawOffsetFor(ShipBase ship, int ticks, bool isShadow = false)
         {
-            int angle = ship.compShip.sProps.IncomingAngle;            
+            float angle = ship.compShip.sProps.IncomingAngle * Mathf.PI / 180f;
             float num = (float)(ticks * ticks) * 0.01f;
             int sign = 1;
             int signHorizontal = 1;
-            if (ship.shipState == ShipState.Outgoing)
+            if (ship.shipState == ShipState.Incoming)
             {
                 sign = -1;
             }
