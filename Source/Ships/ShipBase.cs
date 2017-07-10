@@ -1050,7 +1050,7 @@ namespace OHUShips
 
 
             Scribe_References.Look(ref this.ParkingMap, "ParkingMap");
-            Scribe_Values.Look<IntVec3>(ref this.ParkingPosition, "ParkingMap", IntVec3.Zero , false);
+            Scribe_Values.Look<IntVec3>(ref this.ParkingPosition, "ParkingPosition", IntVec3.Zero , false);
 
 
 
