@@ -85,5 +85,6 @@
 
   <TooBigShipMassUsage>The assigned passengers and cargo are too heavy for this ship.</TooBigShipMassUsage>
 
+  <ShipOutOfFuelCrash>The ship "{0}" ran out of fuel and went down with all passengers being lost.</ShipOutOfFuelCrash>
 
 </LanguageData>
