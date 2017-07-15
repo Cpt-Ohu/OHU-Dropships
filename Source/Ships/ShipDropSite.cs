@@ -31,12 +31,12 @@ namespace OHUShips
                 return this.cachedMat;
             }
         }
-
+        
         public override void Draw()
         {
             base.Draw();
         }
-
+                
         public override void ExposeData()
         {
             base.ExposeData();
