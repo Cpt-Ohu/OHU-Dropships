@@ -49,6 +49,7 @@
     </building>
 
   </ThingDef>
+
   <!--=============== Dropship ===============-->
 
 
@@ -227,7 +228,7 @@ Maximum Cargo Capacity: 185 kg
 
 	 </li>
       <li Class="CompProperties_Refuelable">
-        <fuelConsumptionRate>10.0</fuelConsumptionRate>
+        <fuelConsumptionRate>5.0</fuelConsumptionRate>
         <fuelCapacity>500.0</fuelCapacity>
         <fuelFilter>
           <thingDefs>
@@ -280,6 +281,7 @@ Maximum Cargo Capacity: 185 kg
     <selectable>false</selectable>
   </ThingDef>
 
+
   <!--=============== Albatros ===============-->
 
   <ThingDef ParentName="BaseShip">
@@ -325,7 +327,7 @@ Maximum Cargo Capacity: 80 kg
 		<li>Pirate</li>
 	   </availableToFactions>
         <LeavingShipDef>OHUAlbatrosLeaving</LeavingShipDef>
-        <IncomingAngle>80</IncomingAngle>
+        <IncomingAngle>35</IncomingAngle>
         <ShadowGraphicPath>Things/Ships/OHUAlbatrosShadow</ShadowGraphicPath>
         <FleetIconGraphicPath>Things/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
 
@@ -386,5 +388,6 @@ Maximum Cargo Capacity: 80 kg
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
   </ThingDef>
+
   
 </ThingDefs>

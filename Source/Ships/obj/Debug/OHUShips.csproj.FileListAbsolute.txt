@@ -2,7 +2,15 @@ D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\Warhammer40k-Corruption-A17\Assem
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\Warhammer40k-Corruption-A17\Assemblies\0OHUShips.pdb
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\Warhammer40k-Corruption-A17\Source\Ships\obj\Debug\0OHUShips.dll
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\Warhammer40k-Corruption-A17\Source\Ships\obj\Debug\0OHUShips.pdb
+<<<<<<< HEAD
 C:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.34\Assemblies\0OHUShips.dll
 C:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.34\Assemblies\0OHUShips.pdb
 C:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.34\Source\Ships\obj\Debug\0OHUShips.dll
 C:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.34\Source\Ships\obj\Debug\0OHUShips.pdb
+=======
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\Warhammer40k-Corruption-A17\Source\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache
+D:\Modding\rimworld\Wh40k\DropShips\OHU-Dropships\Assemblies\0OHUShips.dll
+D:\Modding\rimworld\Wh40k\DropShips\OHU-Dropships\Assemblies\0OHUShips.pdb
+D:\Modding\rimworld\Wh40k\DropShips\OHU-Dropships\Source\Ships\obj\Debug\0OHUShips.dll
+D:\Modding\rimworld\Wh40k\DropShips\OHU-Dropships\Source\Ships\obj\Debug\0OHUShips.pdb
+>>>>>>> origin/master

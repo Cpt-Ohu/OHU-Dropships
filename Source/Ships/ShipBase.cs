@@ -189,6 +189,7 @@ namespace OHUShips
 
         public int MaxShipFlightTicks
         {
+<<<<<<< HEAD
             get
             {
                 float consumption = this.refuelableComp.Props.fuelConsumptionRate;
@@ -204,6 +205,20 @@ namespace OHUShips
                 {
                 return this.compShip.sProps.TicksToImpact + this.compShip.sProps.TicksToDespawn;
                 }
+=======
+            float fuel = this.refuelableComp.Fuel;
+            float fuelConsumption = 0f;
+            if (LaunchAsFleet && this.fleetID != -1)
+            {
+                List<ShipBase> fleetShips = DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID);
+                ShipBase lowest = fleetShips.Aggregate((curMin, x) => (curMin == null || x.refuelableComp.Props.fuelCapacity < curMin.refuelableComp.Props.fuelCapacity && x.refuelableComp.Props.fuelConsumptionRate < curMin.refuelableComp.Props.fuelConsumptionRate ? x : curMin));
+                fuel = lowest.refuelableComp.Fuel;
+                fuelConsumption = lowest.refuelableComp.Props.fuelConsumptionRate;
+            }
+
+            return Mathf.FloorToInt(fuel / (fuelConsumption * 0.6f));
+            
+>>>>>>> origin/master
         }
 
         public bool ReadyForTakeoff
