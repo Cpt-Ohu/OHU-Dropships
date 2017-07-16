@@ -49,7 +49,6 @@
     </building>
 
   </ThingDef>
-
   <!--=============== Dropship ===============-->
 
 
@@ -64,7 +63,7 @@ Still the manufacturer boasts that on underdeveloped Rimworlds, this ship can do
 
 
 Manufacturer: OHU (Orbital Hubs United)
-Fuel Capacity: 3000
+Fuel Capacity: 1500
 Maximum Cargo Capacity: 1000 kg
 Defensive Capabilities: 1x Light Caliber Front Gun
 Offensive Capabilities: 1x Payload Slot
@@ -121,8 +120,8 @@ Offensive Capabilities: 1x Payload Slot
 
 	 </li>
       <li Class="CompProperties_Refuelable">
-        <fuelConsumptionRate>5.0</fuelConsumptionRate>
-        <fuelCapacity>3000.0</fuelCapacity>
+        <fuelConsumptionRate>7.0</fuelConsumptionRate>
+        <fuelCapacity>1500.0</fuelCapacity>
         <fuelFilter>
           <thingDefs>
             <li>Chemfuel</li>
@@ -133,7 +132,7 @@ Offensive Capabilities: 1x Payload Slot
         <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
         <initialConfigurableTargetFuelLevel>200</initialConfigurableTargetFuelLevel>
         <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
-        <autoRefuelPercent>0.75</autoRefuelPercent>
+        <autoRefuelPercent>1.00</autoRefuelPercent>
       </li>
     </comps>
 
@@ -228,7 +227,7 @@ Maximum Cargo Capacity: 185 kg
 
 	 </li>
       <li Class="CompProperties_Refuelable">
-        <fuelConsumptionRate>5.0</fuelConsumptionRate>
+        <fuelConsumptionRate>10.0</fuelConsumptionRate>
         <fuelCapacity>500.0</fuelCapacity>
         <fuelFilter>
           <thingDefs>
@@ -281,7 +280,6 @@ Maximum Cargo Capacity: 185 kg
     <selectable>false</selectable>
   </ThingDef>
 
-
   <!--=============== Albatros ===============-->
 
   <ThingDef ParentName="BaseShip">
@@ -327,7 +325,7 @@ Maximum Cargo Capacity: 80 kg
 		<li>Pirate</li>
 	   </availableToFactions>
         <LeavingShipDef>OHUAlbatrosLeaving</LeavingShipDef>
-        <IncomingAngle>35</IncomingAngle>
+        <IncomingAngle>80</IncomingAngle>
         <ShadowGraphicPath>Things/Ships/OHUAlbatrosShadow</ShadowGraphicPath>
         <FleetIconGraphicPath>Things/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
 
@@ -388,6 +386,5 @@ Maximum Cargo Capacity: 80 kg
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
   </ThingDef>
-
   
 </ThingDefs>
