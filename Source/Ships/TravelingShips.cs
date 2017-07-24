@@ -211,10 +211,8 @@ namespace OHUShips
         {
             base.Tick();
             this.BurnFuel();
-            Log.Message("Counting :" + this.ships.Count.ToString());
             if (this.ships.Count < 1)
             {
-                Log.Message("Destroying");
                 this.RemoveAllPawnsFromWorldPawns();
                 this.RemoveAllPods();
                 Find.WorldObjects.Remove(this);

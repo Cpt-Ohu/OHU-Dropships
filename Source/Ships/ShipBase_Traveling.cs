@@ -114,6 +114,7 @@ namespace OHUShips
                         {
                             Find.WorldPawns.PassToWorld(pawns[i]);
                         }                        
+
                         this.Destroy();
                     }
                 }

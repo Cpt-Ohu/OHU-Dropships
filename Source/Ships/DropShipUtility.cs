@@ -73,7 +73,8 @@ namespace OHUShips
         {
             return map.listerThings.AllThings.FindAll(x => x is ShipBase).Cast<ShipBase>().ToList();
         }
-
+     
+        
         public static Vector3 DrawPosAt(ShipBase ship, int ticks, ShipBase_Traveling travelingShip = null)
         {
             if (ticks < 0)
@@ -113,11 +114,11 @@ namespace OHUShips
                 case 0:
                     return new Vector3(sign * num * Mathf.Cos(angle), 0f, signHorizontal * num * Mathf.Sin(angle));
                 case 1:
-                    return new Vector3(0f, 0f, sign * num * Mathf.Sin(angle));
+                    return new Vector3(0f, 0f, sign * -num * Mathf.Sin(angle));
                 case 2:
                     return new Vector3(sign * -num * Mathf.Cos(angle), 0f, signHorizontal * num * Mathf.Sin(angle));
                 case 3:
-                    return new Vector3(0f, 0f, sign * -num * Mathf.Sin(angle));
+                    return new Vector3(0f, 0f, sign * num * Mathf.Sin(angle));
                 default:
                     Log.Error("Ship with no Rot4 found");
                     return Vector3.zero;
