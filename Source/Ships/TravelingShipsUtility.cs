@@ -145,7 +145,7 @@ namespace OHUShips
                 else if (newWorldObject != null && foundMapParent)
                 {
                     Site site = newWorldObject as Site;
-                    mapToDropIn = GetOrGenerateMapUtility.GetOrGenerateMap(landedShip.Tile, SiteCoreWorker.MapSize, newWorldObject.def);
+                    mapToDropIn = GetOrGenerateMapUtility.GetOrGenerateMap(landedShip.Tile, site != null ? Find.World.info.initialMapSize : SiteCoreWorker.MapSize , newWorldObject.def);
                 }
                 else
                 {

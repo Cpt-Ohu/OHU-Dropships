@@ -148,6 +148,7 @@ namespace OHUShips
             this.closeOnEscapeKey = true;
             this.forcePause = true;
             this.absorbInputAroundWindow = true;
+            OHUShipsModSettings.CargoLoadingActive = true;
         }
 
         public override void PostOpen()
@@ -565,6 +566,12 @@ namespace OHUShips
         {
             this.massUsageDirty = true;
             this.daysWorthOfFoodDirty = true;
+        }
+
+        public override void Close(bool doCloseSound = true)
+        {
+            OHUShipsModSettings.CargoLoadingActive = false;
+            base.Close(doCloseSound);
         }
     }
 }

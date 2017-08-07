@@ -80,6 +80,7 @@
     <Compile Include="LordToil_LeaveInShip.cs" />
     <Compile Include="LordToil_LoadShipCargo.cs" />
     <Compile Include="LordToil_StealForShip.cs" />
+    <Compile Include="OHUShipsModSettings.cs" />
     <Compile Include="ScenPart_StartWithShip.cs" />
     <Compile Include="ShipBase.cs" />
     <Compile Include="ShipBase_Traveling.cs" />

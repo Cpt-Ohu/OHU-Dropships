@@ -521,7 +521,7 @@ namespace OHUShips
                 Pawn pawn = thing as Pawn;
                 if (pawn.def.race.Humanlike)
                 {
-                    if ((this.innerContainer.ToList<Thing>().Count(x => x is Pawn) >= this.compShip.sProps.maxPassengers))
+                    if ((this.innerContainer.ToList<Thing>().Count(x => x is Pawn && x.def.race.Humanlike) >= this.compShip.sProps.maxPassengers))
                     {
                         Messages.Message("MessagePassengersFull".Translate(new object[] { pawn.NameStringShort, this.ShipNick }), this, MessageSound.RejectInput);
                         return false;
@@ -559,7 +559,7 @@ namespace OHUShips
             }
             return false;
         }
-        
+                
         public void PrepareForLaunchIn(int ticksToLiftoff, bool noOneLeftBehind = false)
         {
             this.ActivatedLaunchSequence = true;
@@ -1037,8 +1037,7 @@ namespace OHUShips
                     GenDraw.DrawWorldRadiusRing(tile, (int)(ship.MaxLaunchDistanceEverPossible(launchAsFleet)*0.48f));
                 }
             }
-        }
-               
+        }               
 
         public override void ExposeData()
         {

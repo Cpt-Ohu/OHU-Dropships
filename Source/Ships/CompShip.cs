@@ -120,21 +120,24 @@ namespace OHUShips
         public void Notify_PawnEntered(Pawn p)
         {
             p.ClearMind(true);
-            this.SubtractFromToLoadList(p);
+            this.SubtractFromToLoadList(p, 1);
         }
 
-        public void SubtractFromToLoadList(Thing t)
+        public void SubtractFromToLoadList(Thing t, int count)
         {
+            Log.Message("Subtracting");
             if (this.leftToLoad == null)
             {
                 return;
             }
-            TransferableOneWay transferableOneWay = TransferableUtility.TransferableMatching<TransferableOneWay>(t, this.leftToLoad);
+            TransferableOneWay transferableOneWay = TransferableUtility.TransferableMatchingDesperate(t, this.leftToLoad);
             if (transferableOneWay == null)
             {
+                Log.Message("Transferable not found");
                 return;
             }
-            transferableOneWay.AdjustBy(-t.stackCount);
+            transferableOneWay.AdjustBy(-count);
+            Log.Message(transferableOneWay.CountToTransfer.ToString());
             if (transferableOneWay.CountToTransfer <= 0)
             {
                 this.leftToLoad.Remove(transferableOneWay);
@@ -149,6 +152,9 @@ namespace OHUShips
             }
         }
 
-
+        public void NotifyItemAdded(Thing t, int count = 0)
+        {
+            this.SubtractFromToLoadList(t, count);
+        }
     }
 }

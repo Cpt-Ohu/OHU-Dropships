@@ -21,7 +21,7 @@ namespace OHUShips
 
             harmony.Patch(AccessTools.Property(typeof(MapPawns), "AnyPawnBlockingMapRemoval").GetGetMethod(false), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(AnyColonistTameAnimalOrPrisonerOfColonyPostFix)), null);
 
-            harmony.Patch(AccessTools.Property(typeof(TransferableOneWay), "MaxCount").GetGetMethod(false), new HarmonyMethod(typeof(HarmonyPatches), nameof(MaxCountTransferablePostFix)), null);
+           // harmony.Patch(AccessTools.Property(typeof(TransferableOneWay), "MaxCount").GetGetMethod(false), new HarmonyMethod(typeof(HarmonyPatches), nameof(MaxCountTransferablePostFix)), null);
 
             harmony.Patch(AccessTools.Method(typeof(RimWorld.GameEnder), "CheckGameOver"), null, new HarmonyMethod(typeof(HarmonyPatches), "CheckGameOverPostfix"));
 
@@ -33,7 +33,11 @@ namespace OHUShips
 
             harmony.Patch(AccessTools.Method(typeof(CaravanInventoryUtility), "AllInventoryItems"), new HarmonyMethod(typeof(HarmonyPatches), "AllInventoryItemsPrefix"), null);
 
-            //harmony.Patch(AccessTools.Method(typeof(RimWorld.Transferable), "AdjustTo"),new HarmonyMethod(typeof(HarmonyPatches), "AdjustToPrefix"), null);
+            harmony.Patch(AccessTools.Method(typeof(ThingOwner), "NotifyAddedAndMergedWith", new Type[] { typeof(Thing), typeof(int) }), new HarmonyMethod(typeof(HarmonyPatches), "NotifyAddedAndMergedWithPostfix"), null);
+
+            harmony.Patch(AccessTools.Method(typeof(ThingOwner), "NotifyAdded", new Type[] { typeof(Thing) }), new HarmonyMethod(typeof(HarmonyPatches), "NotifyAddedPostfix"), null);
+            
+            harmony.Patch(AccessTools.Method(typeof(RimWorld.Transferable), "AdjustTo"),new HarmonyMethod(typeof(HarmonyPatches), "AdjustToPrefix"), null);
 
         }
 
@@ -241,6 +245,24 @@ namespace OHUShips
             }
         }
         
-        
+        public static void NotifyAddedAndMergedWithPostfix(ref ThingOwner __instance, Thing item, int mergedCount)
+        {
+            ShipBase ship = __instance.Owner as ShipBase;
+            if (ship != null)
+            {
+                ship.compShip.NotifyItemAdded(item, mergedCount);
+            }
+        }
+
+        public static void NotifyAddedPostfix(ref ThingOwner __instance, Thing item)
+        {
+            ShipBase ship = __instance.Owner as ShipBase;
+            if (ship != null)
+            {
+                ship.compShip.NotifyItemAdded(item, item.stackCount);
+            }
+        }
+
+
     }
 }

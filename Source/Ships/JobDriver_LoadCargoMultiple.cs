@@ -27,14 +27,11 @@ namespace OHUShips
             yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, true);
             yield return Toils_Haul.JumpIfAlsoCollectingNextTargetInQueue(toil, TargetIndex.A);
             Toil toil2 = Toils_Haul.CarryHauledThingToContainer();
-            toil2.AddFinishAction(delegate
-            {
-                ship.compShip.SubtractFromToLoadList(TargetA.Thing);
-            });
             yield return toil2;
             yield return Toils_Goto.MoveOffTargetBlueprint(TargetIndex.B);
             yield return Toils_Construct.MakeSolidThingFromBlueprintIfNecessary(TargetIndex.B);
-            yield return Toils_Haul.DepositHauledThingInContainer(TargetIndex.B, TargetIndex.C);
+            Toil toil3 = Toils_Haul.DepositHauledThingInContainer(TargetIndex.B, TargetIndex.C);
+            yield return toil3;
             yield return Toils_Haul.JumpToCarryToNextContainerIfPossible(toil2, TargetIndex.C);
             yield break;
         }
