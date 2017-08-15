@@ -18,18 +18,28 @@ namespace OHUShips
         public static Job JobLoadShipCargo(Pawn p, ShipBase ship)
         {
             Thing thing = LoadShipCargoUtility.FindThingToLoad(p, ship);
-            int thingCount = Mathf.Min(TransferableUtility.TransferableMatching<TransferableOneWay>(thing, ship.compShip.leftToLoad).CountToTransfer, thing.stackCount);
-            if (thingCount < 0)
+            TransferableOneWay transferable = TransferableUtility.TransferableMatchingDesperate(thing, ship.compShip.leftToLoad);
+            if (thing != null && transferable != null)
             {
-                thingCount = 1;
+                int thingCount = transferable.CountToTransfer;
+                //Log.Message("Count to take: " + thingCount.ToString());
+                if (thingCount < 0)
+                {
+                    thingCount = 1;
+                }
+                return new Job(ShipNamespaceDefOfs.LoadContainerMultiplePawns, thing, ship)
+                {
+                    count = thingCount,
+                    ignoreForbidden = true,
+                    playerForced = true
+
+                };
             }
-            return new Job(ShipNamespaceDefOfs.LoadContainerMultiplePawns, thing, ship)
+            else
             {
-                count = thingCount,
-                ignoreForbidden = true,
-                playerForced = true
-                
-            };
+                //Log.Message("No Transferable found.");
+            }
+            return null;
         }
 
         private static Thing FindThingToLoad(Pawn p, ShipBase ship)
@@ -41,6 +51,7 @@ namespace OHUShips
                 for (int i = 0; i < leftToLoad.Count; i++)
                 {
                     TransferableOneWay transferableOneWay = leftToLoad[i];
+                    //Log.Message(transferableOneWay.CountToTransfer.ToString());
                     if (transferableOneWay.CountToTransfer > 0)
                     {
                         for (int j = 0; j < transferableOneWay.things.Count; j++)
@@ -54,7 +65,7 @@ namespace OHUShips
             {
                 return null;
             }
-            Predicate<Thing> validator = (Thing x) => LoadShipCargoUtility.neededThings.Contains(x) && p.CanReserve(x, 10);
+            Predicate<Thing> validator = (Thing x) => LoadShipCargoUtility.neededThings.Contains(x) && p.CanReserve(x, 1);
             Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map, ThingRequest.ForGroup(ThingRequestGroup.HaulableEver), PathEndMode.Touch, TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn, false), 9999f, validator, null);
             if (thing == null)
             {
@@ -66,8 +77,10 @@ namespace OHUShips
                         return pawn;
                     }
                 }
+                return null;
             }
             LoadShipCargoUtility.neededThings.Clear();
+            //Log.Message("Returning Thing: " + thing.ToString());
             return thing;
         }
 
@@ -82,14 +95,16 @@ namespace OHUShips
             for (int i = 0; i < lords.Count; i++)
             {
                 LordJob_LoadShipCargo lordJob_LoadAndEnterTransporters = lords[i].LordJob as LordJob_LoadShipCargo;
+                //if (lordJob_LoadAndEnterTransporters != null) Log.Message("Found Lordjob");
                 if (lordJob_LoadAndEnterTransporters != null && lordJob_LoadAndEnterTransporters.ship == ship)
                 {
+                    //Log.Message("Found for REmoval");
                     return lords[i];
                 }
             }
             return null;
         }
 
-        
+
     }
 }

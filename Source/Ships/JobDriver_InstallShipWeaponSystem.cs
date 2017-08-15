@@ -18,7 +18,7 @@ namespace OHUShips
             this.FailOnDestroyedNullOrForbidden(TargetIndex.B);
             yield return Toils_Reserve.Reserve(TargetIndex.A, 1);
             yield return Toils_Reserve.ReserveQueue(TargetIndex.A, 1);
-            yield return Toils_Reserve.Reserve(TargetIndex.B, 1);
+            yield return Toils_Reserve.Reserve(TargetIndex.B, 10);
             yield return Toils_Reserve.ReserveQueue(TargetIndex.B, 1);
             Toil toil = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).FailOnSomeonePhysicallyInteracting(TargetIndex.A);
             yield return toil;

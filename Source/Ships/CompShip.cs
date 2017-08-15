@@ -13,9 +13,9 @@ namespace OHUShips
     public class CompShip : ThingComp
     {
         public List<TransferableOneWay> leftToLoad;
-        
+
         public bool cargoLoadingActive;
-        
+
         public ShipBase ship
         {
             get
@@ -36,7 +36,7 @@ namespace OHUShips
         {
             get
             {
-                return  GraphicDatabase.Get<Graphic_Single>(sProps.ShadowGraphicPath, ShaderDatabase.Transparent, Vector2.one, Color.white);
+                return GraphicDatabase.Get<Graphic_Single>(sProps.ShadowGraphicPath, ShaderDatabase.Transparent, Vector2.one, Color.white);
             }
         }
 
@@ -56,7 +56,7 @@ namespace OHUShips
                 {
                     return null;
                 }
-                TransferableOneWay transferableOneWay = this.leftToLoad.Find((TransferableOneWay x) => x.CountToTransfer != 0 && x.HasAnyThing);
+                TransferableOneWay transferableOneWay = this.leftToLoad.Find((TransferableOneWay x) => x.CountToTransfer > 0 && x.HasAnyThing);
                 if (transferableOneWay != null)
                 {
                     return transferableOneWay.AnyThing;
@@ -88,7 +88,7 @@ namespace OHUShips
         {
             if (!t.HasAnyThing || t.CountToTransfer <= 0)
             {
-                Log.Message("NoThingsToTransfer");
+                //Log.Message("NoThingsToTransfer");
                 return;
             }
             if (this.leftToLoad == null)
@@ -110,10 +110,17 @@ namespace OHUShips
 
         public void TryRemoveLord(Map map)
         {
+            List<Pawn> pawns = new List<Pawn>();
             Lord lord = LoadShipCargoUtility.FindLoadLord(ship, map);
             if (lord != null)
             {
+                pawns.AddRange(lord.ownedPawns);
                 map.lordManager.RemoveLord(lord);
+            }
+
+            foreach (Pawn p in pawns)
+            {
+                Lord lord1 = p.GetLord();
             }
         }
 
@@ -125,7 +132,6 @@ namespace OHUShips
 
         public void SubtractFromToLoadList(Thing t, int count)
         {
-            Log.Message("Subtracting");
             if (this.leftToLoad == null)
             {
                 return;
@@ -133,13 +139,12 @@ namespace OHUShips
             TransferableOneWay transferableOneWay = TransferableUtility.TransferableMatchingDesperate(t, this.leftToLoad);
             if (transferableOneWay == null)
             {
-                Log.Message("Transferable not found");
                 return;
             }
             transferableOneWay.AdjustBy(-count);
-            Log.Message(transferableOneWay.CountToTransfer.ToString());
             if (transferableOneWay.CountToTransfer <= 0)
             {
+                //Log.Message("Removing Transferable: " + transferableOneWay.AnyThing.ToString());
                 this.leftToLoad.Remove(transferableOneWay);
             }
             if (!this.AnythingLeftToLoad)
@@ -154,6 +159,7 @@ namespace OHUShips
 
         public void NotifyItemAdded(Thing t, int count = 0)
         {
+            //Log.Message("Notifying: " + count.ToString());
             this.SubtractFromToLoadList(t, count);
         }
     }

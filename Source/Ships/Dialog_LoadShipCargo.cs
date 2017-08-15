@@ -248,7 +248,7 @@ namespace OHUShips
 
             this.DoBottomButtons(rect2);
             Rect inRect2 = rect2;
-            inRect2.yMax -= 59f;
+            inRect2.yMax += 59f;
             bool flag = false;
             Dialog_LoadShipCargo.Tab tab = this.tab;
             if (tab != Dialog_LoadShipCargo.Tab.Pawns)
