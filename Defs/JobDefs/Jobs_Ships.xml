@@ -35,6 +35,11 @@
     <casualInterruptible>false</casualInterruptible>
   </JobDef>
 
-
+  <JobDef>
+    <defName>RescueToShip</defName>
+    <driverClass>JobDriver_HaulToContainer</driverClass>
+    <reportString>rescuing TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
 
 </Defs>

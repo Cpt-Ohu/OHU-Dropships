@@ -30,5 +30,20 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <WorkGiverDef>
+    <defName>DoctorRescueToShip</defName>
+    <label>rescue downed allies to TargetB</label>
+    <giverClass>OHUShips.WorkGiver_RescuePawnToShip</giverClass>
+    <workType>Doctor</workType>
+    <verb>rescue</verb>
+    <gerund>rescuing</gerund>
+    <priorityInType>90</priorityInType>
+    <directOrderable>false</directOrderable>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+
 
 </WorkGivers>
