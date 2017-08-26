@@ -46,7 +46,8 @@ namespace OHUShips
             {
                 return GraphicDatabase.Get<Graphic_Single>(this.def.graphicData.texPath, ShaderDatabase.ShaderFromType(this.def.graphicData.shaderType), this.def.graphicData.drawSize, this.DrawColor, this.DrawColorTwo);
             }
-        }        
+        }
+        
 
         public string ShipNick = "Ship";
         

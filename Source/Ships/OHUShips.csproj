@@ -93,6 +93,7 @@
     <Compile Include="TravelingShipArrivalAction.cs" />
     <Compile Include="TravelingShips.cs" />
     <Compile Include="TravelingShipsUtility.cs" />
+    <Compile Include="Trigger_PawnsExhausted.cs" />
     <Compile Include="WeaponSystem.cs" />
     <Compile Include="WeaponSystemShipBomb.cs" />
     <Compile Include="WeaponSystemShipLC.cs" />

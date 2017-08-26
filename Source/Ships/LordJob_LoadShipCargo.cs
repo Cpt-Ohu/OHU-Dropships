@@ -11,6 +11,8 @@ namespace OHUShips
     {
         public ShipBase ship;
 
+        private int TimeOutTick = 7500;
+
         public LordJob_LoadShipCargo()
         {
         }
@@ -31,10 +33,16 @@ namespace OHUShips
 
             Transition transition = new Transition(loadToil, lordToil_End);
             transition.AddTrigger(new Trigger_PawnLost());
+            
             transition.AddPreAction(new TransitionAction_Message("MessageFailedToLoadTransportersBecauseColonistLost".Translate(), MessageSound.Negative));
             transition.AddPreAction(new TransitionAction_Custom(new Action(this.CancelLoadingProcess)));
             stateGraph.AddTransition(transition);
 
+            Transition endTransition = new Transition(loadToil, lordToil_End);
+            endTransition.AddTrigger(new Trigger_TicksPassed(TimeOutTick));
+            endTransition.AddTrigger(new Trigger_PawnsExhausted());
+            endTransition.AddPreAction(new TransitionAction_Custom(new Action(delegate { Log.Message("Ending"); })));
+            stateGraph.AddTransition(endTransition);
             return stateGraph;
         }
 
