@@ -275,15 +275,24 @@ namespace OHUShips
             }
             if (this.arrivalAction == TravelingShipArrivalAction.BombingRun)
             {
-                TravelingShips travelingShips = (TravelingShips)WorldObjectMaker.MakeWorldObject(ShipNamespaceDefOfs.TravelingSuborbitalShip);
-                travelingShips.Tile = this.destinationTile;
-                travelingShips.SetFaction(Faction.OfPlayer);
-                travelingShips.destinationTile = this.initialTile;
-                travelingShips.destinationCell = this.launchCell;
-                travelingShips.arriveMode = this.arriveMode;
-                travelingShips.arrivalAction = TravelingShipArrivalAction.EnterMapFriendly;
-                Find.WorldObjects.Add(travelingShips);
-                Find.WorldObjects.Remove(this);
+                MapParent parent = Find.World.worldObjects.MapParentAt(this.destinationTile);
+                if (parent != null)
+                {
+                    Messages.Message("MessageBombedSettlement".Translate(new object[] { parent.ToString(), parent.Faction.Name }), parent, MessageSound.Standard);
+                    Find.World.worldObjects.Remove(parent);
+                }
+                this.SwitchOriginToDest();
+
+                //TravelingShips travelingShips = (TravelingShips)WorldObjectMaker.MakeWorldObject(ShipNamespaceDefOfs.TravelingSuborbitalShip);
+                //travelingShips.ships.AddRange(this.ships);
+                //travelingShips.Tile = this.destinationTile;
+                //travelingShips.SetFaction(Faction.OfPlayer);
+                //travelingShips.destinationTile = this.initialTile;
+                //travelingShips.destinationCell = this.launchCell;
+                //travelingShips.arriveMode = this.arriveMode;
+                //travelingShips.arrivalAction = TravelingShipArrivalAction.EnterMapFriendly;
+                //Find.WorldObjects.Add(travelingShips);
+                //Find.WorldObjects.Remove(this);
             }
             else
             {
@@ -453,5 +462,19 @@ namespace OHUShips
             this.ships.Clear();
         }
 
+        public void SwitchOriginToDest()
+        {
+            this.traveledPct = 0f;
+            this.arrived = false;
+            this.arrivalAction = TravelingShipArrivalAction.EnterMapFriendly;
+
+            int bufferTile = this.destinationTile;
+
+            this.destinationCell = this.launchCell;
+            this.destinationTile = this.initialTile;
+
+            this.initialTile = bufferTile;
+            this.launchCell = IntVec3.Zero;
+        }
     }
 }

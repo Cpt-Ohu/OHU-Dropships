@@ -46,8 +46,8 @@ namespace OHUShips
             {
                 return GraphicDatabase.Get<Graphic_Single>(this.def.graphicData.texPath, ShaderDatabase.ShaderFromType(this.def.graphicData.shaderType), this.def.graphicData.drawSize, this.DrawColor, this.DrawColorTwo);
             }
-        }
-        
+        }        
+
         public string ShipNick = "Ship";
         
         public ShipState shipState = ShipState.Stationary;
@@ -521,7 +521,7 @@ namespace OHUShips
                 Pawn pawn = thing as Pawn;
                 if (pawn.def.race.Humanlike)
                 {
-                    if ((this.innerContainer.ToList<Thing>().Count(x => x is Pawn && x.def.race.Humanlike) >= this.compShip.sProps.maxPassengers))
+                    if (!DropShipUtility.HasPassengerSeats(this))
                     {
                         Messages.Message("MessagePassengersFull".Translate(new object[] { pawn.NameStringShort, this.ShipNick }), this, MessageSound.RejectInput);
                         return false;
@@ -666,10 +666,11 @@ namespace OHUShips
             }
         }
 
-        public bool TryInstallTurret(ShipWeaponSlot slot, CompShipWeapon comp)
+        public bool TryInstallTurret(CompShipWeapon comp)
         {   
             if (comp.SProps.TurretToInstall != null)
             {
+                ShipWeaponSlot slot = comp.slotToInstall;
                 Building_ShipTurret turret = (Building_ShipTurret)ThingMaker.MakeThing(comp.SProps.TurretToInstall, null);
                 turret.installedByWeaponSystem = comp.parent.def;
                 this.installedTurrets[slot] = turret;
@@ -694,12 +695,13 @@ namespace OHUShips
             }
             return false;
         }
-        public bool TryInstallPayload(ShipWeaponSlot slot, CompShipWeapon comp)
+        public bool TryInstallPayload( WeaponSystemShipBomb bomb,  CompShipWeapon comp)
         {
             if (comp.SProps.PayloadToInstall != null)
             {
-                WeaponSystemShipBomb newBomb = (WeaponSystemShipBomb)ThingMaker.MakeThing(comp.SProps.PayloadToInstall, null);
-                this.Payload.Add(slot, newBomb);
+                ShipWeaponSlot slot = comp.slotToInstall;
+                this.loadedBombs.Add(bomb);
+                this.Payload[slot] = bomb;
                 return true;
             }
             return false;
@@ -844,7 +846,6 @@ namespace OHUShips
                 {
                     return null;
                 }
-                Log.Message("Max: " + this.MaxLaunchDistanceEverPossible(false).ToString());
                 int num = Find.WorldGrid.TraversalDistanceBetween(tile, target.Tile);
                 if (num <= this.MaxLaunchDistanceEverPossible(this.LaunchAsFleet))
                 {

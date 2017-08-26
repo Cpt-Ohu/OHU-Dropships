@@ -486,5 +486,10 @@ namespace OHUShips
             }
             return false;
         }
+
+        public static bool HasPassengerSeats(ShipBase ship)
+        {
+            return (ship.GetDirectlyHeldThings().ToList<Thing>().Count(x => x is Pawn && x.def.race.Humanlike) < ship.compShip.sProps.maxPassengers);
+        }
     }
 }

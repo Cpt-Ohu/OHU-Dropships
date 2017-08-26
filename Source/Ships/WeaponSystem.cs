@@ -61,7 +61,13 @@ namespace OHUShips
 
             Scribe_Values.Look<bool>(ref this.isInstalled, "isInstalled", false, false);
             Scribe_Values.Look<string>(ref this.assignedSlotName, "assignedSlotName");
-            Scribe_References.Look<ShipWeaponSlot>(ref this.slotToInstall, "slotToInstall");
+            Scribe_Values.Look<Vector3>(ref this.drawPosOffset, "drawPosOffset");
+            Scribe_Values.Look<WeaponSystemType>(ref this.weaponSystemType, "weaponSystemType");
+            Scribe_TargetInfo.Look(ref this.forcedTarget, "forcedTarget");
+            if (this.slotToInstall != null)
+            {
+                Scribe_References.Look<ShipWeaponSlot>(ref this.slotToInstall, "slotToInstall");
+            }
         }
 
         public override void PreApplyDamage(DamageInfo dinfo, out bool absorbed)

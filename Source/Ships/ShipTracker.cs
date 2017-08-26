@@ -109,6 +109,7 @@ namespace OHUShips
 
         public int GetNextWeaponSlotID()
         {
+            Log.Message(this.nextWeaponSlotID.ToString());
             return this.GetNextID(ref this.nextWeaponSlotID);
         }
 
@@ -135,6 +136,7 @@ namespace OHUShips
         {
             base.ExposeData();
             Scribe_Values.Look<int>(ref this.nextFleetID, "nextFleetID");
+            Scribe_Values.Look<int>(ref this.nextWeaponSlotID, "nextWeaponSlotID");
             Scribe_Collections.Look<int, string>(ref this.PlayerFleetManager, "PlayerFleetManager", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look<ShipBase>(ref this.AllWorldShips, "AllWorldShips", LookMode.Reference, new object[0]);            
         }

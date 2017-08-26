@@ -185,9 +185,9 @@ namespace OHUShips
             }
             else
             {
+                Widgets.DrawWindowBackground(rectslotIcon);
                 Texture2D tex = ContentFinder<Texture2D>.Get(currentWeapon.Value.def.building.turretTopGraphicPath);
                 GUI.DrawTexture(rectslotIcon, tex);
-                Widgets.DrawWindowBackground(rectslotIcon);
             }
 
             if (Mouse.IsOver(rectslotIcon))
@@ -267,9 +267,9 @@ namespace OHUShips
             }
             else
             {
+                Widgets.DrawWindowBackground(rectslotIcon);
                 Texture2D tex = currentWeapon.Value.def.uiIcon;
                 GUI.DrawTexture(rectslotIcon, currentWeapon.Value.def.uiIcon);
-                Widgets.DrawWindowBackground(rectslotIcon);
             }
 
             if (Mouse.IsOver(rectslotIcon))

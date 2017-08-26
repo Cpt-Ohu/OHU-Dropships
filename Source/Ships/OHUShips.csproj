@@ -99,6 +99,7 @@
     <Compile Include="WeaponSystemType.cs" />
     <Compile Include="WITab_LandedShip_Cargo.cs" />
     <Compile Include="WorkGiver_InstallShipWeapon.cs" />
+    <Compile Include="WorkGiver_RescuePawnToShip.cs" />
     <Compile Include="WorkGiver_UninstallShipWeapon.cs" />
   </ItemGroup>
   <ItemGroup>

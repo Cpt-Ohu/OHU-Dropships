@@ -13,9 +13,9 @@ namespace OHUShips
     public class CompShip : ThingComp
     {
         public List<TransferableOneWay> leftToLoad;
-
+        
         public bool cargoLoadingActive;
-
+        
         public ShipBase ship
         {
             get
@@ -36,7 +36,7 @@ namespace OHUShips
         {
             get
             {
-                return GraphicDatabase.Get<Graphic_Single>(sProps.ShadowGraphicPath, ShaderDatabase.Transparent, Vector2.one, Color.white);
+                return  GraphicDatabase.Get<Graphic_Single>(sProps.ShadowGraphicPath, ShaderDatabase.Transparent, Vector2.one, Color.white);
             }
         }
 
@@ -161,6 +161,12 @@ namespace OHUShips
         {
             //Log.Message("Notifying: " + count.ToString());
             this.SubtractFromToLoadList(t, count);
+        }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Collections.Look<ShipWeaponSlot>(ref this.sProps.weaponSlots, "weaponSlots", LookMode.Deep);
         }
     }
 }

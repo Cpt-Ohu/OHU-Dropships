@@ -23,6 +23,7 @@ namespace OHUShips
         public static JobDef LoadContainerMultiplePawns;
 
         public static JobDef LeaveInShip;
+        public static JobDef RescueToShip;
 
         public static DutyDef LeaveInShipDuty;
         public static DutyDef StealForShipDuty;
