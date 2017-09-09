@@ -182,13 +182,14 @@ namespace OHUShips
                 Log.Error("Tried removing transferables with neither ship nor map specified");
             }
 
-                for (int j = 0; j < transferable.things.Count; j++)
+            for (int j = 0; j < transferable.things.Count; j++)
             {
                 for (int k = 0; k < tmpShips.Count; k++)
                 {
                     Thing thing = tmpShips[k].GetDirectlyHeldThings().FirstOrDefault(x => x == (transferable.things[j]));
                     if (thing != null)
                     {
+                        Log.Message("FoundCargo");
                         thingsInCargoToRemov.Add(transferable.things[j]);
                         //                  transferable.CountToTransfer -= transferable.things[j].stackCount;
                     }

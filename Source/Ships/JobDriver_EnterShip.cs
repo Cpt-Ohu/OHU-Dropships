@@ -32,9 +32,10 @@ namespace OHUShips
                             ship.TryAcceptThing(pawn.carryTracker.CarriedThing);
                         }
                         ship.TryAcceptThing(pawn, true);
+                        pawn.ClearMind();
                     };
 
-                    ship.compShip.Notify_PawnEntered(this.pawn);
+                    //ship.compShip.Notify_PawnEntered(this.pawn);
 
                     action();                    
                 },

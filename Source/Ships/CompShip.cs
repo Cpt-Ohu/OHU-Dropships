@@ -52,7 +52,7 @@ namespace OHUShips
         {
             get
             {
-                if (this.leftToLoad == null)
+                if (this.leftToLoad.NullOrEmpty())
                 {
                     return null;
                 }
@@ -132,6 +132,7 @@ namespace OHUShips
 
         public void SubtractFromToLoadList(Thing t, int count)
         {
+            //Log.Message("Remaining transferables: " + this.leftToLoad.Count.ToString() + " with Pawns:" + this.leftToLoad.FindAll(x => x.AnyThing is Pawn).Count.ToString());
             if (this.leftToLoad == null)
             {
                 return;

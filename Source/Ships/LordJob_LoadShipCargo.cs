@@ -41,7 +41,9 @@ namespace OHUShips
             Transition endTransition = new Transition(loadToil, lordToil_End);
             endTransition.AddTrigger(new Trigger_TicksPassed(TimeOutTick));
             endTransition.AddTrigger(new Trigger_PawnsExhausted());
-            endTransition.AddPreAction(new TransitionAction_Custom(new Action(delegate { Log.Message("Ending"); })));
+            endTransition.AddPreAction(new TransitionAction_Custom(new Action(delegate {
+            Log.Message("Ending");
+            this.CancelLoadingProcess(); })));
             stateGraph.AddTransition(endTransition);
             return stateGraph;
         }

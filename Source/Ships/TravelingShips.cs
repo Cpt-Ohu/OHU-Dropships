@@ -392,10 +392,7 @@ namespace OHUShips
             }
             else if (this.arriveMode == PawnsArriveMode.CenterDrop)
             {
-                if (!DropCellFinder.TryFindRaidDropCenterClose(out intVec, map))
-                {
-                    intVec = DropCellFinder.FindRaidDropCenterDistant(map);
-                }
+                intVec = DropCellFinder.FindRaidDropCenterDistant(map);
             }
             else
             {

@@ -48,7 +48,7 @@ namespace OHUShips
                 return tmp;
             }
         }
-
+        
         public List<TravelingShips> AllTravelingShips
         {
             get
@@ -64,6 +64,11 @@ namespace OHUShips
                 }
                 return tmp;
             }
+        }
+
+        public void RemoveShip(ShipBase ship)
+        {
+            this.AllWorldShips.Remove(ship);
         }
 
         public List<ShipBase> PlayerShips

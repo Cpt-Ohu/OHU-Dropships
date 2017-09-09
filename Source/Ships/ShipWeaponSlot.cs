@@ -41,6 +41,10 @@ namespace OHUShips
         public virtual void ExposeData()
         {
             Scribe_Values.Look<string>(ref this.SlotName, "SlotName", "");
+            Scribe_Values.Look<WeaponSystemType>(ref this.slotType, "slotType", WeaponSystemType.LightCaliber);
+            Scribe_Values.Look<IntVec2>(ref this.turretMinSize, "turretMinSize", IntVec2.One);
+            Scribe_Values.Look<IntVec3>(ref this.turretPosOffset, "posOffset", IntVec3.Zero);
+            Scribe_Values.Look<Vector3>(ref this.posOffset, "posOffset", Vector3.one);
             Scribe_Values.Look<int>(ref this.loadID, "loadID");
             Scribe_Values.Look<WeaponSystemType>(ref this.slotType, "slotType");
         }

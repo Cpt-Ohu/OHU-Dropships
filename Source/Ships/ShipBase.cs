@@ -47,6 +47,7 @@ namespace OHUShips
                 return GraphicDatabase.Get<Graphic_Single>(this.def.graphicData.texPath, ShaderDatabase.ShaderFromType(this.def.graphicData.shaderType), this.def.graphicData.drawSize, this.DrawColor, this.DrawColorTwo);
             }
         }
+
         
 
         public string ShipNick = "Ship";
@@ -240,6 +241,7 @@ namespace OHUShips
             {
                 if (current.slotType == WeaponSystemType.LightCaliber)
                 {
+
                     this.installedTurrets.Add(current, null);
                 }
                 if (current.slotType == WeaponSystemType.Bombing)
@@ -428,6 +430,8 @@ namespace OHUShips
             {
                 current.Destroy(mode);
             }
+
+            DropShipUtility.currentShipTracker.RemoveShip(this);
             base.Destroy(mode);
         }
 
@@ -567,7 +571,8 @@ namespace OHUShips
             this.timeToLiftoff = ticksToLiftoff;
             this.NoneLeftBehind = noOneLeftBehind;
         }
-        
+               
+
         public void WaitForLordPassengers(List<Pawn> potentialPassengers, bool noneLeftBehind = false)
         {
             int passengersPresent = 0;
@@ -666,6 +671,7 @@ namespace OHUShips
                 yield return new FloatMenuOption("ShipPassengersFull".Translate(), null, MenuOptionPriority.Default, null, null, 0f, null, null);
             }
         }
+
 
         public bool TryInstallTurret(CompShipWeapon comp)
         {   
@@ -1057,7 +1063,7 @@ namespace OHUShips
             Scribe_Values.Look<int>(ref this.drawTickOffset, "drawTickOffset", 0, false);
             Scribe_Values.Look<int>(ref this.timeWaited, "timeWaited", 200, false);
 
-
+            
             Scribe_References.Look(ref this.ParkingMap, "ParkingMap");
             Scribe_Values.Look<IntVec3>(ref this.ParkingPosition, "ParkingPosition", IntVec3.Zero , false);
 

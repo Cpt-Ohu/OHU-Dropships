@@ -21,17 +21,24 @@ namespace OHUShips
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            ShipBase ship = (ShipBase)t;
-            KeyValuePair<ShipWeaponSlot, Thing> weaponSpecs = ship.weaponsToUninstall.RandomElement();
+            ShipBase ship = t as ShipBase;
 
-            weaponSpecs.Value.TryGetComp<CompShipWeapon>().slotToInstall = weaponSpecs.Key;
-
-            return new Job(ShipNamespaceDefOfs.UninstallShipWeapon, weaponSpecs.Value, ship)
+            if (ship != null)
             {
-                count = 1,
-                ignoreForbidden = false
-            };
 
+                KeyValuePair<ShipWeaponSlot, Thing> weaponSpecs = ship.weaponsToUninstall.RandomElement();
+                
+                if (weaponSpecs.Value != null)
+                {
+                        return new Job(ShipNamespaceDefOfs.UninstallShipWeapon, weaponSpecs.Value, ship)
+                        {
+                            count = 1,
+                            ignoreForbidden = false
+                        };
+                    
+                }
+            }
+            return null;       
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
@@ -39,7 +46,7 @@ namespace OHUShips
             if (t is ShipBase)
             {
                 ShipBase ship = (ShipBase)t;
-                return ship.weaponsToUninstall.Count > 0;
+                return ship.weaponsToUninstall.Count > 0 && !ship.weaponsToUninstall.Any(x => x.Value == null);
             }
             return false;
         }
