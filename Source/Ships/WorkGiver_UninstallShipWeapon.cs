@@ -21,21 +21,19 @@ namespace OHUShips
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            ShipBase ship = t as ShipBase;
+            Building_ShipTurret turret = t as Building_ShipTurret;
 
-            if (ship != null)
+            if (turret != null && turret.ParentShip != null)
             {
-
-                KeyValuePair<ShipWeaponSlot, Thing> weaponSpecs = ship.weaponsToUninstall.RandomElement();
+                //KeyValuePair<ShipWeaponSlot, Thing> weaponSpecs = turret.ParentShip.weaponsToUninstall.FirstOrDefault(x => x.Value == turret);
                 
-                if (weaponSpecs.Value != null)
+                if (turret.ParentShip.weaponsToUninstall.ContainsValue(turret) && pawn.Map.reservationManager.CanReserve(pawn, turret,1))
                 {
-                        return new Job(ShipNamespaceDefOfs.UninstallShipWeapon, weaponSpecs.Value, ship)
+                        return new Job(ShipNamespaceDefOfs.UninstallShipWeapon, turret, turret.ParentShip)
                         {
                             count = 1,
-                            ignoreForbidden = false
-                        };
-                    
+                            ignoreForbidden = false,
+                        };                    
                 }
             }
             return null;       
@@ -43,10 +41,13 @@ namespace OHUShips
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            if (t is ShipBase)
+            if (t is Building_ShipTurret)
             {
-                ShipBase ship = (ShipBase)t;
-                return ship.weaponsToUninstall.Count > 0 && !ship.weaponsToUninstall.Any(x => x.Value == null);
+                Building_ShipTurret turret = t as Building_ShipTurret;
+                if (turret.ParentShip != null)
+                {
+                    return pawn.Map.reservationManager.CanReserve(pawn, turret, 1) && turret.ParentShip.weaponsToUninstall.Count > 0 && !turret.ParentShip.weaponsToUninstall.Any(x => x.Value == null);
+                }
             }
             return false;
         }

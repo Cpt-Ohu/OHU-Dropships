@@ -15,7 +15,9 @@ namespace OHUShips
         [DebuggerHidden]
         protected override IEnumerable<Toil> MakeNewToils()
         {
+            this.FailOnSomeonePhysicallyInteracting(TargetIndex.A);
             yield return Toils_Reserve.Reserve(TargetIndex.A, 1);
+            //yield return Toils_Reserve.Reserve(TargetIndex.B, 1);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
             Toil toil = new Toil();
             toil.defaultCompleteMode = ToilCompleteMode.Delay;
@@ -35,6 +37,7 @@ namespace OHUShips
                         GenSpawn.Spawn(t, TargetA.Thing.Position, this.Map);
                         ship.weaponsToUninstall.RemoveAll(x => x.Value == turret);
                         ship.installedTurrets[turret.Slot] = null;
+                        ship.assignedTurrets.Remove(turret);
                         turret.Destroy();
                     }
                         
