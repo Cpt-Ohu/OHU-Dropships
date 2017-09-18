@@ -15,3 +15,7 @@ D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.5\Assemblies\0OHU
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.5\Assemblies\0OHUShips.pdb
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.5\Source\Ships\obj\Debug\0OHUShips.dll
 D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.5\Source\Ships\obj\Debug\0OHUShips.pdb
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.55 - TEST\Assemblies\0OHUShips.dll
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.55 - TEST\Assemblies\0OHUShips.pdb
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.55 - TEST\Source\Ships\obj\Debug\0OHUShips.dll
+D:\Spiele\Steam\SteamApps\common\RimWorld\Mods\OHU-Dropships-1.55 - TEST\Source\Ships\obj\Debug\0OHUShips.pdb

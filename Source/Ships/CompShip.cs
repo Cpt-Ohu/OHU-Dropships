@@ -13,7 +13,8 @@ namespace OHUShips
     public class CompShip : ThingComp
     {
         public List<TransferableOneWay> leftToLoad;
-        
+        public List<ShipWeaponSlot> weaponSlots;
+
         public bool cargoLoadingActive;
         
         public ShipBase ship
@@ -46,6 +47,25 @@ namespace OHUShips
             {
                 return ContentFinder<Texture2D>.Get(this.sProps.FleetIconGraphicPath, true);
             }
+        }
+
+        public override void Initialize(CompProperties props)
+        {
+            base.Initialize(props);
+        }
+
+        public void InitiateWeaponSlots()
+        {
+            this.weaponSlots = new List<ShipWeaponSlot>();
+            foreach (ShipWeaponSlot slot in this.sProps.weaponSlots)
+            {
+                this.weaponSlots.Add(new ShipWeaponSlot(slot));
+            }
+        }
+
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
         }
 
         public Thing FirstThingLeftToLoad
@@ -167,7 +187,7 @@ namespace OHUShips
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Collections.Look<ShipWeaponSlot>(ref this.sProps.weaponSlots, "weaponSlots", LookMode.Deep);
+            Scribe_Collections.Look<ShipWeaponSlot>(ref this.weaponSlots, "weaponSlots", LookMode.Deep);
         }
     }
 }

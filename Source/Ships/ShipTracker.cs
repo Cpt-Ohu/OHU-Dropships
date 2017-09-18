@@ -114,7 +114,6 @@ namespace OHUShips
 
         public int GetNextWeaponSlotID()
         {
-            Log.Message(this.nextWeaponSlotID.ToString());
             return this.GetNextID(ref this.nextWeaponSlotID);
         }
 

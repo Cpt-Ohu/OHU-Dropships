@@ -30,6 +30,9 @@ namespace OHUShips
 
         public List<Pawn> assignedNewPawns = new List<Pawn>();
 
+
+
+        
         public void GetChildHolders(List<IThingHolder> outChildren)
         {
             ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, this.GetDirectlyHeldThings());
@@ -229,6 +232,7 @@ namespace OHUShips
                 this.compShipCached = new CompShip();
                 this.drawTickOffset = compShip.sProps.TicksToImpact;
             }
+            this.compShip.InitiateWeaponSlots();
             if (this.installedTurrets.Count == 0)
             {
                 this.InitiateInstalledTurrets();
@@ -237,7 +241,7 @@ namespace OHUShips
 
         private void InitiateInstalledTurrets()
         {
-            foreach (ShipWeaponSlot current in this.compShip.sProps.weaponSlots)
+            foreach (ShipWeaponSlot current in this.compShip.weaponSlots)
             {
                 if (current.slotType == WeaponSystemType.LightCaliber)
                 {
@@ -759,6 +763,25 @@ namespace OHUShips
                         }
 
                         yield return command_Action3;
+
+
+                        if (this.ParkingMap != null && !DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID).Any(x => x.ParkingMap != null || !x.ReadyForTakeoff))
+                        {
+                            Command_Action command_Action5 = new Command_Action();
+                            command_Action5.defaultLabel = "CommandTravelParkingPositionFleet".Translate();
+                            command_Action5.defaultDesc = "CommandTravelParkingPositionFleetDesc".Translate();
+                            command_Action5.icon = DropShipUtility.ReturnParkingFleet;
+                            command_Action5.action = delegate
+                            {
+                                foreach (ShipBase ship in DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID))
+                                {
+                                    ship.TryLaunch(new GlobalTargetInfo(ship.ParkingPosition, ship.ParkingMap), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
+                                }
+
+                            };
+                            yield return command_Action5;
+                        }
+
                     }
                 }
                 {
@@ -799,22 +822,6 @@ namespace OHUShips
                     yield return command_Action4;
                 }
 
-                if (this.ParkingMap != null && !DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID).Any(x => x.ParkingMap != null || !x.ReadyForTakeoff))
-                {
-                    Command_Action command_Action5 = new Command_Action();
-                    command_Action5.defaultLabel = "CommandTravelParkingPositionFleet".Translate();
-                    command_Action5.defaultDesc = "CommandTravelParkingPositionFleetDesc".Translate();
-                    command_Action5.icon = DropShipUtility.ReturnParkingFleet;
-                    command_Action5.action = delegate
-                    {
-                        foreach (ShipBase ship in DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID))
-                        {
-                            ship.TryLaunch(new GlobalTargetInfo(ship.ParkingPosition, ship.ParkingMap), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
-                        }
-
-                    };
-                    yield return command_Action5;
-                }
             }
 
         }
@@ -1063,7 +1070,7 @@ namespace OHUShips
             Scribe_Values.Look<int>(ref this.drawTickOffset, "drawTickOffset", 0, false);
             Scribe_Values.Look<int>(ref this.timeWaited, "timeWaited", 200, false);
 
-            
+
             Scribe_References.Look(ref this.ParkingMap, "ParkingMap");
             Scribe_Values.Look<IntVec3>(ref this.ParkingPosition, "ParkingPosition", IntVec3.Zero , false);
 
