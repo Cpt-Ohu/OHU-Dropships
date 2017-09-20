@@ -43,6 +43,13 @@ namespace OHUShips
 
         private static List<Thing> workingInvList = new List<Thing>();
 
+        // added by SpaceDorf
+
+
+
+        
+        
+
         public ShipBase ship
         {
             get
@@ -159,23 +166,58 @@ namespace OHUShips
             Text.Anchor = TextAnchor.UpperLeft;
         }
 
+
+        // added by SpaceDorf
+        public float getLongestWeaponSlotLength()
+        {
+
+            float num = 0;
+            foreach (KeyValuePair<ShipWeaponSlot, Building_ShipTurret> currentWeapon in ship.installedTurrets)
+            {
+               if(currentWeapon.Key.SlotName.Length > num )
+                {
+                 num= currentWeapon.Key.SlotName.Length;
+                }     
+            }
+            foreach (KeyValuePair<ShipWeaponSlot, WeaponSystemShipBomb> currentbomb in ship.Payload)
+            {
+                if (currentbomb.Key.SlotName.Length > num)
+                {
+                    num = currentbomb.Key.SlotName.Length;
+                }
+                
+            }
+            num = num * 7.5f;
+            if (num < 150)
+                return num;
+            else
+                return 200;
+        }
+
+
         public void DrawWeaponSlots(Rect inRect)
         {
             Rect rect1 = inRect;
             float num = inRect.y;
+
+            float weaponLabelLength = getLongestWeaponSlotLength();
+
             foreach (KeyValuePair<ShipWeaponSlot, Building_ShipTurret> currentWeapon in ship.installedTurrets)
             {
-                DrawWeaponsTurretRow(ref num, rect1.width, currentWeapon);
+                DrawWeaponsTurretRow(ref num, rect1.width, currentWeapon, weaponLabelLength);
             }
             foreach (KeyValuePair<ShipWeaponSlot, WeaponSystemShipBomb> currentbomb in ship.Payload)
             {
-                DrawWeaponsPayloadRow(ref num, rect1.width, currentbomb);
+                DrawWeaponsPayloadRow(ref num, rect1.width, currentbomb, weaponLabelLength);
             }
         }
 
-        private void DrawWeaponsTurretRow(ref float y, float width, KeyValuePair<ShipWeaponSlot, Building_ShipTurret> currentWeapon)
+        // SpaceDorf added LabelLength
+        private void DrawWeaponsTurretRow(ref float y, float width, KeyValuePair<ShipWeaponSlot, Building_ShipTurret> currentWeapon, float LabelLength)
         {
-            Rect rectslotName = new Rect(10f, y, 100f, 30f);
+            
+ 
+            Rect rectslotName = new Rect(10f, y, LabelLength, 30f);
             Widgets.Label(rectslotName, currentWeapon.Key.SlotName);
 
             Rect rectslotIcon = new Rect(rectslotName.xMax + 5f, y, 30f, 30f);
@@ -255,9 +297,10 @@ namespace OHUShips
             y += 35f;
         }
 
-        private void DrawWeaponsPayloadRow(ref float y, float width, KeyValuePair<ShipWeaponSlot, WeaponSystemShipBomb> currentWeapon)
+        // SpaceDorf added LabelLength
+        private void DrawWeaponsPayloadRow(ref float y, float width, KeyValuePair<ShipWeaponSlot, WeaponSystemShipBomb> currentWeapon, float LabelLength)
         {
-            Rect rectslotName = new Rect(10f, y, 100f, 30f);
+            Rect rectslotName = new Rect(10f, y, LabelLength, 30f);
             Widgets.Label(rectslotName, currentWeapon.Key.SlotName);
 
             Rect rectslotIcon = new Rect(rectslotName.xMax + 5f, y, 30f, 30f);
