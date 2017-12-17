@@ -11,6 +11,11 @@ namespace OHUShips
 {
     public class JobDriver_UninstallShipWeaponSystem : JobDriver
     {
+		public override bool TryMakePreToilReservations()
+		{
+			return true;
+			//throw new NotImplementedException();
+		}
 
         [DebuggerHidden]
         protected override IEnumerable<Toil> MakeNewToils()

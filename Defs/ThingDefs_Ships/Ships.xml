@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ThingDefs>
+<Defs>
  
   <ThingDef ParentName="BuildingBase" Abstract="True" Name="BaseShip">
     <thingClass>OHUShips.ShipBase</thingClass>
@@ -167,7 +167,7 @@ Offensive Capabilities: 1x Payload Slot
       <shaderType>CutoutFlying</shaderType>
       <drawSize>1.9</drawSize>
     </graphicData>
-    <altitudeLayer>FlyingItem</altitudeLayer>
+    <altitudeLayer>Skyfaller</altitudeLayer>
     <useHitPoints>false</useHitPoints>
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
@@ -274,7 +274,7 @@ Maximum Cargo Capacity: 185 kg
       <shaderType>CutoutFlying</shaderType>
       <drawSize>1.9</drawSize>
     </graphicData>
-    <altitudeLayer>FlyingItem</altitudeLayer>
+    <altitudeLayer>Skyfaller</altitudeLayer>
     <useHitPoints>false</useHitPoints>
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
@@ -381,10 +381,10 @@ Maximum Cargo Capacity: 80 kg
       <shaderType>CutoutFlying</shaderType>
       <drawSize>1.9</drawSize>
     </graphicData>
-    <altitudeLayer>FlyingItem</altitudeLayer>
+    <altitudeLayer>Skyfaller</altitudeLayer>
     <useHitPoints>false</useHitPoints>
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
   </ThingDef>
   
-</ThingDefs>
+</Defs>

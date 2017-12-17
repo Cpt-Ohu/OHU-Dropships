@@ -235,7 +235,7 @@ namespace OHUShips
                 this.tab = Dialog_LoadShipCargo.Tab.Items;
             }, this.tab == Dialog_LoadShipCargo.Tab.Items));
             inRect.yMin += 72f;
-            Widgets.DrawMenuSection(inRect, true);
+            Widgets.DrawMenuSection(inRect);
             TabDrawer.DrawTabs(inRect, Dialog_LoadShipCargo.tabsList);
             inRect = inRect.ContractedBy(17f);
             GUI.BeginGroup(inRect);
@@ -406,7 +406,7 @@ namespace OHUShips
                Lord newLord = LordMaker.MakeNewLord(Faction.OfPlayer, new LordJob_LoadShipCargo(this.ship), this.map, list);
             }
             ship.compShip.cargoLoadingActive = true;
-            Messages.Message("MessageShipCargoLoadStarted".Translate( new object[] { ship.ShipNick }), ship, MessageSound.Benefit);
+            Messages.Message("MessageShipCargoLoadStarted".Translate( new object[] { ship.ShipNick }), ship, MessageTypeDefOf.NeutralEvent);
             return true;
         }
 
@@ -432,23 +432,23 @@ namespace OHUShips
         {
             if (!this.transferables.Any((TransferableOneWay x) => x.CountToTransfer != 0))
             {
-                Messages.Message("CantSendEmptyTransportPods".Translate(), MessageSound.RejectInput);
+                Messages.Message("CantSendEmptyTransportPods".Translate(), MessageTypeDefOf.RejectInput);
                 return false;
             }
             if (this.numOfHaulers <= 0 && pawns.Count <= 0)
             {
-                Messages.Message("CantAssignZeroHaulers".Translate(), MessageSound.RejectInput);
+                Messages.Message("CantAssignZeroHaulers".Translate(), MessageTypeDefOf.RejectInput);
                 return false;
             }
             if (this.MassUsage > this.MassCapacity)
             {
                 this.FlashMass();
-                Messages.Message("TooBigShipMassUsage".Translate(), MessageSound.RejectInput);
+                Messages.Message("TooBigShipMassUsage".Translate(), MessageTypeDefOf.RejectInput);
                 return false;
             }
             if (this.PawnsToTransfer > this.PassengerCapacity)
             {
-                Messages.Message("ShipSeatsFull".Translate(), MessageSound.RejectInput);
+                Messages.Message("ShipSeatsFull".Translate(), MessageTypeDefOf.RejectInput);
                 return false;
             }
             Pawn pawn = pawns.Find((Pawn x) => !x.MapHeld.reachability.CanReach(x.PositionHeld, this.ship, PathEndMode.Touch, TraverseParms.For(TraverseMode.PassDoors, Danger.Deadly, false)));
@@ -457,7 +457,7 @@ namespace OHUShips
                 Messages.Message("PawnCantReachTransporters".Translate(new object[]
                 {
                     pawn.LabelShort
-                }).CapitalizeFirst(), MessageSound.RejectInput);
+                }).CapitalizeFirst(), MessageTypeDefOf.RejectInput);
                 return false;
             }
             Map map = this.ship.Map;
@@ -488,7 +488,7 @@ namespace OHUShips
                                 Messages.Message("TransporterItemIsUnreachableSingle".Translate(new object[]
                                 {
                                     this.transferables[i].ThingDef.label
-                                }), MessageSound.RejectInput);
+                                }), MessageTypeDefOf.RejectInput);
                             }
                             else
                             {
@@ -496,7 +496,7 @@ namespace OHUShips
                                 {
                                     CountToTransfer,
                                     this.transferables[i].ThingDef.label
-                                }), MessageSound.RejectInput);
+                                }), MessageTypeDefOf.RejectInput);
                             }
                             return false;
                         }

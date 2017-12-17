@@ -13,7 +13,7 @@ namespace OHUShips
         {
             get
             {
-                return (ShipBase)base.CurJob.GetTarget(TargetIndex.B).Thing;
+                return (ShipBase)base.job.GetTarget(TargetIndex.B).Thing;
             }
         }
         
@@ -51,6 +51,11 @@ namespace OHUShips
                 defaultCompleteMode = ToilCompleteMode.Instant
             };
             return gotoShip;
+        }
+
+        public override bool TryMakePreToilReservations()
+        {
+            throw new NotImplementedException();
         }
     }
 }

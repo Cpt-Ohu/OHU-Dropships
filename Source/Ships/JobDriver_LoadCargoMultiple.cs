@@ -85,7 +85,7 @@ namespace OHUShips
             CompShip compShip = ship.compShip;
                 if (transferable != null)
                 {
-                    if (firstCheck && this.CurJob.count > transferable.CountToTransfer)
+                    if (firstCheck && this.job.count > transferable.CountToTransfer)
                     {
                         return true;
                     }

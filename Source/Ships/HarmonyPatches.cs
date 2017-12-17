@@ -15,34 +15,36 @@ namespace OHUShips
     {
         static HarmonyPatches()
         {
+            //Log.Error("1");
             HarmonyInstance harmony = HarmonyInstance.Create("rimworld.ohu.ships.main");
-
+			//Log.Error("2");
             harmony.Patch(AccessTools.Method(typeof(RimWorld.FactionGenerator), "GenerateFactionsIntoWorld"), null, new HarmonyMethod(typeof(HarmonyPatches), "GenerateFactionsIntoWorldPostFix"));
-
+			//Log.Error("3");
             harmony.Patch(AccessTools.Property(typeof(MapPawns), "AnyPawnBlockingMapRemoval").GetGetMethod(false), null, new HarmonyMethod(typeof(HarmonyPatches), nameof(AnyColonistTameAnimalOrPrisonerOfColonyPostFix)), null);
 
-           // harmony.Patch(AccessTools.Property(typeof(TransferableOneWay), "MaxCount").GetGetMethod(false), new HarmonyMethod(typeof(HarmonyPatches), nameof(MaxCountTransferablePostFix)), null);
-
-            harmony.Patch(AccessTools.Method(typeof(RimWorld.GameEnder), "CheckGameOver"), null, new HarmonyMethod(typeof(HarmonyPatches), "CheckGameOverPostfix"));
-
+			// harmony.Patch(AccessTools.Property(typeof(TransferableOneWay), "MaxCount").GetGetMethod(false), new HarmonyMethod(typeof(HarmonyPatches), nameof(MaxCountTransferablePostFix)), null);
+			//Log.Error("4");
+            harmony.Patch(AccessTools.Method(typeof(RimWorld.GameEnder), "CheckOrUpdateGameOver"), null, new HarmonyMethod(typeof(HarmonyPatches), "CheckGameOverPostfix"));
+			//Log.Error("5");
             harmony.Patch(AccessTools.Method(typeof(RimWorld.Planet.WorldSelector), "AutoOrderToTileNow", new Type[] { typeof(Caravan), typeof(int) }), new HarmonyMethod(typeof(HarmonyPatches), "AutoOrderToTileNowPrefix"), null);
-
+			//Log.Error("6");
             harmony.Patch(AccessTools.Method(typeof(RimWorld.Scenario), "GenerateIntoMap", new Type[] { typeof(Map) }), new HarmonyMethod(typeof(HarmonyPatches), "GenerateIntoMapPreFix"), null);
-
+			//Log.Error("7");
             harmony.Patch(AccessTools.Method(typeof(RimWorld.TransferableOneWayWidget), "AddSection"), new HarmonyMethod(typeof(HarmonyPatches), "AddSectionPrefix"), null);
-
+			//Log.Error("8");
             harmony.Patch(AccessTools.Method(typeof(CaravanInventoryUtility), "AllInventoryItems"), new HarmonyMethod(typeof(HarmonyPatches), "AllInventoryItemsPrefix"), null);
-
+			//Log.Error("9");
             harmony.Patch(AccessTools.Method(typeof(ThingOwner), "NotifyAddedAndMergedWith", new Type[] { typeof(Thing), typeof(int) }), new HarmonyMethod(typeof(HarmonyPatches), "NotifyAddedAndMergedWithPostfix"), null);
-
+			//Log.Error("10");
             harmony.Patch(AccessTools.Method(typeof(ThingOwner), "NotifyAdded", new Type[] { typeof(Thing) }), new HarmonyMethod(typeof(HarmonyPatches), "NotifyAddedPostfix"), null);
-            
+			//Log.Error("11");
             harmony.Patch(AccessTools.Method(typeof(RimWorld.Transferable), "AdjustTo"),new HarmonyMethod(typeof(HarmonyPatches), "AdjustToPrefix"), null);
 
         }
 
         public static void AnyColonistTameAnimalOrPrisonerOfColonyPostFix(ref bool __result, MapPawns __instance)
         {
+			//Log.Error("1");
             if (!__result)
             {
                 Map map = Traverse.Create(__instance).Field("map").GetValue<Map>();
@@ -59,6 +61,7 @@ namespace OHUShips
 
         public static bool AllInventoryItemsPrefix(ref Caravan caravan, ref List<Thing> __result)
         {
+			//Log.Error("2");
             __result = new List<Thing>();
                 List<Pawn> pawnsListForReading = caravan.PawnsListForReading;
                 for (int i = 0; i < pawnsListForReading.Count; i++)
@@ -94,6 +97,7 @@ namespace OHUShips
 
         public static void MaxCountTransferablePostFix(TransferableOneWay __instance)
         {
+			//Log.Error("3");
             Map map = Find.VisibleMap;
             List<ShipBase> ships = DropShipUtility.ShipsOnMap(map);
             for (int i=0; i < ships.Count; i++)
@@ -107,6 +111,7 @@ namespace OHUShips
 
         public static void AddSectionPrefix(TransferableOneWayWidget __instance, string title, IEnumerable<TransferableOneWay> transferables)
         {
+			//Log.Error("4");
             List<TransferableOneWay> tmp = transferables.ToList();
             for (int i = 0; i < tmp.Count; i++)
             {
@@ -117,6 +122,7 @@ namespace OHUShips
 
         public static void CheckGameOverPostfix()
         {
+			//Log.Error("5");
             List<TravelingShips> travelingShips = Find.WorldObjects.AllWorldObjects.FindAll(x => x is TravelingShips).Cast<TravelingShips>().ToList();
             for (int i=0; i < travelingShips.Count; i++)
             {
@@ -173,6 +179,7 @@ namespace OHUShips
 
         public static void GenerateFactionsIntoWorldPostFix()
         {
+			//Log.Error("6");
             Log.Message("GeneratingShipTracker");
             ShipTracker shipTracker = (ShipTracker)WorldObjectMaker.MakeWorldObject(ShipNamespaceDefOfs.ShipTracker);
             int tile = 0;
@@ -186,6 +193,7 @@ namespace OHUShips
 
         public static bool AutoOrderToTileNowPrefix(Caravan c, int tile)
         {
+			//Log.Error("7");
             LandedShip ship = c as LandedShip;
             if (ship != null)
             {
@@ -196,6 +204,7 @@ namespace OHUShips
 
         public static void GenerateIntoMapPreFix(Map map)
         {
+			//Log.Error("8");
             if (Find.GameInitData == null)
             {
                 return;
@@ -247,6 +256,7 @@ namespace OHUShips
         
         public static void NotifyAddedAndMergedWithPostfix(ref ThingOwner __instance, Thing item, int mergedCount)
         {
+			//Log.Error("9");
             ShipBase ship = __instance.Owner as ShipBase;
             if (ship != null)
             {
@@ -256,6 +266,7 @@ namespace OHUShips
 
         public static void NotifyAddedPostfix(ref ThingOwner __instance, Thing item)
         {
+			//Log.Error("10");
             ShipBase ship = __instance.Owner as ShipBase;
             if (ship != null)
             {

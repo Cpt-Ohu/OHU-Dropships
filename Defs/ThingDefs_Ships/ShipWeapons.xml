@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ThingDefs>
+<Defs>
 
   <ThingDef ParentName="ResourceBase">
     <defName>ShipTurretTemplate</defName>
@@ -104,7 +104,7 @@
 			<ai_combatDangerous>true</ai_combatDangerous>
       <turretGunDef>Gun_TurretImprovised</turretGunDef>
       <turretBurstCooldownTime>5.15</turretBurstCooldownTime>
-      <turretTopgraphicPath>Things/Building/Security/TurretImprovised_Top</turretTopgraphicPath>
+      <turretTopGraphicPath>Things/Building/Security/TurretImprovised_Top</turretTopGraphicPath>
 	 <isInert>true</isInert>
       <isEdifice>false</isEdifice>
 
@@ -117,4 +117,4 @@
 
 
 
-</ThingDefs>
+</Defs>

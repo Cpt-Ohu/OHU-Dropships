@@ -70,7 +70,7 @@ namespace OHUShips
             return parms.raidStrategy.letterLabelEnemy;
         }
 
-        public override bool TryExecute(IncidentParms parms)
+        protected override bool TryExecuteWorker(IncidentParms parms)
         {
             Map map = (Map)parms.target;
             this.ResolveRaidPoints(parms);
@@ -107,9 +107,9 @@ namespace OHUShips
             }
             string letterLabel = this.GetLetterLabel(parms);
             string letterText = this.GetLetterText(parms, list);
-            PawnRelationUtility.Notify_PawnsSeenByPlayer(list, ref letterLabel, ref letterText, this.GetRelatedPawnsInfoLetterText(parms), true);
+            PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(list, ref letterLabel, ref letterText, this.GetRelatedPawnsInfoLetterText(parms), true);
             Find.LetterStack.ReceiveLetter(letterLabel, letterText, this.GetLetterDef(), target, stringBuilder.ToString());
-            if (this.GetLetterDef() == LetterDefOf.BadUrgent)
+            if (this.GetLetterDef() == LetterDefOf.ThreatBig)
             {
                 TaleRecorder.RecordTale(TaleDefOf.RaidArrived, new object[0]);
             }

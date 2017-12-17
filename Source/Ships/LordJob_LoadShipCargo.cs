@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Verse.AI.Group;
 using Verse;
+using RimWorld;
 
 namespace OHUShips
 {
@@ -34,7 +35,7 @@ namespace OHUShips
             Transition transition = new Transition(loadToil, lordToil_End);
             transition.AddTrigger(new Trigger_PawnLost());
             
-            transition.AddPreAction(new TransitionAction_Message("MessageFailedToLoadTransportersBecauseColonistLost".Translate(), MessageSound.Negative));
+            transition.AddPreAction(new TransitionAction_Message("MessageFailedToLoadTransportersBecauseColonistLost".Translate(), MessageTypeDefOf.NegativeEvent));
             transition.AddPreAction(new TransitionAction_Custom(new Action(this.CancelLoadingProcess)));
             stateGraph.AddTransition(transition);
 

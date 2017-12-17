@@ -66,7 +66,7 @@ namespace OHUShips
                     pawnsToMove.Add(current);
                 }
             }
-            ship.GetDirectlyHeldThings().TryAddRange(pawnsToMove);
+            ship.GetDirectlyHeldThings().TryAddRangeOrTransfer(pawnsToMove);
         }
 
         public static List<ShipBase> ShipsOnMap(Map map)
@@ -156,7 +156,7 @@ namespace OHUShips
             Vector3 result = Gen.TrueCenter(ship);
             if (travelingShip != null)
             {
-                result = travelingShip.Position.ToVector3ShiftedWithAltitude(AltitudeLayer.FlyingItem);
+                result = travelingShip.Position.ToVector3ShiftedWithAltitude(AltitudeLayer.Skyfaller);
             }
             result += DropShipUtility.drawOffsetFor(ship, ticks, true);
             result.y = Altitudes.AltitudeFor(AltitudeLayer.Shadows);

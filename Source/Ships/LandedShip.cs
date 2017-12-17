@@ -216,10 +216,10 @@ namespace OHUShips
                 {
                     yield return TravelingShipsUtility.TradeCommand(this);
                 }
-                if (CaravanJourneyDestinationUtility.AnyJurneyDestinationAt(base.Tile))
-                {
-                    yield return CaravanJourneyDestinationUtility.TakeOffCommand(base.Tile);
-                }
+                //if (CaravanJourneyDestinationUtility.AnyJurneyDestinationAt(base.Tile))
+                //{
+                //    yield return CaravanJourneyDestinationUtility.TakeOffCommand(base.Tile);
+                //}
 
                 if (!this.ships.Any(x => x.ParkingMap == null))
                 {

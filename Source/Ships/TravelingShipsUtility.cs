@@ -33,7 +33,7 @@ namespace OHUShips
 
         public static Command TradeCommand(LandedShip caravan)
         {
-            Pawn bestNegotiator = CaravanVisitUtility.BestNegotiator(caravan);
+            Pawn bestNegotiator = BestCaravanPawnUtility.FindBestNegotiator(caravan);
             Command_Action command_Action = new Command_Action();
             command_Action.defaultLabel = "CommandTrade".Translate();
             command_Action.defaultDesc = "CommandTradeDesc".Translate();
@@ -48,10 +48,10 @@ namespace OHUShips
                     Find.WindowStack.Add(new Dialog_TradeFromShips(caravan, bestNegotiator, factionBase));
                     string empty = string.Empty;
                     string empty2 = string.Empty;
-                    PawnRelationUtility.Notify_PawnsSeenByPlayer(factionBase.Goods.OfType<Pawn>(), ref empty, ref empty2, "LetterRelatedPawnsTradingWithFactionBase".Translate(), false);
+                    PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(factionBase.Goods.OfType<Pawn>(), ref empty, ref empty2, "LetterRelatedPawnsTradingWithFactionBase".Translate(), false);
                     if (!empty2.NullOrEmpty())
                     {
-                        Find.LetterStack.ReceiveLetter(empty, empty2, LetterDefOf.Good, factionBase, null);
+                        Find.LetterStack.ReceiveLetter(empty, empty2, LetterDefOf.PositiveEvent, factionBase, null);
                     }
                 }
             };

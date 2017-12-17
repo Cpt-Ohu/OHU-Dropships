@@ -79,7 +79,7 @@ namespace OHUShips
             rect3.y = rect2.yMax + 100;
             rect3.height = rect.height - rect2.height ;
 
-            Widgets.DrawMenuSection(rect3, true);
+            Widgets.DrawMenuSection(rect3);
             List<TabRecord> list = new List<TabRecord>();
 
             list.Add(new TabRecord("ShipPassengers".Translate(), delegate

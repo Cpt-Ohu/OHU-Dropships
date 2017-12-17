@@ -232,7 +232,7 @@ namespace OHUShips
                 ship.refuelableComp.ConsumeFuel(ship.refuelableComp.Props.fuelConsumptionRate / 60f);
                 if (!ship.refuelableComp.HasFuel && !ship.Destroyed)
                 {
-                    Messages.Message("ShipOutOfFuelCrash".Translate(new object[] { ship.ShipNick }), MessageSound.SeriousAlert);
+                    Messages.Message("ShipOutOfFuelCrash".Translate(new object[] { ship.ShipNick }), MessageTypeDefOf.ThreatBig);
                     ship.Destroy();
                     DropShipUtility.currentShipTracker.AllWorldShips.Remove(ship);
                 }
@@ -278,7 +278,7 @@ namespace OHUShips
                 MapParent parent = Find.World.worldObjects.MapParentAt(this.destinationTile);
                 if (parent != null)
                 {
-                    Messages.Message("MessageBombedSettlement".Translate(new object[] { parent.ToString(), parent.Faction.Name }), parent, MessageSound.Standard);
+                    Messages.Message("MessageBombedSettlement".Translate(new object[] { parent.ToString(), parent.Faction.Name }), parent, MessageTypeDefOf.NeutralEvent);
                     Find.World.worldObjects.Remove(parent);
                 }
                 this.SwitchOriginToDest();
@@ -309,7 +309,7 @@ namespace OHUShips
                     }
                     this.RemoveAllPods();
                     Find.WorldObjects.Remove(this);
-                    Messages.Message("MessageTransportPodsArrivedAndLost".Translate(), new GlobalTargetInfo(this.destinationTile), MessageSound.Negative);
+                    Messages.Message("MessageTransportPodsArrivedAndLost".Translate(), new GlobalTargetInfo(this.destinationTile), MessageTypeDefOf.NegativeEvent);
                 }
                 else
                 {
@@ -371,7 +371,7 @@ namespace OHUShips
             this.RemoveAllPods();
             Find.WorldObjects.Remove(this);
             
-            Messages.Message("MessageShipsArrived".Translate(), landedShip, MessageSound.Benefit);
+            Messages.Message("MessageShipsArrived".Translate(), landedShip, MessageTypeDefOf.NeutralEvent);
         }
 
         public bool IsPlayerControlled
@@ -410,7 +410,7 @@ namespace OHUShips
                 text = text + " " + extraMessagePart;
             }
             DropShipUtility.DropShipGroups(intVec, map, this.ships, this.arrivalAction, this.isSingularShip);
-            Messages.Message(text, new TargetInfo(intVec, map, false), MessageSound.Benefit);
+            Messages.Message(text, new TargetInfo(intVec, map, false), MessageTypeDefOf.NeutralEvent);
             this.RemoveAllPods();
             Find.WorldObjects.Remove(this);
         }

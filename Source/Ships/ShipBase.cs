@@ -30,9 +30,6 @@ namespace OHUShips
 
         public List<Pawn> assignedNewPawns = new List<Pawn>();
 
-
-
-        
         public void GetChildHolders(List<IThingHolder> outChildren)
         {
             ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, this.GetDirectlyHeldThings());
@@ -232,7 +229,6 @@ namespace OHUShips
                 this.compShipCached = new CompShip();
                 this.drawTickOffset = compShip.sProps.TicksToImpact;
             }
-            this.compShip.InitiateWeaponSlots();
             if (this.installedTurrets.Count == 0)
             {
                 this.InitiateInstalledTurrets();
@@ -241,7 +237,7 @@ namespace OHUShips
 
         private void InitiateInstalledTurrets()
         {
-            foreach (ShipWeaponSlot current in this.compShip.weaponSlots)
+            foreach (ShipWeaponSlot current in this.compShip.sProps.weaponSlots)
             {
                 if (current.slotType == WeaponSystemType.LightCaliber)
                 {
@@ -532,14 +528,18 @@ namespace OHUShips
                 {
                     if (!DropShipUtility.HasPassengerSeats(this))
                     {
-                        Messages.Message("MessagePassengersFull".Translate(new object[] { pawn.NameStringShort, this.ShipNick }), this, MessageSound.RejectInput);
+                        Messages.Message("MessagePassengersFull".Translate(new object[] { pawn.NameStringShort, this.ShipNick }), this, MessageTypeDefOf.RejectInput);
                         return false;
                     }
+                    this.innerContainer.TryAdd(pawn, 1, false);
+                    pawn.DeSpawn();
                 }
                 else
                 {
-                    if (this.innerContainer.TryAdd(thing, true))
+
+                    if (this.innerContainer.TryAdd(thing.SplitOff(thing.stackCount), true))
                     {
+                        
                         return true;
                     }
                     else
@@ -551,20 +551,17 @@ namespace OHUShips
             bool flag;
             if (thing.holdingOwner != null)
             {
-                flag = thing.holdingOwner.TryTransferToContainer(thing, this.innerContainer, thing.stackCount);
+                
+                flag = thing.holdingOwner.TryTransferToContainer(thing, this.innerContainer);
                 
             }
             else
             {
-                flag = this.innerContainer.TryAdd(thing, true);
+                flag = this.innerContainer.TryAdd(thing.SplitOff(thing.stackCount), true);
             }
             if (flag)
             {                
                 return true;
-            }
-            else
-            {
-
             }
             return false;
         }
@@ -763,25 +760,6 @@ namespace OHUShips
                         }
 
                         yield return command_Action3;
-
-
-                        if (this.ParkingMap != null && !DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID).Any(x => x.ParkingMap != null || !x.ReadyForTakeoff))
-                        {
-                            Command_Action command_Action5 = new Command_Action();
-                            command_Action5.defaultLabel = "CommandTravelParkingPositionFleet".Translate();
-                            command_Action5.defaultDesc = "CommandTravelParkingPositionFleetDesc".Translate();
-                            command_Action5.icon = DropShipUtility.ReturnParkingFleet;
-                            command_Action5.action = delegate
-                            {
-                                foreach (ShipBase ship in DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID))
-                                {
-                                    ship.TryLaunch(new GlobalTargetInfo(ship.ParkingPosition, ship.ParkingMap), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
-                                }
-
-                            };
-                            yield return command_Action5;
-                        }
-
                     }
                 }
                 {
@@ -822,6 +800,22 @@ namespace OHUShips
                     yield return command_Action4;
                 }
 
+                if (this.ParkingMap != null && !DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID).Any(x => x.ParkingMap != null || !x.ReadyForTakeoff))
+                {
+                    Command_Action command_Action5 = new Command_Action();
+                    command_Action5.defaultLabel = "CommandTravelParkingPositionFleet".Translate();
+                    command_Action5.defaultDesc = "CommandTravelParkingPositionFleetDesc".Translate();
+                    command_Action5.icon = DropShipUtility.ReturnParkingFleet;
+                    command_Action5.action = delegate
+                    {
+                        foreach (ShipBase ship in DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID))
+                        {
+                            ship.TryLaunch(new GlobalTargetInfo(ship.ParkingPosition, ship.ParkingMap), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
+                        }
+
+                    };
+                    yield return command_Action5;
+                }
             }
 
         }
@@ -893,7 +887,7 @@ namespace OHUShips
             bool canBomb = true;
             if (!target.IsValid)
             {
-                Messages.Message("MessageTransportPodsDestinationIsInvalid".Translate(), MessageSound.RejectInput);
+                Messages.Message("MessageTransportPodsDestinationIsInvalid".Translate(), MessageTypeDefOf.RejectInput);
                 return false;
             }
             if (this.LaunchAsFleet)
@@ -904,13 +898,13 @@ namespace OHUShips
                     ShipBase ship = DropShipUtility.currentShipTracker.ShipsInFleet(this.fleetID)[i];
                     if (ship.compShip.cargoLoadingActive)
                     {
-                        Messages.Message("MessageFleetLaunchImpossible".Translate(), MessageSound.RejectInput);
+                        Messages.Message("MessageFleetLaunchImpossible".Translate(), MessageTypeDefOf.RejectInput);
                         return false;
                     }
                     int num = (Find.WorldGrid.TraversalDistanceBetween(tile, target.Tile));
                     if (num > ship.MaxLaunchDistanceEverPossible(true))
                     {
-                        Messages.Message("MessageFleetLaunchImpossible".Translate(), MessageSound.RejectInput);
+                        Messages.Message("MessageFleetLaunchImpossible".Translate(), MessageTypeDefOf.RejectInput);
                         return false;
                     }
                     if (!(2*num > ship.MaxLaunchDistanceEverPossible(true)))
@@ -928,7 +922,7 @@ namespace OHUShips
                     Messages.Message("MessageTransportPodsDestinationIsTooFar".Translate(new object[]
                     {
                     CompLaunchable.FuelNeededToLaunchAtDist((float)num).ToString("0.#")
-                    }), MessageSound.RejectInput);
+                    }), MessageTypeDefOf.RejectInput);
                     return false;
                 }
                 if (!(2 * num > this.MaxLaunchDistanceEverPossible(true)))
@@ -1032,7 +1026,7 @@ namespace OHUShips
             }
             if (Find.World.Impassable(target.Tile))
             {
-                Messages.Message("MessageTransportPodsDestinationIsInvalid".Translate(), MessageSound.RejectInput);
+                Messages.Message("MessageTransportPodsDestinationIsInvalid".Translate(), MessageTypeDefOf.RejectInput);
                 return false;
             }
             
@@ -1070,7 +1064,7 @@ namespace OHUShips
             Scribe_Values.Look<int>(ref this.drawTickOffset, "drawTickOffset", 0, false);
             Scribe_Values.Look<int>(ref this.timeWaited, "timeWaited", 200, false);
 
-
+            
             Scribe_References.Look(ref this.ParkingMap, "ParkingMap");
             Scribe_Values.Look<IntVec3>(ref this.ParkingPosition, "ParkingPosition", IntVec3.Zero , false);
 

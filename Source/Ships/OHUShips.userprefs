@@ -1,0 +1,52 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workbench ActiveDocument="TravelingShipArrivalAction.cs">
+    <Files>
+      <File FileName="CompProperties_Ship.cs" Line="1" Column="1" />
+      <File FileName="Building_ShipTurret.cs" Line="8" Column="23" />
+      <File FileName="CompProperties_ShipWeapon.cs" Line="1" Column="1" />
+      <File FileName="CompShip.cs" Line="175" Column="1" />
+      <File FileName="Dialog_LoadShipCargo.cs" Line="216" Column="9" />
+      <File FileName="DropShipUtility.cs" Line="159" Column="101" />
+      <File FileName="IncidentWorker_AerialRaid.cs" Line="112" Column="61" />
+      <File FileName="TravelingShipsUtility.cs" Line="54" Column="96" />
+      <File FileName="JobDriver_EnterShip.cs" Line="38" Column="38" />
+      <File FileName="JobDriver_InstallShipWeaponSystem.cs" Line="11" Column="12" />
+      <File FileName="JobDriver_LeaveInShip.cs" Line="13" Column="10" />
+      <File FileName="JobDriver_UninstallShipWeaponSystem.cs" Line="18" Column="4" />
+      <File FileName="WorkGiver_InstallShipWeapon.cs" Line="48" Column="10" />
+      <File FileName="ITab_ShipCargo.cs" Line="77" Column="13" />
+      <File FileName="LordJob_LoadShipCargo.cs" Line="52" Column="44" />
+      <File FileName="JobDriver_LoadCargoMultiple.cs" Line="88" Column="47" />
+      <File FileName="LandedShip.cs" Line="219" Column="1" />
+      <File FileName="ShipBase.cs" Line="535" Column="36" />
+      <File FileName="TravelingShips.cs" Line="413" Column="101" />
+      <File FileName="HarmonyPatches.cs" Line="269" Column="22" />
+      <File FileName="JobGiver_FleeIfShipDestroyed.cs" Line="1" Column="1" />
+      <File FileName="JobGiver_LeaveInShip.cs" Line="1" Column="1" />
+      <File FileName="JobGiver_LoadShipCargo.cs" Line="1" Column="1" />
+      <File FileName="JobGiver_EnterShipDuringLoad.cs" Line="1" Column="1" />
+      <File FileName="LoadShipCargoUtility.cs" Line="1" Column="1" />
+      <File FileName="LordJob_AerialAssault.cs" Line="1" Column="1" />
+      <File FileName="ShipDropSite.cs" Line="1" Column="1" />
+      <File FileName="TravelingShipArrivalAction.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="OHUShips" expanded="True">
+            <Node name="OHUShips" expanded="True">
+              <Node name="References" expanded="True" />
+              <Node name="TravelingShipArrivalAction.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
