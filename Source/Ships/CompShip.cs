@@ -145,9 +145,9 @@ namespace OHUShips
             transferableOneWay.AdjustBy(-count);
             if (transferableOneWay.CountToTransfer <= 0)
             {
-                //Log.Message("Removing Transferable: " + transferableOneWay.AnyThing.ToString());
                 this.leftToLoad.Remove(transferableOneWay);
             }
+
             if (!this.AnythingLeftToLoad)
             {
                 this.cargoLoadingActive = false;
@@ -161,7 +161,6 @@ namespace OHUShips
 
         public void NotifyItemAdded(Thing t, int count = 0)
         {
-            //Log.Message("Notifying: " + count.ToString());
             this.SubtractFromToLoadList(t, count);
         }
 

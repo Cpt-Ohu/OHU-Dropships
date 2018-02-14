@@ -47,9 +47,7 @@ namespace OHUShips
                 return GraphicDatabase.Get<Graphic_Single>(this.def.graphicData.texPath, ShaderDatabase.ShaderFromType(this.def.graphicData.shaderType), this.def.graphicData.drawSize, this.DrawColor, this.DrawColorTwo);
             }
         }
-
         
-
         public string ShipNick = "Ship";
         
         public ShipState shipState = ShipState.Stationary;
@@ -531,8 +529,15 @@ namespace OHUShips
                         Messages.Message("MessagePassengersFull".Translate(new object[] { pawn.NameStringShort, this.ShipNick }), this, MessageTypeDefOf.RejectInput);
                         return false;
                     }
-                    this.innerContainer.TryAdd(pawn, 1, false);
-                    pawn.DeSpawn();
+					if (pawn.Spawned)
+					{
+						pawn.DeSpawn();
+					}
+                    if(!this.innerContainer.Contains(pawn)){
+                        //pawn.InContainerEnclosed
+						this.innerContainer.TryAdd(pawn, 1, false);
+                    }
+
                 }
                 else
                 {

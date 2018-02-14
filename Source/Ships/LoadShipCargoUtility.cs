@@ -17,27 +17,32 @@ namespace OHUShips
 
         public static Job JobLoadShipCargo(Pawn p, ShipBase ship)
         {
-            Thing thing = LoadShipCargoUtility.FindThingToLoad(p, ship);
-            TransferableOneWay transferable = TransferableUtility.TransferableMatchingDesperate(thing, ship.compShip.leftToLoad);
-            if (thing != null && transferable != null)
+            if (p.jobs.jobQueue.Any(x => x.job.def == ShipNamespaceDefOfs.LoadContainerMultiplePawns))
             {
-                int thingCount = transferable.CountToTransfer;
-                //Log.Message("Count to take: " + thingCount.ToString());
-                if (thingCount < 0)
-                {
-                    thingCount = 1;
-                }
-                return new Job(ShipNamespaceDefOfs.LoadContainerMultiplePawns, thing, ship)
-                {
-                    count = thingCount,
-                    ignoreForbidden = true,
-                    playerForced = true
-
-                };
+                    return null;
+                
             }
+                Thing thing = LoadShipCargoUtility.FindThingToLoad(p, ship);
+                TransferableOneWay transferable = TransferableUtility.TransferableMatchingDesperate(thing, ship.compShip.leftToLoad);
+                if (thing != null && transferable != null)
+                {
+                    int thingCount = transferable.CountToTransfer;
+                    if (thingCount < 0)
+                    {
+                        thingCount = 1;
+                    }
+                    return new Job(ShipNamespaceDefOfs.LoadContainerMultiplePawns, thing, ship)
+                    {
+                        count = thingCount,
+                        ignoreForbidden = true,
+                        playerForced = true
+
+                    };
+                }
+            
             else
             {
-                //Log.Message("No Transferable found.");
+                Log.Message("No Transferable found.");
             }
             return null;
         }
@@ -51,7 +56,6 @@ namespace OHUShips
                 for (int i = 0; i < leftToLoad.Count; i++)
                 {
                     TransferableOneWay transferableOneWay = leftToLoad[i];
-                    //Log.Message(transferableOneWay.CountToTransfer.ToString());
                     if (transferableOneWay.CountToTransfer > 0)
                     {
                         for (int j = 0; j < transferableOneWay.things.Count; j++)
@@ -65,8 +69,10 @@ namespace OHUShips
             {
                 return null;
             }
-            Predicate<Thing> validator = (Thing x) => LoadShipCargoUtility.neededThings.Contains(x) && p.CanReserve(x, 1);
-            Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map, ThingRequest.ForGroup(ThingRequestGroup.HaulableEver), PathEndMode.Touch, TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn, false), 9999f, validator, null);
+            //Predicate<Thing> validator = (Thing x) => LoadShipCargoUtility.neededThings.Contains(x) && p.CanReserve(x, 1) && !p.Map.reservationManager.IsReservedByAnyoneOf(x, p.Faction);
+            //Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map, ThingRequest.ForGroup(ThingRequestGroup.HaulableEver), PathEndMode.Touch, TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn, false), 9999f, validator, null);
+            Thing thing = GenClosest.ClosestThingReachable(p.Position, p.Map, ThingRequest.ForGroup(ThingRequestGroup.HaulableEver), PathEndMode.Touch, TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn, false), 9999f, (Thing x) => LoadShipCargoUtility.neededThings.Contains(x) && p.CanReserve(x, 1, -1, null, false), null, 0, -1, false, RegionType.Set_Passable, false);
+
             if (thing == null)
             {
                 foreach (Thing current in LoadShipCargoUtility.neededThings)

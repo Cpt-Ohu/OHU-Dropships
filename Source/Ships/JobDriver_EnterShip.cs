@@ -43,8 +43,6 @@ namespace OHUShips
                         }
                     };
 
-                    ship.compShip.Notify_PawnEntered(this.pawn);
-
                     action();                    
                 },
                 defaultCompleteMode = ToilCompleteMode.Instant
