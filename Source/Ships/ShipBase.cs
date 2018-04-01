@@ -47,7 +47,7 @@ namespace OHUShips
                 return GraphicDatabase.Get<Graphic_Single>(this.def.graphicData.texPath, ShaderDatabase.ShaderFromType(this.def.graphicData.shaderType), this.def.graphicData.drawSize, this.DrawColor, this.DrawColorTwo);
             }
         }
-        
+
         public string ShipNick = "Ship";
         
         public ShipState shipState = ShipState.Stationary;
@@ -1076,6 +1076,7 @@ namespace OHUShips
 
 
             Scribe_Values.Look<bool>(ref this.DeepsaveTurrets, "DeepsaveTurrets", false, false);
+            this.assignedTurrets.RemoveAll(x => x == null);
             if (this.DeepsaveTurrets)
             {
                 Scribe_Collections.Look<Building_ShipTurret>(ref this.assignedTurrets, "assignedTurrets", LookMode.Deep, new object[0]);

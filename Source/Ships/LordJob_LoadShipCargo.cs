@@ -43,8 +43,8 @@ namespace OHUShips
             endTransition.AddTrigger(new Trigger_TicksPassed(TimeOutTick));
             endTransition.AddTrigger(new Trigger_PawnsExhausted());
             endTransition.AddPreAction(new TransitionAction_Custom(new Action(delegate {
-            Log.Message("Ending");
-            this.CancelLoadingProcess(); })));
+                this.CancelLoadingProcess();
+            })));
             stateGraph.AddTransition(endTransition);
             return stateGraph;
         }

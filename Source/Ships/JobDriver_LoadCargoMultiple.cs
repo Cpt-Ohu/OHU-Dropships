@@ -33,8 +33,7 @@ namespace OHUShips
         {
             this.FailOnDestroyedOrNull(TargetIndex.A);
             this.FailOnDespawnedOrNull(TargetIndex.B);
-            Toil toil = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).FailOnSomeonePhysicallyInteracting(TargetIndex.A);
-            toil.AddFinishAction(delegate { Log.Message("Finished A"); });
+            Toil toil = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
             //toil.AddFailCondition(() => ShipFull(ship));
             toil.tickAction += delegate
             {
@@ -67,7 +66,7 @@ namespace OHUShips
         public override bool TryMakePreToilReservations()
         {
             ////Log.Message("Reserving 1");
-            this.pawn.ReserveAsManyAsPossible(this.job.GetTargetQueue(TargetIndex.A), this.job, 1, -1, null);
+            //this.pawn.ReserveAsManyAsPossible(this.job.GetTargetQueue(TargetIndex.A), this.job, 1, -1, null);
             ////Log.Message("Reserving 2");
             //this.pawn.ReserveAsManyAsPossible(this.job.GetTargetQueue(TargetIndex.B), this.job, 10, 1, null);
             ////Log.Message("Reserving 3");
