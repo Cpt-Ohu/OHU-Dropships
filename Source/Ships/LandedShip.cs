@@ -153,7 +153,7 @@ namespace OHUShips
         public override string GetInspectString()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            if (this.Resting)
+            if (this.NightResting)
             {
                 stringBuilder.Append("CaravanResting".Translate());
             }
@@ -163,9 +163,9 @@ namespace OHUShips
             }
             else if (this.pather.Moving)
             {
-                if (this.pather.arrivalAction != null)
+                if (this.pather.ArrivalAction != null)
                 {
-                    stringBuilder.Append(this.pather.arrivalAction.ReportString);
+                    stringBuilder.Append(this.pather.ArrivalAction.ReportString);
                 }
                 else
                 {
@@ -174,12 +174,12 @@ namespace OHUShips
             }
             else
             {
-                Settlement factionBase = CaravanVisitUtility.SettlementVisitedNow(this);
-                if (factionBase != null)
+                SettlementBase Settlement = CaravanVisitUtility.SettlementVisitedNow(this);
+                if (Settlement != null)
                 {
                     stringBuilder.Append("CaravanVisiting".Translate(new object[]
                     {
-                        factionBase.Label
+                        Settlement.Label
                     }));
                 }
                 else
@@ -202,7 +202,7 @@ namespace OHUShips
                 command_Action.action = delegate
                 {
                     SoundDef.Named("ShipTakeoff_SuborbitalLaunch").PlayOneShotOnCamera();
-                    this.ships[0].StartChoosingDestination(this.ships[0], false);
+                    this.ships[0].StartChoosingDestination(false);
                 };
                 yield return command_Action;
 
@@ -211,15 +211,15 @@ namespace OHUShips
                     yield return TravelingShipsUtility.ShipTouchdownCommand(this, true);
                     yield return TravelingShipsUtility.ShipTouchdownCommand(this, false);
                 }
-                Settlement factionBase = CaravanVisitUtility.SettlementVisitedNow(this);
-                if (factionBase != null && factionBase.CanTradeNow)
+                SettlementBase Settlement = CaravanVisitUtility.SettlementVisitedNow(this);
+                if (Settlement != null && Settlement.CanTradeNow)
                 {
                     yield return TravelingShipsUtility.TradeCommand(this);
                 }
-                if (CaravanJourneyDestinationUtility.AnyJurneyDestinationAt(base.Tile))
-                {
-                    yield return CaravanJourneyDestinationUtility.TakeOffCommand(base.Tile);
-                }
+                //if (CaravanJourneyDestinationUtility.AnyJurneyDestinationAt(base.Tile))
+                //{
+                //    yield return CaravanJourneyDestinationUtility.TakeOffCommand(base.Tile);
+                //}
 
                 if (!this.ships.Any(x => x.ParkingMap == null))
                 {
@@ -231,7 +231,7 @@ namespace OHUShips
                     {
                         foreach (ShipBase ship in this.ships)
                         {
-                            ship.TryLaunch(new GlobalTargetInfo(ship.ParkingPosition, ship.ParkingMap), PawnsArriveMode.CenterDrop, TravelingShipArrivalAction.EnterMapFriendly, false);
+                            ship.TryLaunch(new GlobalTargetInfo(ship.ParkingPosition, ship.ParkingMap), PawnsArrivalModeDefOf.CenterDrop, ShipArrivalAction.EnterMapFriendly, false);
                         }
                     };
                     yield return command_Action4;

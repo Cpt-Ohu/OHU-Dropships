@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ThingDefs>
+<Defs>
  
   <ThingDef ParentName="BuildingBase" Abstract="True" Name="BaseShip">
     <thingClass>OHUShips.ShipBase</thingClass>
@@ -26,15 +26,16 @@
     <staticSunShadowHeight>0.5</staticSunShadowHeight>
     <fillPercent>1.0</fillPercent>
     <designationCategory>Ship</designationCategory>
-    <iconDrawScale>1</iconDrawScale>
+    
     <statBases>
+      <Mass>120</Mass>
       <MaxHitPoints>250</MaxHitPoints>
       <WorkToBuild>3000</WorkToBuild>
       <Flammability>0</Flammability>
     </statBases>
     <costList>
       <Steel>80</Steel>
-      <Component>1</Component>
+      <ComponentIndustrial>1</ComponentIndustrial>
     </costList>
     <placeWorkers>
       <li>PlaceWorker_NotUnderRoof</li>
@@ -49,6 +50,7 @@
     </building>
 
   </ThingDef>
+
   <!--=============== Dropship ===============-->
 
 
@@ -63,11 +65,10 @@ Still the manufacturer boasts that on underdeveloped Rimworlds, this ship can do
 
 
 Manufacturer: OHU (Orbital Hubs United)
-Fuel Capacity: 1500
+Fuel Capacity: 3000
 Maximum Cargo Capacity: 1000 kg
 Defensive Capabilities: 1x Light Caliber Front Gun
-Offensive Capabilities: 1x Payload Slot
-</description>
+Offensive Capabilities: 1x Payload Slot</description>
     <graphicData>
       <texPath>Things/Ships/OHUDropShip</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -81,8 +82,9 @@ Offensive Capabilities: 1x Payload Slot
     <castEdgeShadows>false</castEdgeShadows>
     <fillPercent>1.0</fillPercent>
     <designationCategory>Ship</designationCategory>
-    <iconDrawScale>1</iconDrawScale>
+    
     <statBases>
+      <Mass>120</Mass>
       <MaxHitPoints>500</MaxHitPoints>
       <WorkToBuild>3000</WorkToBuild>
       <Flammability>0</Flammability>
@@ -96,7 +98,8 @@ Offensive Capabilities: 1x Payload Slot
         <maxPassengers>8</maxPassengers>
         <CanBeStartingShip>true</CanBeStartingShip>
         <availableToFactions>
-		<li>Outlander</li>
+		<li>OutlanderCivil</li>
+		<li>OutlanderRough</li>
 		<li>Pirate</li>
 	   </availableToFactions>
         <LeavingShipDef>OHUDropShipLeaving</LeavingShipDef>
@@ -114,14 +117,14 @@ Offensive Capabilities: 1x Payload Slot
 	    <li>
           <SlotName>Payload</SlotName>
           <slotType>Bombing</slotType>
-          <turretPosOffset>(0,0,0)</turretPosOffset>
+          <turretPosOffset>(4,0,0)</turretPosOffset>
 	    </li>
 	   </weaponSlots>
 
 	 </li>
       <li Class="CompProperties_Refuelable">
-        <fuelConsumptionRate>7.0</fuelConsumptionRate>
-        <fuelCapacity>1500.0</fuelCapacity>
+        <fuelConsumptionRate>5.0</fuelConsumptionRate>
+        <fuelCapacity>3000.0</fuelCapacity>
         <fuelFilter>
           <thingDefs>
             <li>Chemfuel</li>
@@ -132,14 +135,14 @@ Offensive Capabilities: 1x Payload Slot
         <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
         <initialConfigurableTargetFuelLevel>200</initialConfigurableTargetFuelLevel>
         <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
-        <autoRefuelPercent>1.00</autoRefuelPercent>
+        <autoRefuelPercent>0.75</autoRefuelPercent>
       </li>
     </comps>
 
     <costList>
       <Steel>800</Steel>
       <Plasteel>100</Plasteel>
-      <Component>20</Component>
+      <ComponentIndustrial>20</ComponentIndustrial>
     </costList>
 		<researchPrerequisites>
 			<li>ShipBasics</li>
@@ -158,7 +161,7 @@ Offensive Capabilities: 1x Payload Slot
   <ThingDef>
     <defName>OHUDropShipLeaving</defName>
     <label>Dropship(leaving)</label>
-    <category>Skyfaller</category>
+    <category>Attachment</category>
 		<thingClass>OHUShips.ShipBase_Traveling</thingClass>
 		<tickerType>Normal</tickerType>
     <graphicData>
@@ -167,7 +170,7 @@ Offensive Capabilities: 1x Payload Slot
       <shaderType>CutoutFlying</shaderType>
       <drawSize>1.9</drawSize>
     </graphicData>
-    <altitudeLayer>FlyingItem</altitudeLayer>
+    <altitudeLayer>Skyfaller</altitudeLayer>
     <useHitPoints>false</useHitPoints>
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
@@ -184,8 +187,7 @@ Offensive Capabilities: 1x Payload Slot
 
 Manufacturer: OHU (Orbital Hubs United)
 Fuel Capacity: 500
-Maximum Cargo Capacity: 185 kg
-</description>
+Maximum Cargo Capacity: 185 kg</description>
     <graphicData>
       <texPath>Things/Ships/OHUKestrel</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -199,8 +201,9 @@ Maximum Cargo Capacity: 185 kg
     <castEdgeShadows>false</castEdgeShadows>
     <fillPercent>1.0</fillPercent>
     <designationCategory>Ship</designationCategory>
-    <iconDrawScale>1</iconDrawScale>
+    
     <statBases>
+      <Mass>120</Mass>
       <MaxHitPoints>200</MaxHitPoints>
       <WorkToBuild>1000</WorkToBuild>
       <Flammability>0</Flammability>
@@ -214,7 +217,8 @@ Maximum Cargo Capacity: 185 kg
         <maxPassengers>2</maxPassengers>
         <CanBeStartingShip>false</CanBeStartingShip>
         <availableToFactions>
-		<li>Outlander</li>
+		<li>OutlanderCivil</li>
+		<li>OutlanderRough</li>
 		<li>Pirate</li>
 	   </availableToFactions>
         <LeavingShipDef>OHUKestrelLeaving</LeavingShipDef>
@@ -227,7 +231,7 @@ Maximum Cargo Capacity: 185 kg
 
 	 </li>
       <li Class="CompProperties_Refuelable">
-        <fuelConsumptionRate>10.0</fuelConsumptionRate>
+        <fuelConsumptionRate>5.0</fuelConsumptionRate>
         <fuelCapacity>500.0</fuelCapacity>
         <fuelFilter>
           <thingDefs>
@@ -246,7 +250,7 @@ Maximum Cargo Capacity: 185 kg
     <costList>
       <Steel>350</Steel>
       <Plasteel>25</Plasteel>
-      <Component>5</Component>
+      <ComponentIndustrial>5</ComponentIndustrial>
     </costList>
 		<researchPrerequisites>
 			<li>ShipBasics</li>
@@ -265,7 +269,7 @@ Maximum Cargo Capacity: 185 kg
   <ThingDef>
     <defName>OHUKestrelLeaving</defName>
     <label>Kestrel(leaving)</label>
-    <category>Skyfaller</category>
+    <category>Attachment</category>
 		<thingClass>OHUShips.ShipBase_Traveling</thingClass>
 		<tickerType>Normal</tickerType>
     <graphicData>
@@ -274,11 +278,12 @@ Maximum Cargo Capacity: 185 kg
       <shaderType>CutoutFlying</shaderType>
       <drawSize>1.9</drawSize>
     </graphicData>
-    <altitudeLayer>FlyingItem</altitudeLayer>
+    <altitudeLayer>Skyfaller</altitudeLayer>
     <useHitPoints>false</useHitPoints>
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
   </ThingDef>
+
 
   <!--=============== Albatros ===============-->
 
@@ -291,8 +296,7 @@ Maximum Cargo Capacity: 185 kg
 
 Manufacturer: OHU (Orbital Hubs United)
 Fuel Capacity: 100
-Maximum Cargo Capacity: 80 kg
-</description>
+Maximum Cargo Capacity: 80 kg</description>
     <graphicData>
       <texPath>Things/Ships/OHUAlbatros</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -306,8 +310,9 @@ Maximum Cargo Capacity: 80 kg
     <castEdgeShadows>false</castEdgeShadows>
     <fillPercent>1.0</fillPercent>
     <designationCategory>Ship</designationCategory>
-    <iconDrawScale>1</iconDrawScale>
+    
     <statBases>
+      <Mass>120</Mass>
       <MaxHitPoints>150</MaxHitPoints>
       <WorkToBuild>1000</WorkToBuild>
       <Flammability>0</Flammability>
@@ -321,11 +326,12 @@ Maximum Cargo Capacity: 80 kg
         <maxPassengers>1</maxPassengers>
         <CanBeStartingShip>false</CanBeStartingShip>
         <availableToFactions>
-		<li>Outlander</li>
+		<li>OutlanderCivil</li>
+		<li>OutlanderRough</li>
 		<li>Pirate</li>
 	   </availableToFactions>
         <LeavingShipDef>OHUAlbatrosLeaving</LeavingShipDef>
-        <IncomingAngle>80</IncomingAngle>
+        <IncomingAngle>35</IncomingAngle>
         <ShadowGraphicPath>Things/Ships/OHUAlbatrosShadow</ShadowGraphicPath>
         <FleetIconGraphicPath>Things/Ships/OHUDropShipFleetIcon</FleetIconGraphicPath>
 
@@ -353,7 +359,7 @@ Maximum Cargo Capacity: 80 kg
     <costList>
       <Steel>250</Steel>
       <Plasteel>10</Plasteel>
-      <Component>6</Component>
+      <ComponentIndustrial>6</ComponentIndustrial>
     </costList>
 		<researchPrerequisites>
 			<li>ShipBasics</li>
@@ -372,7 +378,7 @@ Maximum Cargo Capacity: 80 kg
   <ThingDef>
     <defName>OHUAlbatrosLeaving</defName>
     <label>Albatros(leaving)</label>
-    <category>Skyfaller</category>
+    <category>Attachment</category>
 		<thingClass>OHUShips.ShipBase_Traveling</thingClass>
 		<tickerType>Normal</tickerType>
     <graphicData>
@@ -381,10 +387,13 @@ Maximum Cargo Capacity: 80 kg
       <shaderType>CutoutFlying</shaderType>
       <drawSize>1.9</drawSize>
     </graphicData>
-    <altitudeLayer>FlyingItem</altitudeLayer>
+    <altitudeLayer>Skyfaller</altitudeLayer>
     <useHitPoints>false</useHitPoints>
     <drawOffscreen>true</drawOffscreen>
     <selectable>false</selectable>
   </ThingDef>
+
+
+
   
-</ThingDefs>
+</Defs>

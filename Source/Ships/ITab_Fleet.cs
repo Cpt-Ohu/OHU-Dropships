@@ -34,7 +34,7 @@ namespace OHUShips
         {
             get
             {
-                return DropShipUtility.currentShipTracker;
+                return DropShipUtility.CurrentShipTracker;
             }
         }
 
@@ -160,7 +160,7 @@ namespace OHUShips
             public Dialog_RenameShip(int ID)
             {
                 this.num = ID;
-                this.curName = DropShipUtility.currentShipTracker.PlayerFleetManager[num];
+                this.curName = DropShipUtility.CurrentShipTracker.PlayerFleetManager[num];
                 this.nameMessageKey = "NameFleetMessage";
                 this.gainedNameMessageKey = "RenamedFleetMessage";
                 this.invalidNameMessageKey = "FleetNameIsInvalid";
@@ -173,7 +173,7 @@ namespace OHUShips
 
             protected override void Named(string s)
             {
-                DropShipUtility.currentShipTracker.PlayerFleetManager[num] = s;
+                DropShipUtility.CurrentShipTracker.PlayerFleetManager[num] = s;
             }
         }
     }

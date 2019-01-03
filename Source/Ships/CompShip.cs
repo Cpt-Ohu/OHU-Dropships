@@ -13,8 +13,7 @@ namespace OHUShips
     public class CompShip : ThingComp
     {
         public List<TransferableOneWay> leftToLoad;
-        public List<ShipWeaponSlot> weaponSlots;
-
+        
         public bool cargoLoadingActive;
         
         public ShipBase ship
@@ -47,25 +46,6 @@ namespace OHUShips
             {
                 return ContentFinder<Texture2D>.Get(this.sProps.FleetIconGraphicPath, true);
             }
-        }
-
-        public override void Initialize(CompProperties props)
-        {
-            base.Initialize(props);
-        }
-
-        public void InitiateWeaponSlots()
-        {
-            this.weaponSlots = new List<ShipWeaponSlot>();
-            foreach (ShipWeaponSlot slot in this.sProps.weaponSlots)
-            {
-                this.weaponSlots.Add(new ShipWeaponSlot(slot));
-            }
-        }
-
-        public override void PostSpawnSetup(bool respawningAfterLoad)
-        {
-            base.PostSpawnSetup(respawningAfterLoad);
         }
 
         public Thing FirstThingLeftToLoad
@@ -115,7 +95,7 @@ namespace OHUShips
             {
                 this.leftToLoad = new List<TransferableOneWay>();
             }
-            if (TransferableUtility.TransferableMatching<TransferableOneWay>(t.AnyThing, this.leftToLoad) != null)
+            if (TransferableUtility.TransferableMatching<TransferableOneWay>(t.AnyThing, this.leftToLoad, TransferAsOneMode.PodsOrCaravanPacking) != null)
             {
                 Log.Error("Transferable already exists.");
                 return;
@@ -134,13 +114,12 @@ namespace OHUShips
             Lord lord = LoadShipCargoUtility.FindLoadLord(ship, map);
             if (lord != null)
             {
-                pawns.AddRange(lord.ownedPawns);
-                map.lordManager.RemoveLord(lord);
-            }
+                foreach (Pawn p in pawns)
+                {
+                    lord.Notify_PawnLost(p, PawnLostCondition.LeftVoluntarily);
 
-            foreach (Pawn p in pawns)
-            {
-                Lord lord1 = p.GetLord();
+                }
+                map.lordManager.RemoveLord(lord);
             }
         }
 
@@ -157,7 +136,7 @@ namespace OHUShips
             {
                 return;
             }
-            TransferableOneWay transferableOneWay = TransferableUtility.TransferableMatchingDesperate(t, this.leftToLoad);
+            TransferableOneWay transferableOneWay = TransferableUtility.TransferableMatchingDesperate(t, this.leftToLoad, TransferAsOneMode.PodsOrCaravanPacking);
             if (transferableOneWay == null)
             {
                 return;
@@ -165,29 +144,29 @@ namespace OHUShips
             transferableOneWay.AdjustBy(-count);
             if (transferableOneWay.CountToTransfer <= 0)
             {
-                //Log.Message("Removing Transferable: " + transferableOneWay.AnyThing.ToString());
                 this.leftToLoad.Remove(transferableOneWay);
             }
+
             if (!this.AnythingLeftToLoad)
             {
                 this.cargoLoadingActive = false;
                 this.TryRemoveLord(this.parent.Map);
                 this.leftToLoad.Clear();
                 this.leftToLoad = new List<TransferableOneWay>();
-                Messages.Message("MessageFinishedLoadingShipCargo".Translate(new object[] { this.ship.ShipNick }), this.parent, MessageSound.Benefit);
+              
+                Messages.Message("MessageFinishedLoadingShipCargo".Translate(new object[] { this.ship.ShipNick }), this.parent, MessageTypeDefOf.TaskCompletion);
             }
         }
 
         public void NotifyItemAdded(Thing t, int count = 0)
         {
-            //Log.Message("Notifying: " + count.ToString());
             this.SubtractFromToLoadList(t, count);
         }
 
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Collections.Look<ShipWeaponSlot>(ref this.weaponSlots, "weaponSlots", LookMode.Deep);
+            Scribe_Collections.Look<ShipWeaponSlot>(ref this.sProps.weaponSlots, "weaponSlots", LookMode.Deep);
         }
     }
 }

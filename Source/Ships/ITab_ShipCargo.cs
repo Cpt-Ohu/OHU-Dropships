@@ -79,7 +79,7 @@ namespace OHUShips
             rect3.y = rect2.yMax + 100;
             rect3.height = rect.height - rect2.height ;
 
-            Widgets.DrawMenuSection(rect3, true);
+            Widgets.DrawMenuSection(rect3);
             List<TabRecord> list = new List<TabRecord>();
 
             list.Add(new TabRecord("ShipPassengers".Translate(), delegate
@@ -344,7 +344,7 @@ namespace OHUShips
                 TooltipHandler.TipRegion(rect2, "DropThing".Translate());
                 if (Widgets.ButtonImage(rect2, DropShipUtility.DropTexture))
                 {
-                    Verse.Sound.SoundStarter.PlayOneShotOnCamera(SoundDefOf.TickHigh);
+                    Verse.Sound.SoundStarter.PlayOneShotOnCamera(SoundDefOf.Tick_High);
                     this.InterfaceDrop(thing, this.ship);
                 }
                 rect.width -= 24f;

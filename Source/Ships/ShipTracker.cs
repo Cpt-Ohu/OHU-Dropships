@@ -8,19 +8,8 @@ using Verse;
 
 namespace OHUShips
 {
-    public class ShipTracker : WorldObject
+    public class ShipTracker : WorldComponent
     {
-        public override bool SelectableNow
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public override void Draw()
-        {
-        }
 
         private int nextFleetID = 0;
 
@@ -30,7 +19,25 @@ namespace OHUShips
 
         public Dictionary<string, List<ShipBase>> shipsInFlight = new Dictionary<string, List<ShipBase>>();
 
-        public List<ShipBase> AllWorldShips = new List<ShipBase>();
+        public List<ShipBase> AllPlanetShips = new List<ShipBase>();
+
+        public IEnumerable<WorldShip> AllWorldShips
+        {
+            get
+            {
+                foreach (WorldShip ship in Find.WorldObjects.AllWorldObjects.OfType<WorldShip>())
+                {
+                    yield return ship;
+                }
+            }
+        }
+
+        public WorldShipPathFinder WorldShipPathFinder;
+
+        public ShipTracker(World world) : base(world)
+        {
+            this.WorldShipPathFinder = new WorldShipPathFinder();
+        }
 
         public List<LandedShip> AllLandedShips
         {
@@ -49,33 +56,18 @@ namespace OHUShips
             }
         }
         
-        public List<TravelingShips> AllTravelingShips
-        {
-            get
-            {
-                List<TravelingShips> tmp = new List<TravelingShips>();
-                for (int i=0; i < Find.WorldObjects.AllWorldObjects.Count; i++)
-                {
-                    TravelingShips ship = Find.WorldObjects.AllWorldObjects[i] as TravelingShips;
-                    if (ship != null)
-                    {
-                        tmp.Add(ship);
-                    }
-                }
-                return tmp;
-            }
-        }
 
         public void RemoveShip(ShipBase ship)
         {
-            this.AllWorldShips.Remove(ship);
+            this.AllPlanetShips.Remove(ship);
+            this.AllPlanetShips.RemoveAll(x => x == null);
         }
 
         public List<ShipBase> PlayerShips
         {
             get
             {
-                return this.AllWorldShips.FindAll(x => x.Faction == Faction.OfPlayer);
+                return this.AllPlanetShips.FindAll(x => x.Faction == Faction.OfPlayer);
             }
         }
         public void AddNewFleetEntry()
@@ -119,22 +111,9 @@ namespace OHUShips
 
         public List<ShipBase> ShipsInFleet(int ID)
         {
-            return this.AllWorldShips.FindAll(x => x.fleetID == ID);
+            return this.AllPlanetShips.FindAll(x => x.fleetID == ID);
         }
 
-        public bool PawnIsTravelingInShip(Pawn pawn)
-        {
-            for(int i = 0; i < this.AllTravelingShips.Count; i++)
-            {
-                TravelingShips cur = this.AllTravelingShips[i];
-                if (cur.ContainsPawn(pawn))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
                 
         public override void ExposeData()
         {
@@ -142,7 +121,7 @@ namespace OHUShips
             Scribe_Values.Look<int>(ref this.nextFleetID, "nextFleetID");
             Scribe_Values.Look<int>(ref this.nextWeaponSlotID, "nextWeaponSlotID");
             Scribe_Collections.Look<int, string>(ref this.PlayerFleetManager, "PlayerFleetManager", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look<ShipBase>(ref this.AllWorldShips, "AllWorldShips", LookMode.Reference, new object[0]);            
+            Scribe_Collections.Look<ShipBase>(ref this.AllPlanetShips, "AllWorldShips", LookMode.Reference, new object[0]);            
         }
     }
 }

@@ -20,6 +20,14 @@
   <CommandLoadShipCargo>Load</CommandLoadShipCargo>
   <CommandLoadShipCargoDesc>Load Cargo and passengers into the ship</CommandLoadShipCargoDesc>
 
+  
+  <CommandWorldShipHold>Hold</CommandWorldShipHold>
+  <CommandWorldShipHoldDesc>Enter a circling pattern, holding the ship in mid air. You can resume your flight at any moment.</CommandWorldShipHoldDesc>
+  
+  
+  <CommandWorldShipHalt>Halt</CommandWorldShipHalt>
+  <CommandWorldShipHaltDesc>Immediately touch down.</CommandWorldShipHaltDesc>
+  
 
   <Install>Install: </Install>
   <Uninstall>Uninstall: </Uninstall>
@@ -32,7 +40,7 @@
 
   <MessageShipsArrived>Your ships have arrived at their destination.</MessageShipsArrived>
 
-
+	<AttackSettlementAerial>Aerial assault (center)</AttackSettlementAerial>
 
   <NameFleetMessage>Rename Fleet</NameFleetMessage>
   <RenamedFleetMessage>Fleet renamed</RenamedFleetMessage>
@@ -85,6 +93,13 @@
 
   <TooBigShipMassUsage>The assigned passengers and cargo are too heavy for this ship.</TooBigShipMassUsage>
 
-  <ShipOutOfFuelCrash>The ship "{0}" ran out of fuel and went down with all passengers being lost.</ShipOutOfFuelCrash>
+  <ShipOutOfFuelCrash>The ship "{0}" ran out of fuel and went down with all {1} passengers being lost.</ShipOutOfFuelCrash>
+
+
+  <MessageBombedSettlement>Your ships have bombed {0} of {1}. It has been destroyed.</MessageBombedSettlement>
+  
+  <Runway>Runway</Runway>
+  <Zone_Runway>Runway</Zone_Runway>
+  <DesignatorRunwayZoneDesc>Create a zone where friendly aircraft may land.</DesignatorRunwayZoneDesc>
 
 </LanguageData>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<RecipeDefs>
+<Defs>
 
 	
   <RecipeDef>
@@ -24,7 +24,7 @@
 			<li>
 				<filter>
           <thingDefs>
-            <li>Component</li>
+            <li>ComponentIndustrial</li>
           </thingDefs>
         </filter>
         <count>3</count>
@@ -33,7 +33,7 @@
     <fixedIngredientFilter>
       <thingDefs>
         <li>Steel</li>
-	  <li>Component</li>
+	  <li>ComponentIndustrial</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>
@@ -41,4 +41,4 @@
     </products>
     <workSkill>Crafting</workSkill>
   </RecipeDef>
-</RecipeDefs>
+</Defs>

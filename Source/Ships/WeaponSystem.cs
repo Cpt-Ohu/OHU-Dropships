@@ -70,9 +70,10 @@ namespace OHUShips
             }
         }
 
-        public override void PreApplyDamage(DamageInfo dinfo, out bool absorbed)
+
+        public override void PreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
         {
-            base.PreApplyDamage(dinfo, out absorbed);
+            base.PreApplyDamage(ref dinfo, out absorbed);
             if (absorbed)
             {
                 return;

@@ -1,0 +1,24 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workbench ActiveDocument="ShipBase.cs">
+    <Files>
+      <File FileName="LandedShip.cs" Line="219" Column="1" />
+      <File FileName="ShipBase.cs" Line="537" Column="7" />
+      <File FileName="TravelingShips.cs" Line="413" Column="101" />
+      <File FileName="HarmonyPatches.cs" Line="269" Column="22" />
+      <File FileName="JobGiver_FleeIfShipDestroyed.cs" Line="1" Column="1" />
+      <File FileName="JobGiver_LeaveInShip.cs" Line="1" Column="1" />
+      <File FileName="JobGiver_LoadShipCargo.cs" Line="1" Column="1" />
+      <File FileName="JobGiver_EnterShipDuringLoad.cs" Line="1" Column="1" />
+      <File FileName="LoadShipCargoUtility.cs" Line="1" Column="1" />
+      <File FileName="LordJob_AerialAssault.cs" Line="1" Column="1" />
+      <File FileName="ShipDropSite.cs" Line="1" Column="1" />
+      <File FileName="TravelingShipArrivalAction.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

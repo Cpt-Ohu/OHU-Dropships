@@ -5,11 +5,12 @@ using System.Text;
 
 namespace OHUShips
 {
-    public enum TravelingShipArrivalAction
+    public enum ShipArrivalAction
     {
         StayOnWorldMap,
         EnterMapFriendly,
         EnterMapAssault,
-        BombingRun
+        BombingRun,
+        Despawn
     }
 }

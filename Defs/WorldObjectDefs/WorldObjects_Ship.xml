@@ -13,36 +13,24 @@
     <expandingIcon>false</expandingIcon>
     <texture>World/WorldObjects/Caravan</texture>
   </WorldObjectDef>
-
-
-  <WorldObjectDef>
-    <defName>TravelingSuborbitalShip</defName>
-    <label>aircraft</label>
+  
+    <WorldObjectDef>
+    <defName>WorldShip</defName>
+    <label>worldship</label>
     <description>Various aircraft in flight.</description>
-    <worldObjectClass>OHUShips.TravelingShips</worldObjectClass>
-    <texture>UI/Images/MovingFleet</texture>
-    <useDynamicDrawer>true</useDynamicDrawer>
-    <expandingIcon>true</expandingIcon>
-    <expandingIconTexture>World/WorldObjects/Expanding/TravelingTransportPods</expandingIconTexture>
-    <expandingIconPriority>6</expandingIconPriority>
-  </WorldObjectDef>
-
-  <WorldObjectDef>
-    <defName>LandedShip</defName>
-    <label>landed ships</label>
-    <description>A group of aircraft.</description>
-    <worldObjectClass>OHUShips.LandedShip</worldObjectClass>
+    <worldObjectClass>OHUShips.WorldShip</worldObjectClass>
     <texture>World/WorldObjects/Caravan</texture>
     <useDynamicDrawer>true</useDynamicDrawer>
     <expandingIcon>true</expandingIcon>
     <expandingIconTexture>World/WorldObjects/Expanding/Caravan</expandingIconTexture>
-    <expandingIconPriority>10</expandingIconPriority>
+    <expandingIconPriority>100</expandingIconPriority>
+    <expandMore>true</expandMore>
+    <allowCaravanIncidentsWhichGenerateMap>true</allowCaravanIncidentsWhichGenerateMap>
+    <IncidentTargetTags>
+      <li>Caravan</li>
+    </IncidentTargetTags>
     <inspectorTabs>
-      <li>WITab_Caravan_Health</li>
-      <li>WITab_Caravan_Needs</li>
-      <li>WITab_Caravan_Gear</li>
-      <li>WITab_Caravan_Social</li>
-      <li>OHUShips.WITab_LandedShip_Cargo</li>
+      <li>OHUShips.WITab_Worldship_Cargo</li>
     </inspectorTabs>
   </WorldObjectDef>
 

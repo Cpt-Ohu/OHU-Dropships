@@ -24,7 +24,7 @@ namespace OHUShips
         {
             ShipBase ship = (ShipBase)t;
             KeyValuePair<ShipWeaponSlot, Thing> weaponSpecs = ship.weaponsToInstall.RandomElement();
-            if (!ship.Map.reservationManager.IsReserved(weaponSpecs.Value, pawn.Faction))
+            if (!ship.Map.reservationManager.IsReservedByAnyoneOf(weaponSpecs.Value, pawn.Faction))
             {
                 weaponSpecs.Value.TryGetComp<CompShipWeapon>().slotToInstall = weaponSpecs.Key;
 
@@ -42,7 +42,7 @@ namespace OHUShips
             if (t is ShipBase)
             {
                 ShipBase ship = (ShipBase)t;
-                return ship.weaponsToInstall.Count > 0 && !t.Map.reservationManager.IsReserved(t, pawn.Faction);
+                return ship.weaponsToInstall.Count > 0 && !t.Map.reservationManager.IsReservedByAnyoneOf(t, pawn.Faction);
             }
             return false;
         }

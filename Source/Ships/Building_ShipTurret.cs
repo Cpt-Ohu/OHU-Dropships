@@ -19,7 +19,7 @@ namespace OHUShips
             {
                 if (this.parentShipCached == null)
                 {
-                    this.parentShipCached = DropShipUtility.currentShipTracker.AllWorldShips.FirstOrDefault(x => x.GetUniqueLoadID() == this.parentShipLoadID);
+                    this.parentShipCached = DropShipUtility.CurrentShipTracker.AllPlanetShips.FirstOrDefault(x => x.GetUniqueLoadID() == this.parentShipLoadID);
                 }
                 return this.parentShipCached;
             }
