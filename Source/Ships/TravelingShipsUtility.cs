@@ -205,20 +205,17 @@ namespace OHUShips
             }
             else if (pawnsArrivalMode == PawnsArrivalModeDefOf.EdgeDrop)
             {
-                return EdgeCell(map);
+                return DistantCell(map);
             }
 
             return IntVec3.Zero;
         }
 
-        private static IntVec3 EdgeCell(Map map)
+        private static IntVec3 DistantCell(Map map)
         {
             IntVec3 cell;
 
-            if(!CellFinder.TryFindRandomEdgeCellWith((IntVec3 x) => x.Standable(map) && CanReachCenter(map, x) && !x.Fogged(map) && !(x.Roofed(map) && x.GetRoof(map).isThickRoof && !x.Fogged(map)), map, 0f, out cell))
-            {
-                CellFinder.RandomEdgeCell(map);
-            }
+            cell = DropCellFinder.FindRaidDropCenterDistant(map);
 
             return cell;
             
