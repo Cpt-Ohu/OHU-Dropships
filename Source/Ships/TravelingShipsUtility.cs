@@ -183,7 +183,6 @@ namespace OHUShips
 
         private static void Enter(WorldShip worldShip, Map map, IntVec3 targetCell, ShipArrivalAction arrivalAction, PawnsArrivalModeDef pawnsArrivalMode)
         {
-            Log.Message("Entering with" + pawnsArrivalMode.defName);
             List<ShipBase> ships = worldShip.WorldShipData.Select(x => x.Ship).ToList();
             IntVec3 cell = GetCellForArrivalMode(worldShip.WorldShipData[0].Ship, targetCell ,map, pawnsArrivalMode);
             DropShipUtility.DropShipGroups(cell, map, ships, arrivalAction, worldShip.WorldShipData.Count == 1);

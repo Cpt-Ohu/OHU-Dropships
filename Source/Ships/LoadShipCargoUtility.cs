@@ -42,7 +42,7 @@ namespace OHUShips
             
             else
             {
-                Log.Message("No Transferable found.");
+                Log.Warning("No Transferable found.");
             }
             return null;
         }

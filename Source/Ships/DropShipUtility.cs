@@ -73,8 +73,8 @@ namespace OHUShips
         {
             return map.listerThings.AllThings.FindAll(x => x is ShipBase).Cast<ShipBase>().ToList();
         }
-     
-        
+
+
         public static Vector3 DrawPosAt(ShipBase ship, int ticks, ShipBase_Traveling travelingShip = null)
         {
             if (ticks < 0)
@@ -152,7 +152,7 @@ namespace OHUShips
             {
                 ticks = 0;
             }
-                        
+
             Vector3 result = GenThing.TrueCenter(ship);
             if (travelingShip != null)
             {
@@ -173,12 +173,12 @@ namespace OHUShips
 
         public static void InitializeDropShipSpawn(ShipBase ship)
         {
-        //    ship.def.selectable = false;
+            //    ship.def.selectable = false;
         }
 
         public static void DropShipLanded(ShipBase ship)
         {
-         //   ship.def.selectable = true;
+            //   ship.def.selectable = true;
         }
 
         public static List<Thing> CurrentFactionShips(Pawn pawn)
@@ -243,7 +243,7 @@ namespace OHUShips
                 if (pawn != null)
                 {
                     tmp.Add(pawn);
-                }                    
+                }
             }
 
             return tmp;
@@ -251,7 +251,7 @@ namespace OHUShips
 
         public static bool ShipIsAlreadyDropping(ShipBase ship, Map map)
         {
-            if(ship.Spawned)
+            if (ship.Spawned)
             {
                 return true;
             }
@@ -323,13 +323,13 @@ namespace OHUShips
                 ShipBase ship = ships[0];
                 List<Zone> runways = map.zoneManager.AllZones.FindAll(x => x is Zone_Runway);
 
-                bool wipeBuildings; 
+                bool wipeBuildings;
                 bool doesntFit;
                 IntVec3 dropCell = IntVec3.Zero;
                 Rot4? rot = ship.Rotation;
                 foreach (var runway in runways)
                 {
-                    
+
                     List<IntVec3> cells = runway.Cells;
                     int x = cells.Min(c => c.x);
                     int z = cells.Min(c => c.z);
@@ -340,7 +340,6 @@ namespace OHUShips
 
 
                     dropCell = (RunwayUtility.FindShipDropPoint(map, rect, ship.def, ref rot, out wipeBuildings, out doesntFit));
-                    Log.Message(dropCell.ToString());
                     if (doesntFit == true)
                     {
                         newShip = null;
@@ -382,8 +381,7 @@ namespace OHUShips
                 return true;
             };
 
-
-            Predicate<IntVec3> validator = (IntVec3 c) => validatingExistingShips(c) &&  DropCellFinder.IsGoodDropSpot(c, map, allowFogged, canRoofPunch) && map.reachability.CanReach(center, c, PathEndMode.OnCell, TraverseMode.PassDoors, Danger.Deadly);
+            Predicate<IntVec3> validator = (IntVec3 c) => validatingExistingShips(c) && DropCellFinder.IsGoodDropSpot(c, map, allowFogged, canRoofPunch) && map.reachability.CanReach(center, c, PathEndMode.OnCell, TraverseMode.PassDoors, Danger.Deadly) && GenAdj.OccupiedRect(c, ship.Rotation, ship.def.Size).InBounds(map);
             int num = 5;
             while (!CellFinder.TryFindRandomCellNear(center, map, num, validator, out result))
             {
@@ -405,7 +403,7 @@ namespace OHUShips
             while (num < 5)
             {
                 Predicate<IntVec3> validator = delegate (IntVec3 c)
-                {                    
+                {
                     foreach (IntVec3 current2 in GenAdj.CellsOccupiedBy(c, Rot4.North, size))
                     {
                         if (!current2.Standable(map))
@@ -454,7 +452,7 @@ namespace OHUShips
             List<Thing> list = map.listerThings.AllThings.FindAll(x => x.TryGetComp<CompShipWeapon>() != null);
 
             List<WeaponSystem> list2 = new List<WeaponSystem>();
-            for (int i=0; i < list.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 CompShipWeapon comp = list[i].TryGetComp<CompShipWeapon>();
                 if (comp.SProps.weaponSystemType == slot.slotType)
@@ -467,16 +465,16 @@ namespace OHUShips
 
         public static List<Thing> availableWeaponsForSlot(Map map, ShipWeaponSlot slot)
         {
-            return map.listerThings.AllThings.FindAll(x => x.TryGetComp<CompShipWeapon>() != null && x.TryGetComp<CompShipWeapon>().SProps.weaponSystemType == slot.slotType);            
+            return map.listerThings.AllThings.FindAll(x => x.TryGetComp<CompShipWeapon>() != null && x.TryGetComp<CompShipWeapon>().SProps.weaponSystemType == slot.slotType);
         }
 
         private static List<TransferableOneWay> tmpTransferables = new List<TransferableOneWay>();
 
         public static float ApproxDaysWorthOfFood_Ship(ShipBase ship, List<TransferableOneWay> transferables, bool canEatPlants)
-        {            
+        {
             tmpTransferables.Clear();
 
-            for (int i=0; i < transferables.Count; i++)
+            for (int i = 0; i < transferables.Count; i++)
             {
                 TransferableOneWay oneWay = new TransferableOneWay();
                 oneWay.things.AddRange(transferables[i].things);
@@ -488,7 +486,7 @@ namespace OHUShips
 
             foreach (Pawn current in ship.GetDirectlyHeldThings().Where(x => x is Pawn))
             {
-                    DropShipUtility.AddThingsToTransferables(tmpTransferables, current);
+                DropShipUtility.AddThingsToTransferables(tmpTransferables, current);
             }
             for (int i = 0; i < ship.GetDirectlyHeldThings().Count; i++)
             {
@@ -531,7 +529,7 @@ namespace OHUShips
                 {
                     Pawn pawn = newCargo[i] as Pawn;
                     ships.RandomElement().TryAcceptThing(newCargo[i], true);
-                    
+
                     num++;
                 }
 
@@ -548,7 +546,7 @@ namespace OHUShips
             LordJob_AerialAssault lordAssault = pawn.GetLord().LordJob as LordJob_AerialAssault;
             if (lordAssault != null)
             {
-                return lordAssault.ships.All(x => x.Destroyed || !x.Spawned) ;
+                return lordAssault.ships.All(x => x.Destroyed || !x.Spawned);
             }
             return false;
         }

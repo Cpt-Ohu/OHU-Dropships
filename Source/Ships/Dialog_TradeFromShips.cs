@@ -50,8 +50,6 @@ namespace OHUShips
                                   return -1;
                               }).ThenBy((Tradeable tr) => tr.AnyThing.HitPoints).ToList<Tradeable>();
 
-            Log.Message("ALL Tradeables: " + TradeSession.deal.AllTradeables.Count.ToString());
-            Log.Message("Tradeables: " + tradeables.Count().ToString());
         }
 
         public override void DoWindowContents(Rect inRect)
@@ -121,7 +119,6 @@ namespace OHUShips
                             {
                                 if (!pawn.IsColonist && (pawn.Faction != null && pawn.Faction != worldShip.Faction) )
                                 {
-                                    Log.Message("Removing: " + pawn.Name);
                                     tmpToRemove.Add(container[k]);
                                 }
                             }

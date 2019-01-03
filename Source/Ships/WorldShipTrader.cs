@@ -59,7 +59,7 @@ namespace OHUShips
 
         public void GiveSoldThingToTrader(Thing toGive, int countToGive, Pawn playerNegotiator)
         {
-             var shipData = this._worldShip.WorldShipData.FirstOrDefault(d => d.Cargo.Contains(toGive));
+            var shipData = this._worldShip.WorldShipData.FirstOrDefault(d => d.Cargo.Contains(toGive));
             if (shipData != null && shipData.Ship != null)
             {
                 shipData.Ship.GetDirectlyHeldThings().Remove(toGive);
@@ -72,6 +72,13 @@ namespace OHUShips
             if (shipBase != null)
             {
                 shipBase.GetDirectlyHeldThings().TryAddOrTransfer(toGive, countToGive, true);
+                if (toGive is Pawn p)
+                {
+                    if (p.IsWorldPawn())
+                    {
+                        Find.WorldPawns.RemovePawn(p);
+                    }
+                }
             }
         }
 

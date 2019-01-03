@@ -23,7 +23,6 @@ namespace OHUShips
                 FieldInfo info = base.GetType().GetField("tradeables", BindingFlags.Instance | BindingFlags.NonPublic);
                 if (info != null)
                 {
-                    Log.Message("Found tradeables");
                     return info.GetValue(this) as List<Tradeable>;
                 }
                 return null;

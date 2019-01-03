@@ -33,6 +33,18 @@ namespace OHUShips
             }
         }
 
+        public override Texture2D ExpandingIcon
+        {
+            get
+            {
+                if (this.WorldShipData.Count > 1)
+                {
+                    return DropShipUtility.movingFleet;
+                }
+                return DropShipUtility.movingShip;
+            }
+        }
+
         public WorldShip()
         {
             pather = new WorldShipPather(this);
@@ -156,9 +168,7 @@ namespace OHUShips
             {
                 Messages.Message("MessageShipsArrived".Translate(), this, MessageTypeDefOf.NeutralEvent);
             }
-
-            Log.Message("Arrived with pawnmode " + mapArrivalMode.defName + " and action " + arrivalAction.ToString());
-
+            
             if (arrivalAction == ShipArrivalAction.EnterMapAssault || arrivalAction == ShipArrivalAction.EnterMapFriendly)
             {
                 MapParent parent = Find.WorldObjects.MapParentAt(this.Tile);

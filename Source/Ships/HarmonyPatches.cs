@@ -46,8 +46,7 @@ namespace OHUShips
 
 
             harmony.Patch(AccessTools.Method(typeof(TradeSession), "SetupWith"), new HarmonyMethod(typeof(HarmonyPatches), "SetupWithPrefix", null), null);
-            harmony.Patch(AccessTools.Method(typeof(TradeDeal), "AddAllTradeables"), new HarmonyMethod(typeof(HarmonyPatches), "AddAllTradeablesPrefix", null), null);
-
+            
             harmony.Patch(AccessTools.Method(typeof(SettlementBase_TraderTracker), "GiveSoldThingToPlayer"), new HarmonyMethod(typeof(HarmonyPatches), "GiveSoldThingToPlayerPrefix", null), null);
 
             harmony.Patch(AccessTools.Method(typeof(Settlement_TraderTracker), "GiveSoldThingToTrader"), new HarmonyMethod(typeof(HarmonyPatches), "GiveSoldThingToTraderPrefix", null), null);
@@ -110,7 +109,6 @@ namespace OHUShips
         {
             if (newPlayerNegotiator.GetWorldShip() != null)
             {
-                Log.Message("Found Worldship");
                 if (!newTrader.CanTradeNow)
                 {
                     Log.Warning("Called SetupWith with a trader not willing to trade now.", false);
@@ -132,20 +130,11 @@ namespace OHUShips
         {
             TradeDeal_Worldship tradeDeal = FormatterServices.GetUninitializedObject(typeof(TradeDeal_Worldship)) as TradeDeal_Worldship;
             FieldInfo fieldInfo = typeof(TradeDeal).GetField("tradeables", BindingFlags.NonPublic | BindingFlags.Instance);
-            Log.Message(fieldInfo.Name);
             fieldInfo.SetValue(tradeDeal, new List<Tradeable>());
             tradeDeal.cannotSellReasons = new List<string>();
             return tradeDeal;
         }
-
-        public static bool AddAllTradeablesPrefix(ref TradeDeal __instance)
-        {
-            Log.Message("Starting Log");
-            Log.Message(TradeSession.trader.TraderName);
-            Log.Message(TradeSession.trader.Goods.Count().ToString());
-            return true;
-        }
-
+        
         public static void MaxCountTransferablePostFix(TransferableOneWay __instance)
         {
             //Log.Error("3");

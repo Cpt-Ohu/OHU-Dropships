@@ -212,7 +212,6 @@ namespace OHUShips
             //Scribe_Values.Look<WorldPath>(ref this.worldPath, "worldPath");
             if (Scribe.mode == LoadSaveMode.PostLoadInit && this.moving)
             {
-                Log.Message("Starting to Travel");
                 this.SetDestination(this._destinationTile, this._destinationCell, this._arrivalAction, this._mapArrivalMode);
             }
         }
