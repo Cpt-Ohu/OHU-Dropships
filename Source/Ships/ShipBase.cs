@@ -191,7 +191,7 @@ namespace OHUShips
             this.RecolorShip();
         }
 
-        public void RecolorShip()
+        public virtual void RecolorShip()
         {
             this.FirstSpawned = true;
         }

@@ -72,6 +72,10 @@ namespace OHUShips
 
         protected override bool TryExecuteWorker(IncidentParms parms)
         {
+            if (parms.target.PlayerWealthForStoryteller < 90000)
+            {
+                return false;
+            }
             Map map = (Map)parms.target;
             this.ResolveRaidPoints(parms);
             if (!this.TryResolveRaidFaction(parms))

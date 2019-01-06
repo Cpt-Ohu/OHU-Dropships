@@ -157,18 +157,18 @@ namespace OHUShips
                 }
 
                 this.CheckFuelStatus();
-            
+
             }
             this.WorldShipData.RemoveAll(x => x.Ship.Destroyed);
         }
 
         internal void Arrive(IntVec3 targetCell, ShipArrivalAction arrivalAction, PawnsArrivalModeDef mapArrivalMode)
         {
-            if (this.IsPlayerControlled)
+            if (this.IsPlayerControlled && arrivalAction != ShipArrivalAction.BombingRun)
             {
                 Messages.Message("MessageShipsArrived".Translate(), this, MessageTypeDefOf.NeutralEvent);
             }
-            
+
             if (arrivalAction == ShipArrivalAction.EnterMapAssault || arrivalAction == ShipArrivalAction.EnterMapFriendly)
             {
                 MapParent parent = Find.WorldObjects.MapParentAt(this.Tile);
@@ -189,6 +189,13 @@ namespace OHUShips
                     {
                         TravelingShipsUtility.EnterMapWithShip(this, map, targetCell, arrivalAction, mapArrivalMode);
                     }, "SpawningColonists", true, new Action<Exception>(GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap));
+                }
+            }
+            else if (arrivalAction == ShipArrivalAction.BombingRun)
+            {
+                if (BombingUtility.TryBombWorldTarget(this.Tile, this))
+                {
+
                 }
             }
         }

@@ -45,7 +45,6 @@ C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Warhammer40k-Corrupt
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Warhammer40k-Corruption-B18b - Redo\Source\Ships\obj\Debug\0OHUShips.pdb
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Warhammer40k-Corruption-B19\Assemblies\0OHUShips.dll
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Warhammer40k-Corruption-B19\Assemblies\0OHUShips.pdb
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Warhammer40k-Corruption-B19\Source\Ships\obj\Debug\OHUShips.csprojResolveAssemblyReference.cache
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Warhammer40k-Corruption-B19\Source\Ships\obj\Debug\OHUShips.csproj.CoreCompileInputs.cache
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Warhammer40k-Corruption-B19\Source\Ships\obj\Debug\0OHUShips.dll
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Warhammer40k-Corruption-B19\Source\Ships\obj\Debug\0OHUShips.pdb
@@ -54,3 +53,8 @@ C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\OHU-Dropships-1.57\A
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\OHU-Dropships-1.57\Source\Ships\obj\Debug\OHUShips.csproj.CoreCompileInputs.cache
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\OHU-Dropships-1.57\Source\Ships\obj\Debug\0OHUShips.dll
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\OHU-Dropships-1.57\Source\Ships\obj\Debug\0OHUShips.pdb
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\OHU-Dropships-2.0\Assemblies\0OHUShips.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\OHU-Dropships-2.0\Assemblies\0OHUShips.pdb
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\OHU-Dropships-2.0\Source\Ships\obj\Debug\OHUShips.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\OHU-Dropships-2.0\Source\Ships\obj\Debug\0OHUShips.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\OHU-Dropships-2.0\Source\Ships\obj\Debug\0OHUShips.pdb

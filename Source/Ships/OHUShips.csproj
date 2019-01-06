@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BombingUtility.cs" />
     <Compile Include="Building_ShipTurret.cs" />
     <Compile Include="CompProperties_Ship.cs" />
     <Compile Include="CompProperties_ShipWeapon.cs" />

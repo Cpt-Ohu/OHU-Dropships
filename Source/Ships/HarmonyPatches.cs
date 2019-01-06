@@ -51,7 +51,9 @@ namespace OHUShips
 
             harmony.Patch(AccessTools.Method(typeof(Settlement_TraderTracker), "GiveSoldThingToTrader"), new HarmonyMethod(typeof(HarmonyPatches), "GiveSoldThingToTraderPrefix", null), null);
 
+            harmony.Patch(AccessTools.Method(typeof(SettlementDefeatUtility), "IsDefeated"), null, new HarmonyMethod(typeof(HarmonyPatches), "IsDefeatedPostfix", null), null);
 
+            
 
         }
 
@@ -327,6 +329,13 @@ namespace OHUShips
             return true;
         }
 
+        public static void IsDefeatedPostfix(ref bool __result, Map map, Faction faction)
+        {
+            if (!faction.HostileTo(Faction.OfPlayer))
+            {
+                __result = false;
+            }
+        }
 
     }
 }

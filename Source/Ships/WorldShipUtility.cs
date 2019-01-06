@@ -26,7 +26,7 @@ namespace OHUShips
                 //worldShip.AddPawnOrItem(t, true);
             }
         }
-        
+
 
         public static Command TradeCommand(WorldShip worldShip)
         {
@@ -41,8 +41,8 @@ namespace OHUShips
                 if (Settlement != null && Settlement.CanTradeNow)
                 {
                     //caravan.UnloadCargoForTrading();
-                //Find.WindowStack.Add(new Dialog_TradeFromShips(caravan, bestNegotiator, Settlement));
-                Find.WindowStack.Add(new Dialog_TradeFromShips(worldShip, bestNegotiator, Settlement));
+                    //Find.WindowStack.Add(new Dialog_TradeFromShips(caravan, bestNegotiator, Settlement));
+                    Find.WindowStack.Add(new Dialog_TradeFromShips(worldShip, bestNegotiator, Settlement));
                     string empty = string.Empty;
                     string empty2 = string.Empty;
                     PawnRelationUtility.Notify_PawnsSeenByPlayer_Letter(Settlement.Goods.OfType<Pawn>(), ref empty, ref empty2, "LetterRelatedPawnsTradingWithSettlement".Translate(), false);
@@ -124,13 +124,14 @@ namespace OHUShips
         public static void Settle(WorldShip worldShip, bool settlePermanent = false)
         {
             Faction faction = worldShip.Faction;
+            PawnsArrivalModeDef arrivalMode = PawnsArrivalModeDefOf.CenterDrop;
             if (faction != Faction.OfPlayer)
             {
                 Log.Error("Cannot settle with non-player faction.");
                 return;
             }
             MapParent newWorldObject;
-            Map mapToDropIn;
+            Map mapToDropIn = null;
             bool foundMapParent = false;
             if (settlePermanent)
             {
@@ -157,24 +158,39 @@ namespace OHUShips
                 if (settlePermanent)
                 {
                     vec3 = Find.World.info.initialMapSize;
-                    mapToDropIn = MapGenerator.GenerateMap(vec3, newWorldObject, MapGeneratorDefOf.Base_Faction, null, null);
+                    mapToDropIn = MapGenerator.GenerateMap(vec3, newWorldObject, MapGeneratorDefOf.Base_Player, null, null);
                 }
                 else if (newWorldObject != null && foundMapParent)
                 {
-                    Site site = newWorldObject as Site;
-                    mapToDropIn = GetOrGenerateMapUtility.GetOrGenerateMap(worldShip.Tile, site != null ? Find.World.info.initialMapSize : SiteCoreWorker.MapSize, newWorldObject.def);
+                    if (newWorldObject.HasMap)
+                    {
+                        arrivalMode = PawnsArrivalModeDefOf.EdgeDrop;
+                        mapToDropIn = newWorldObject.Map;
+                    }
+                    else
+                    {
+                        Site site = newWorldObject as Site;
+                        mapToDropIn = GetOrGenerateMapUtility.GetOrGenerateMap(worldShip.Tile, site == null ? Find.World.info.initialMapSize : SiteCoreWorker.MapSize, newWorldObject.def);
+                        arrivalMode = PawnsArrivalModeDefOf.EdgeDrop;
+                    }
                 }
                 else
                 {
                     vec3 = new IntVec3(100, 1, 100);
-                    mapToDropIn = MapGenerator.GenerateMap(vec3, newWorldObject, MapGeneratorDefOf.Base_Faction, null, null);
+                    mapToDropIn = MapGenerator.GenerateMap(vec3, newWorldObject, MapGeneratorDefOf.Base_Player, null, null);
                 }
+                if (mapToDropIn == null)
+                {
+                    Log.Error("Failed to generate Map for Ship Dropdown");
+                    return;
+                }
+
                 Current.Game.CurrentMap = mapToDropIn;
             }, "GeneratingMap", true, new Action<Exception>(GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap));
             LongEventHandler.QueueLongEvent(delegate
             {
                 Map map = newWorldObject.Map;
-                TravelingShipsUtility.EnterMapWithShip(worldShip, map, IntVec3.Zero, ShipArrivalAction.EnterMapFriendly, PawnsArrivalModeDefOf.CenterDrop);
+                TravelingShipsUtility.EnterMapWithShip(worldShip, map, IntVec3.Zero, ShipArrivalAction.EnterMapFriendly, arrivalMode);
                 Find.CameraDriver.JumpToCurrentMapLoc(map.Center);
                 Find.MainTabsRoot.EscapeCurrentTab(false);
             }, "SpawningColonists", true, new Action<Exception>(GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap));
