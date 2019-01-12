@@ -24,7 +24,7 @@ namespace OHUShips
         public Dictionary<ShipWeaponSlot, WeaponSystemShipBomb> Payload = new Dictionary<ShipWeaponSlot, WeaponSystemShipBomb>();
         public Dictionary<ShipWeaponSlot, Thing> weaponsToInstall = new Dictionary<ShipWeaponSlot, Thing>();
         public Dictionary<ShipWeaponSlot, Thing> weaponsToUninstall = new Dictionary<ShipWeaponSlot, Thing>();
-                        
+
         public bool shouldSpawnTurrets = false;
         //public bool shouldDeepSave = true;
 
@@ -39,7 +39,7 @@ namespace OHUShips
         {
             return this.innerContainer;
         }
-                
+
         public float MassUsage
         {
             get
@@ -58,7 +58,7 @@ namespace OHUShips
 
 
         public string ShipNick = "Ship";
-        
+
         public ShipState shipState = ShipState.Stationary;
 
         private ThingOwner innerContainer;
@@ -93,10 +93,10 @@ namespace OHUShips
 
         public int drawTickOffset = 0;
 
-        private const int maxTimeToWait = 3000;        
+        private const int maxTimeToWait = 3000;
 
         private int timeWaited = 0;
-        
+
         private int timeToLiftoff = 50;
 
         private bool NoneLeftBehind = false;
@@ -104,9 +104,9 @@ namespace OHUShips
         private bool ShouldWait = false;
 
         public bool IsTargeting { get; set; }
-        
+
         public bool keepShipReference;
-                
+
         public int fleetID = -1;
 
         public bool LaunchAsFleet;
@@ -137,7 +137,7 @@ namespace OHUShips
                 return this.parentShipCached;
             }
         }
-        
+
         public bool pilotPresent
         {
             get
@@ -153,7 +153,7 @@ namespace OHUShips
         public bool ShouldSpawnFueled;
 
         public bool holdFire = true;
-                
+
         public bool ActivatedLaunchSequence;
 
         private bool DeepsaveTurrets = false;
@@ -195,7 +195,7 @@ namespace OHUShips
         {
             this.FirstSpawned = true;
         }
-        
+
         public int MaxLaunchDistanceEverPossible(bool LaunchAsFleet, bool includeReturnFlight = false)
         {
             if (LaunchAsFleet && this.fleetID != -1)
@@ -205,7 +205,7 @@ namespace OHUShips
                 ShipBase lowest = fleetShips.Aggregate((curMin, x) => (curMin == null || x.MaxLaunchDistanceEverPossible(false) < curMin.MaxLaunchDistanceEverPossible(false) ? x : curMin));
                 return (int)((lowest.MaxShipFlightTicks * lowest.compShip.sProps.WorldMapTravelSpeedFactor * 0.0000416f) / 0.005F);
             }
-            return (int)((this.MaxShipFlightTicks * this.compShip.sProps.WorldMapTravelSpeedFactor * 0.0000416f)/ 0.005F);
+            return (int)((this.MaxShipFlightTicks * this.compShip.sProps.WorldMapTravelSpeedFactor * 0.0000416f) / 0.005F);
         }
 
         public int MaxShipFlightTicks
@@ -225,8 +225,8 @@ namespace OHUShips
             {
                 return this.compShip.sProps.TicksToImpact + this.compShip.sProps.TicksToDespawn;
             }
-        }       
-        
+        }
+
 
         public bool ReadyForTakeoff
         {
@@ -251,7 +251,7 @@ namespace OHUShips
             if (this.installedTurrets.Count == 0)
             {
                 this.InitiateInstalledTurrets();
-            }            
+            }
         }
 
         private void InitiateInstalledTurrets()
@@ -294,7 +294,7 @@ namespace OHUShips
                 }
             }
         }
-        
+
         public bool TryModifyWeaponSystem(ShipWeaponSlot slot, Thing system, bool AddForInstalling = true)
         {
             if (AddForInstalling)
@@ -316,8 +316,8 @@ namespace OHUShips
                 return true;
             }
         }
-       
-        
+
+
         public override void Tick()
         {
             base.Tick();
@@ -332,14 +332,14 @@ namespace OHUShips
             {
                 this.IsTargeting = false;
             }
-            for (int i=0; i < DropShipUtility.AllPawnsInShip(this).Count; i++)
+            for (int i = 0; i < DropShipUtility.AllPawnsInShip(this).Count; i++)
             {
                 Pawn pawn = DropShipUtility.AllPawnsInShip(this)[i];
                 float num = 0.6f;
                 num = 0.7f * num + 0.3f * num;
                 pawn.needs.rest.TickResting(num);
             }
-            
+
             if (this.shipState == ShipState.Incoming)
             {
                 this.drawTickOffset--;
@@ -349,7 +349,7 @@ namespace OHUShips
                 }
                 this.ConsumeFuel();
             }
-            
+
             if (ReadyForTakeoff && ActivatedLaunchSequence)
             {
                 this.timeToLiftoff--;
@@ -372,13 +372,13 @@ namespace OHUShips
                 }
             }
 
-            if (shipState == ShipState.Outgoing )
+            if (shipState == ShipState.Outgoing)
             {
                 this.drawTickOffset++;
                 this.ConsumeFuel();
                 if (this.Spawned)
-                {                    
-                    ShipBase_Traveling travelingShip = new ShipBase_Traveling(this,this.LaunchAsFleet, ShipArrivalAction.StayOnWorldMap);
+                {
+                    ShipBase_Traveling travelingShip = new ShipBase_Traveling(this, this.LaunchAsFleet, ShipArrivalAction.StayOnWorldMap);
 
                     Map curMap = this.Map;
                     IntVec3 curPos = this.Position;
@@ -426,14 +426,14 @@ namespace OHUShips
                 {
                     foreach (ShipBase current in DropShipUtility.CurrentShipTracker.ShipsInFleet(this.fleetID))
                     {
-                        if (current != this)
+                        if (current != this && current.Spawned)
                         {
                             current.shipState = ShipState.Outgoing;
-                            ShipBase_Traveling travelingShip2 = new ShipBase_Traveling(current, target, arriveMode, arrivalAction);Log.Message("Spawn 1");
+                            ShipBase_Traveling travelingShip2 = new ShipBase_Traveling(current, target, arriveMode, arrivalAction);
                             Map shipMap = current.Map;
                             IntVec3 shipPos = current.Position;
-                            this.DeSpawn();
-                            GenSpawn.Spawn(travelingShip, shipPos, shipMap, current.Rotation, WipeMode.Vanish);
+                            current.DeSpawn();
+                            GenSpawn.Spawn(travelingShip2, shipPos, shipMap, current.Rotation, WipeMode.Vanish);
                         }
                     }
                 }
@@ -506,7 +506,7 @@ namespace OHUShips
                     }
                 }
             }
-            for (int i=0; i < slotsToRemove.Count; i++)
+            for (int i = 0; i < slotsToRemove.Count; i++)
             {
                 this.installedTurrets[slotsToRemove[i]] = null;
             }
@@ -529,16 +529,16 @@ namespace OHUShips
                     Pawn pawn1 = thing as Pawn;
                     if ((pawn1 != null && dropPawns && !pawn1.IsPrisoner && pawn1.def.race.Humanlike) || (dropitems && thing.GetType() != typeof(Pawn)))
                     {
-                        if(this.GetDirectlyHeldThings().TryDrop(thing, base.Position, this.Map, ThingPlaceMode.Near, out thing2, delegate (Thing placedThing, int count)
-                        {
-                            if (Find.TickManager.TicksGame < 1200 && TutorSystem.TutorialMode && placedThing.def.category == ThingCategory.Item)
-                            {
-                                Find.TutorialState.AddStartingItem(placedThing);
-                            }
-                        }))                            
+                        if (this.GetDirectlyHeldThings().TryDrop(thing, base.Position, this.Map, ThingPlaceMode.Near, out thing2, delegate (Thing placedThing, int count)
+                         {
+                             if (Find.TickManager.TicksGame < 1200 && TutorSystem.TutorialMode && placedThing.def.category == ThingCategory.Item)
+                             {
+                                 Find.TutorialState.AddStartingItem(placedThing);
+                             }
+                         }))
                         {
 
-                        Pawn pawn2 = thing2 as Pawn;
+                            Pawn pawn2 = thing2 as Pawn;
                             if (pawn2 != null)
                             {
                                 if (pawn2.RaceProps.Humanlike)
@@ -552,7 +552,7 @@ namespace OHUShips
                                 {
                                     pawn2.drafter.Drafted = true;
                                 }
-                            }                            
+                            }
                         }
                     }
                     else if (dropitems && thing.GetType() != typeof(Pawn))
@@ -561,7 +561,7 @@ namespace OHUShips
                     }
                 }
             }
-         
+
             SoundDef.Named("DropPodOpen").PlayOneShot(new TargetInfo(base.Position, base.Map, false));
         }
 
@@ -581,13 +581,14 @@ namespace OHUShips
                         Messages.Message("MessagePassengersFull".Translate(new object[] { pawn.Name, this.ShipNick }), this, MessageTypeDefOf.RejectInput);
                         return false;
                     }
-					if (pawn.Spawned)
-					{
-						pawn.DeSpawn();
-					}
-                    if(!this.innerContainer.Contains(pawn)){
+                    if (pawn.Spawned)
+                    {
+                        pawn.DeSpawn();
+                    }
+                    if (!this.innerContainer.Contains(pawn))
+                    {
                         //pawn.InContainerEnclosed
-						this.innerContainer.TryAdd(pawn, 1, false);
+                        this.innerContainer.TryAdd(pawn, 1, false);
                     }
 
                 }
@@ -598,7 +599,7 @@ namespace OHUShips
                         return true;
                     }
                     else
-                    {                        
+                    {
                         return false;
                     }
                 }
@@ -606,28 +607,28 @@ namespace OHUShips
             bool flag;
             if (thing.holdingOwner != null)
             {
-                
+
                 flag = thing.holdingOwner.TryTransferToContainer(thing, this.innerContainer);
-                
+
             }
             else
             {
                 flag = this.innerContainer.TryAdd(thing.SplitOff(thing.stackCount), true);
             }
             if (flag)
-            {                
+            {
                 return true;
             }
             return false;
         }
-                
+
         public void PrepareForLaunchIn(int ticksToLiftoff, bool noOneLeftBehind = false)
         {
             this.ActivatedLaunchSequence = true;
             this.timeToLiftoff = ticksToLiftoff;
             this.NoneLeftBehind = noOneLeftBehind;
         }
-               
+
 
         public void WaitForLordPassengers(List<Pawn> potentialPassengers, bool noneLeftBehind = false)
         {
@@ -650,7 +651,7 @@ namespace OHUShips
             else
             {
                 ShouldWait = false;
-            }       
+            }
         }
 
 
@@ -708,16 +709,16 @@ namespace OHUShips
             {
                 FloatMenuOption current = enumerator.Current;
                 yield return current;
-            }     
-                Action action = delegate
+            }
+            Action action = delegate
+            {
+                if (selPawn.CanReach(this, PathEndMode.ClosestTouch, Danger.Deadly))
                 {
-                    if (selPawn.CanReach(this, PathEndMode.ClosestTouch, Danger.Deadly))
-                    {
-                        Job job = new Job(ShipNamespaceDefOfs.EnterShip, this);
-                        selPawn.jobs.TryTakeOrderedJob(job);
-                    }
-                };
-            if (DropShipUtility.AllPawnsInShip(this).Count < this.compShip.sProps.maxPassengers +1)
+                    Job job = new Job(ShipNamespaceDefOfs.EnterShip, this);
+                    selPawn.jobs.TryTakeOrderedJob(job);
+                }
+            };
+            if (DropShipUtility.AllPawnsInShip(this).Count < this.compShip.sProps.maxPassengers + 1)
             {
                 yield return new FloatMenuOption("EnterShip".Translate(), action, MenuOptionPriority.Default, null, null, 0f, null, null);
             }
@@ -729,7 +730,7 @@ namespace OHUShips
 
 
         public bool TryInstallTurret(CompShipWeapon comp)
-        {   
+        {
             if (comp.SProps.TurretToInstall != null)
             {
                 ShipWeaponSlot slot = comp.slotToInstall;
@@ -741,11 +742,11 @@ namespace OHUShips
                 turret.SetFactionDirect(this.Faction);
                 if (slot.turretMinSize.x != turret.def.size.x)
                 {
-         //           turret.def.size.x = slot.turretMinSize.x;
+                    //           turret.def.size.x = slot.turretMinSize.x;
                 }
                 if (slot.turretMinSize.z != turret.def.size.z)
                 {
-        //            turret.def.size.z = slot.turretMinSize.z;
+                    //            turret.def.size.z = slot.turretMinSize.z;
                 }
                 IntVec3 drawLoc = this.Position + DropShipUtility.AdjustedIntVecForShip(this, slot.turretPosOffset);
                 if (!turret.Spawned)
@@ -757,7 +758,7 @@ namespace OHUShips
             }
             return false;
         }
-        public bool TryInstallPayload( WeaponSystemShipBomb bomb,  CompShipWeapon comp)
+        public bool TryInstallPayload(WeaponSystemShipBomb bomb, CompShipWeapon comp)
         {
             if (comp.SProps.PayloadToInstall != null)
             {
@@ -851,6 +852,10 @@ namespace OHUShips
                     {
                         this.TryLaunch(new GlobalTargetInfo(this.ParkingPosition, this.ParkingMap), PawnsArrivalModeDefOf.CenterDrop, ShipArrivalAction.EnterMapFriendly, false);
                     };
+                    if (Find.WorldGrid.ApproxDistanceInTiles(this.Map.Tile, this.ParkingMap.Tile) > this.MaxLaunchDistanceEverPossible(false, false))
+                    {
+                        command_Action4.Disable("CommandParkingPositionTooFar".Translate());
+                    }
                     yield return command_Action4;
                 }
 
@@ -880,7 +885,7 @@ namespace OHUShips
 
             foreach (Pawn current in tmp)
             {
-                Find.WorldPawns.PassToWorld(current, RimWorld.Planet.PawnDiscardDecideMode.Decide);   
+                Find.WorldPawns.PassToWorld(current, RimWorld.Planet.PawnDiscardDecideMode.Decide);
             }
 
         }
@@ -918,7 +923,7 @@ namespace OHUShips
                     return "TransportPodDestinationBeyondMaximumRange".Translate();
                 }
                 return "TransportPodNotEnoughFuel".Translate();
-            });           
+            });
 
         }
 
@@ -947,7 +952,7 @@ namespace OHUShips
             if (this.LaunchAsFleet)
             {
                 List<int> distances = new List<int>();
-                for (int i=0; i< DropShipUtility.CurrentShipTracker.ShipsInFleet(this.fleetID).Count; i++)
+                for (int i = 0; i < DropShipUtility.CurrentShipTracker.ShipsInFleet(this.fleetID).Count; i++)
                 {
                     ShipBase ship = DropShipUtility.CurrentShipTracker.ShipsInFleet(this.fleetID)[i];
                     if (ship.compShip.cargoLoadingActive)
@@ -961,7 +966,7 @@ namespace OHUShips
                         Messages.Message("MessageFleetLaunchImpossible".Translate(), MessageTypeDefOf.RejectInput);
                         return false;
                     }
-                    if (!(2*num > ship.MaxLaunchDistanceEverPossible(true)))
+                    if (!(2 * num > ship.MaxLaunchDistanceEverPossible(true)))
                     {
                         canBomb = false;
                     }
@@ -984,7 +989,7 @@ namespace OHUShips
                     canBomb = false;
                 }
             }
-            
+
             MapParent mapParent = target.WorldObject as MapParent;
             if (mapParent != null && mapParent.HasMap)
             {
@@ -1009,8 +1014,8 @@ namespace OHUShips
                 }, null, actionWhenFinished, DropShipUtility.TargeterShipAttachment);
                 return true;
             }
-            
-            if (target.WorldObject is Settlement || target.WorldObject is Site )
+
+            if (target.WorldObject is Settlement || target.WorldObject is Site)
             {
                 Find.WorldTargeter.closeWorldTabWhenFinished = false;
                 MapParent localMapParent = target.WorldObject as MapParent;
@@ -1049,31 +1054,31 @@ namespace OHUShips
                 //    CameraJumper.TryHideWorld();
                 //}, MenuOptionPriority.Default, null, null, 0f, null, null));
 
-                    list.Add(new FloatMenuOption("AttackSettlementAerial".Translate(), delegate
+                list.Add(new FloatMenuOption("AttackSettlementAerial".Translate(), delegate
+                {
+                    if (!this.ReadyForTakeoff || this.LaunchAsFleet && DropShipUtility.CurrentShipTracker.ShipsInFleet(this.fleetID).Any(s => !s.ReadyForTakeoff))
+                    {
+                        return;
+                    }
+                    this.TryLaunch(target, PawnsArrivalModeDefOf.CenterDrop, ShipArrivalAction.EnterMapAssault);
+                    CameraJumper.TryHideWorld();
+                }, MenuOptionPriority.Default, null, null, 0f, null, null));
+
+
+                if (canBomb && (DropShipUtility.CurrentShipTracker.ShipsInFleet(this.fleetID).Any(x => x.installedTurrets.Any(y => y.Key.slotType == WeaponSystemType.Bombing && y.Value != null))) || this.loadedBombs.Any())
+                {
+                    list.Add(new FloatMenuOption("BombSettlement".Translate(), delegate
                     {
                         if (!this.ReadyForTakeoff || this.LaunchAsFleet && DropShipUtility.CurrentShipTracker.ShipsInFleet(this.fleetID).Any(s => !s.ReadyForTakeoff))
                         {
                             return;
                         }
-                        this.TryLaunch(target, PawnsArrivalModeDefOf.CenterDrop, ShipArrivalAction.EnterMapAssault);
+                        this.performBombingRun = true;
+                        this.TryLaunch(target, PawnsArrivalModeDefOf.CenterDrop, ShipArrivalAction.BombingRun);
                         CameraJumper.TryHideWorld();
                     }, MenuOptionPriority.Default, null, null, 0f, null, null));
+                }
 
-
-                    if (canBomb && (DropShipUtility.CurrentShipTracker.ShipsInFleet(this.fleetID).Any(x => x.installedTurrets.Any(y => y.Key.slotType == WeaponSystemType.Bombing && y.Value != null))) || this.loadedBombs.Any())
-                    {
-                        list.Add(new FloatMenuOption("BombSettlement".Translate(), delegate
-                        {
-                            if (!this.ReadyForTakeoff || this.LaunchAsFleet && DropShipUtility.CurrentShipTracker.ShipsInFleet(this.fleetID).Any(s => !s.ReadyForTakeoff))
-                            {
-                                return;
-                            }
-                            this.performBombingRun = true;                           
-                            this.TryLaunch(target, PawnsArrivalModeDefOf.CenterDrop, ShipArrivalAction.BombingRun);
-                            CameraJumper.TryHideWorld();
-                        }, MenuOptionPriority.Default, null, null, 0f, null, null));
-                    }
-                
 
                 Find.WindowStack.Add(new FloatMenu(list));
                 return true;
@@ -1083,7 +1088,7 @@ namespace OHUShips
                 Messages.Message("MessageTransportPodsDestinationIsInvalid".Translate(), MessageTypeDefOf.RejectInput);
                 return false;
             }
-            
+
             this.TryLaunch(target, PawnsArrivalModeDefOf.EdgeDrop, ShipArrivalAction.StayOnWorldMap);
             return true;
         }
@@ -1097,11 +1102,11 @@ namespace OHUShips
                 foreach (ShipBase ship in DropShipUtility.CurrentShipTracker.ShipsInFleet(this.fleetID))
                 {
                     GenDraw.DrawWorldRadiusRing(tile, ship.MaxLaunchDistanceEverPossible(launchAsFleet));
-                    GenDraw.DrawWorldRadiusRing(tile, (int)(ship.MaxLaunchDistanceEverPossible(launchAsFleet)*0.48f));
+                    GenDraw.DrawWorldRadiusRing(tile, (int)(ship.MaxLaunchDistanceEverPossible(launchAsFleet) * 0.48f));
                 }
             }
-        }               
-        
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -1117,10 +1122,10 @@ namespace OHUShips
             Scribe_Values.Look<int>(ref this.timeToLiftoff, "timeToLiftoff", 200, false);
             Scribe_Values.Look<int>(ref this.drawTickOffset, "drawTickOffset", 0, false);
             Scribe_Values.Look<int>(ref this.timeWaited, "timeWaited", 200, false);
-            
+
 
             Scribe_References.Look(ref this.ParkingMap, "ParkingMap");
-            Scribe_Values.Look<IntVec3>(ref this.ParkingPosition, "ParkingPosition", IntVec3.Zero , false);
+            Scribe_Values.Look<IntVec3>(ref this.ParkingPosition, "ParkingPosition", IntVec3.Zero, false);
 
 
 
@@ -1135,22 +1140,22 @@ namespace OHUShips
                 Scribe_Collections.Look<Building_ShipTurret>(ref this.assignedTurrets, "assignedTurrets", LookMode.Reference, new object[0]);
             }
 
-    
+
             Scribe_Collections.Look<WeaponSystemShipBomb>(ref this.loadedBombs, "loadedBombs", LookMode.Reference, new object[0]);
             if (this.assignedSystemsToModify.Count > 0)
             {
                 Scribe_Collections.Look<WeaponSystem, bool>(ref this.assignedSystemsToModify, "assignedSystemsToModify", LookMode.Reference, LookMode.Value);
             }
-            
+
             Scribe_Deep.Look<ThingOwner>(ref this.innerContainer, "innerContainer", new object[]
             {
              this
             });
-            
+
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 this.InitiateInstalledTurrets();
-            }           
+            }
         }
     }
 }

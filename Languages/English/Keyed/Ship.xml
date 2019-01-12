@@ -40,7 +40,7 @@
 
   <MessageShipsArrived>Your ships have arrived at their destination.</MessageShipsArrived>
 
-	<AttackSettlementAerial>Aerial assault (center)</AttackSettlementAerial>
+
 
   <NameFleetMessage>Rename Fleet</NameFleetMessage>
   <RenamedFleetMessage>Fleet renamed</RenamedFleetMessage>
@@ -77,6 +77,8 @@
   <CommandTravelParkingPosition>Return ship</CommandTravelParkingPosition>
 
   <CommandTravelParkingPositionDesc>Return this ship to its parking position.</CommandTravelParkingPositionDesc>
+  
+  <CommandParkingPositionTooFar>Not enough fuel to reach parking position.</CommandParkingPositionTooFar>
 
   <CommandTravelParkingPositionFleet>Return fleet</CommandTravelParkingPositionFleet>
 

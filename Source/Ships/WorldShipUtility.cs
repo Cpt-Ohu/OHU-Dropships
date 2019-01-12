@@ -96,7 +96,7 @@ namespace OHUShips
             for (int i = 0; i < allWorldObjects.Count; i++)
             {
                 WorldObject worldObject = allWorldObjects[i];
-                if (worldObject.Tile == worldShip.Tile && worldObject != worldShip && settlePermanent)
+                if ((worldObject.Tile == worldShip.Tile && worldObject != worldShip && settlePermanent) || (worldObject is PeaceTalks))
                 {
                     flag = true;
                     break;

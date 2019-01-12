@@ -110,16 +110,19 @@ namespace OHUShips
 
         public void TryRemoveLord(Map map)
         {
-            List<Pawn> pawns = new List<Pawn>();
-            Lord lord = LoadShipCargoUtility.FindLoadLord(ship, map);
-            if (lord != null)
+            if (map != null)
             {
-                foreach (Pawn p in pawns)
+                List<Pawn> pawns = new List<Pawn>();
+                Lord lord = LoadShipCargoUtility.FindLoadLord(ship, map);
+                if (lord != null)
                 {
-                    lord.Notify_PawnLost(p, PawnLostCondition.LeftVoluntarily);
+                    foreach (Pawn p in pawns)
+                    {
+                        lord.Notify_PawnLost(p, PawnLostCondition.LeftVoluntarily);
 
+                    }
+                    map.lordManager.RemoveLord(lord);
                 }
-                map.lordManager.RemoveLord(lord);
             }
         }
 

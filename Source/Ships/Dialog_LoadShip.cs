@@ -104,20 +104,20 @@ namespace OHUShips
             }
         }
 
-        private float CaravanMassCapacity
-        {
-            get
-            {
-                if (this.caravanMassCapacityDirty)
-                {
-                    this.caravanMassCapacityDirty = false;
-                    StringBuilder stringBuilder = new StringBuilder();
-                    this.cachedCaravanMassCapacity = CollectionsMassCalculator.CapacityTransferables(this.transferables, stringBuilder);
-                    this.cachedCaravanMassCapacityExplanation = stringBuilder.ToString();
-                }
-                return this.cachedCaravanMassCapacity;
-            }
-        }
+        //private float CaravanMassCapacity
+        //{
+        //    get
+        //    {
+        //        if (this.caravanMassCapacityDirty)
+        //        {
+        //            this.caravanMassCapacityDirty = false;
+        //            StringBuilder stringBuilder = new StringBuilder();
+        //            this.cachedCaravanMassCapacity = CollectionsMassCalculator.CapacityTransferables(this.transferables, stringBuilder);
+        //            this.cachedCaravanMassCapacityExplanation = stringBuilder.ToString();
+        //        }
+        //        return this.cachedCaravanMassCapacity;
+        //    }
+        //}
 
         private int MaxPassengerSeats
         {
@@ -166,24 +166,24 @@ namespace OHUShips
                 if (this.massUsageDirty)
                 {
                     this.massUsageDirty = false;
-                    this.cachedMassUsage = CollectionsMassCalculator.MassUsageTransferables(this.transferables, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, false);
+                    this.cachedMassUsage = this.ship.GetDirectlyHeldThings().Sum(c => c.stackCount * c.def.BaseMass) + CollectionsMassCalculator.MassUsageTransferables(this.transferables, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, true, false);
                 }
                 return this.cachedMassUsage;
             }
         }
 
-        public float CaravanMassUsage
-        {
-            get
-            {
-                if (this.caravanMassUsageDirty)
-                {
-                    this.caravanMassUsageDirty = false;
-                    this.cachedCaravanMassUsage = CollectionsMassCalculator.MassUsageTransferables(this.transferables, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, false, false);
-                }
-                return this.cachedCaravanMassUsage;
-            }
-        }
+        //public float CaravanMassUsage
+        //{
+        //    get
+        //    {
+        //        if (this.caravanMassUsageDirty)
+        //        {
+        //            this.caravanMassUsageDirty = false;
+        //            this.cachedCaravanMassUsage = CollectionsMassCalculator.MassUsageTransferables(this.transferables, IgnorePawnsInventoryMode.IgnoreIfAssignedToUnload, false, false);
+        //        }
+        //        return this.cachedCaravanMassUsage;
+        //    }
+        //}
 
         private float TilesPerDay
         {
@@ -271,7 +271,7 @@ namespace OHUShips
             }));
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.UpperLeft;
-            CaravanUIUtility.DrawCaravanInfo(new CaravanUIUtility.CaravanInfo(this.MassUsage, this.MassCapacity, string.Empty, this.TilesPerDay, this.cachedTilesPerDayExplanation, this.DaysWorthOfFood, this.ForagedFoodPerDay, this.cachedForagedFoodPerDayExplanation, this.Visibility, this.cachedVisibilityExplanation, this.CaravanMassUsage, this.CaravanMassCapacity, this.cachedCaravanMassCapacityExplanation), null, this.map.Tile, null, this.lastMassFlashTime, new Rect(12f, 35f, inRect.width - 24f, 40f), false, null, false);
+            CaravanUIUtility.DrawCaravanInfo(new CaravanUIUtility.CaravanInfo(this.MassUsage, this.MassCapacity, string.Empty, this.TilesPerDay, this.cachedTilesPerDayExplanation, this.DaysWorthOfFood, this.ForagedFoodPerDay, this.cachedForagedFoodPerDayExplanation, this.Visibility, this.cachedVisibilityExplanation, -1, -1, this.cachedCaravanMassCapacityExplanation), null, this.map.Tile, null, this.lastMassFlashTime, new Rect(12f, 35f, inRect.width - 24f, 40f), false, null, false);
             Dialog_LoadShip.tabsList.Clear();
             Dialog_LoadShip.tabsList.Add(new TabRecord("PawnsTab".Translate(), delegate
             {
@@ -331,21 +331,7 @@ namespace OHUShips
             Rect rect2 = new Rect(rect.width / 2f - this.BottomButtonSize.x / 2f, rect.height - 55f, this.BottomButtonSize.x, this.BottomButtonSize.y);
             if (Widgets.ButtonText(rect2, "AcceptButton".Translate(), true, false, true))
             {
-                if (this.CaravanMassUsage > this.CaravanMassCapacity && this.CaravanMassCapacity != 0f)
-                {
-                    if (this.CheckForErrors(TransferableUtility.GetPawnsFromTransferables(this.transferables)))
-                    {
-                        Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("TransportersCaravanWillBeImmobile".Translate(), delegate
-                        {
-                            if (this.TryAccept())
-                            {
-                                SoundDefOf.Tick_High.PlayOneShotOnCamera(null);
-                                this.Close(false);
-                            }
-                        }, false, null));
-                    }
-                }
-                else if (this.TryAccept())
+                if (this.TryAccept())
                 {
                     SoundDefOf.Tick_High.PlayOneShotOnCamera(null);
                     this.Close(false);

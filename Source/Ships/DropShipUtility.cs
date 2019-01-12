@@ -369,11 +369,11 @@ namespace OHUShips
 
             Predicate<IntVec3> validatingExistingShips = (IntVec3 c) =>
             {
-                Vector3 drawSize = ship.def.graphicData.drawSize;
+                Vector2 drawSize = ship.def.graphicData.drawSize;
                 List<Thing> ships = map.listerThings.AllThings.FindAll(x => x is ShipBase_Traveling || x is ShipBase);
                 for (int i = 0; i < ships.Count; i++)
                 {
-                    if (ships[i].Position.InHorDistOf(c, Math.Max(drawSize.x, drawSize.z)))
+                    if (ships[i].Position.InHorDistOf(c, Math.Max(drawSize.x, drawSize.y)))
                     {
                         return false;
                     }

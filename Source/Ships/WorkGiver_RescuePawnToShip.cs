@@ -29,7 +29,7 @@ namespace OHUShips
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             Pawn pawn2 = t as Pawn;
-            if (pawn2 == null || !pawn2.Downed || pawn2.Faction != pawn.Faction || pawn2.InBed() || !pawn.CanReserve(pawn2, 1, -1, null, forced) || GenAI.EnemyIsNear(pawn2, 5f))
+            if (pawn2 == null || !pawn2.Downed || pawn2.Faction != pawn.Faction || pawn2.InBed() || !pawn.CanReserve(pawn2, 1, -1, null, forced) || GenAI.EnemyIsNear(pawn2, 5f) || pawn2.Map.IsPlayerHome)
             {
                 return false;
             }
