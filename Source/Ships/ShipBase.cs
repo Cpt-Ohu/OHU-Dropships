@@ -974,6 +974,15 @@ namespace OHUShips
             }
             else
             {
+                if (target.IsMapTarget)
+                {
+                    if (target.Map.listerThings.AllThings.Where(x => x is ShipBase_Traveling || x.GetType().IsAssignableFrom(typeof(ShipBase))).Any(y => GenAdj.OccupiedRect(y).Overlaps(GenAdj.OccupiedRect(this)))) //y.Position.InHorDistOf(target.Cell, Math.Max(y.def.size.x, y.def.size.z))))
+                    {
+                        SoundDefOf.ClickReject.PlayOneShotOnCamera();
+                        return false;
+                    }
+                }
+
                 int num = Find.WorldGrid.TraversalDistanceBetween(tile, target.Tile);
 
                 if (num > this.MaxLaunchDistanceEverPossible(this.LaunchAsFleet))

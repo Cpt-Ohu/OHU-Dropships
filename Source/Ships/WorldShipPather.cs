@@ -64,7 +64,7 @@ namespace OHUShips
         {
             get
             {
-                return (int)(this.SlowestShipSpeedFactor * BASE_TICKS_PER_MOVE);
+                return (int)(BASE_TICKS_PER_MOVE / this.SlowestShipSpeedFactor);
             }
         }
 
