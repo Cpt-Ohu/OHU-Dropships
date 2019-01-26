@@ -12,7 +12,7 @@ namespace OHUShips
     {
         public ShipBase ship;
 
-        private int TimeOutTick = 7500;
+        private int TimeOutTick = 30000;
 
         public LordJob_LoadShipCargo()
         {

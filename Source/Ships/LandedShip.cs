@@ -63,6 +63,10 @@ namespace OHUShips
             {
                 this.isTargeting = false;
             }
+            foreach (Pawn pawn in this.pawns)
+            {
+                pawn.Tick();
+            }
         }
 
         public override void Draw()

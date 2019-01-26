@@ -471,7 +471,7 @@ namespace OHUShips
             }
             if (mode == DestroyMode.Deconstruct)
             {
-                this.ShipUnload(false);
+                this.ShipUnload(true);
             }
             if (mode == DestroyMode.Vanish)
             {
