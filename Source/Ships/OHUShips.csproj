@@ -77,7 +77,6 @@
     <Compile Include="JobGiver_FleeIfShipDestroyed.cs" />
     <Compile Include="JobGiver_LeaveInShip.cs" />
     <Compile Include="JobGiver_LoadShipCargo.cs" />
-    <Compile Include="LandedShip.cs" />
     <Compile Include="LoadShipCargoUtility.cs" />
     <Compile Include="LordJob_AerialAssault.cs" />
     <Compile Include="LordJob_LoadShipCargo.cs" />
@@ -99,8 +98,7 @@
     <Compile Include="ShipWeaponSlot.cs" />
     <Compile Include="TradeDeal_Worldship.cs" />
     <Compile Include="Transferable_Ship.cs" />
-    <Compile Include="TravelingShipArrivalAction.cs" />
-    <Compile Include="TravelingShipsUtility.cs" />
+    <Compile Include="ShipArrivalAction.cs" />
     <Compile Include="Trigger_PawnsExhausted.cs" />
     <Compile Include="WeaponSystem.cs" />
     <Compile Include="WeaponSystemShipBomb.cs" />

@@ -370,10 +370,10 @@ namespace OHUShips
             Predicate<IntVec3> validatingExistingShips = (IntVec3 c) =>
             {
                 Vector2 drawSize = ship.def.graphicData.drawSize;
-                List<Thing> ships = map.listerThings.AllThings.FindAll(x => x is ShipBase_Traveling || x is ShipBase);
+                List<Thing> ships = map.listerThings.AllThings.FindAll(x => x is ShipBase_Traveling || x.GetType().IsAssignableFrom(typeof(ShipBase)));
                 for (int i = 0; i < ships.Count; i++)
                 {
-                    if (ships[i].Position.InHorDistOf(c, Math.Max(drawSize.x, drawSize.y)))
+                    if (GenAdj.OccupiedRect(ships[i]).Overlaps(GenAdj.OccupiedRect(ship).ExpandedBy(1)))
                     {
                         return false;
                     }

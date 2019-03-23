@@ -26,7 +26,6 @@ namespace OHUShips
             ////Log.Error("4");
             harmony.Patch(AccessTools.Method(typeof(RimWorld.GameEnder), "CheckOrUpdateGameOver"), null, new HarmonyMethod(typeof(HarmonyPatches), "CheckGameOverPostfix"));
             ////Log.Error("5");
-            harmony.Patch(AccessTools.Method(typeof(RimWorld.Planet.WorldSelector), "AutoOrderToTileNow", new Type[] { typeof(Caravan), typeof(int) }), new HarmonyMethod(typeof(HarmonyPatches), "AutoOrderToTileNowPrefix"), null);
             ////Log.Error("6");
             harmony.Patch(AccessTools.Method(typeof(RimWorld.Scenario), "GenerateIntoMap", new Type[] { typeof(Map) }), new HarmonyMethod(typeof(HarmonyPatches), "GenerateIntoMapPreFix"), null);
             ////Log.Error("7");
@@ -40,8 +39,6 @@ namespace OHUShips
             //Log.Error("11");
             harmony.Patch(AccessTools.Method(typeof(RimWorld.Transferable), "AdjustTo"), new HarmonyMethod(typeof(HarmonyPatches), "AdjustToPrefix"), null);
             //Log.Error("12");
-            harmony.Patch(AccessTools.Method(typeof(CaravanTicksPerMoveUtility), "GetTicksPerMove", new Type[] { typeof(Caravan), typeof(StringBuilder) }), new HarmonyMethod(typeof(HarmonyPatches), "GetTicksPerMovePrefix", null), null);
-            //Log.Error("13");
             harmony.Patch(AccessTools.Method(typeof(WorldSelector), "HandleWorldClicks"), null, new HarmonyMethod(typeof(HarmonyPatches), "HandleWorldClicksPostfix", null), null);
 
 
@@ -175,17 +172,7 @@ namespace OHUShips
                 }
             }
         }
-
-        public static bool AutoOrderToTileNowPrefix(Caravan c, int tile)
-        {
-            //Log.Error("7");
-            LandedShip ship = c as LandedShip;
-            if (ship != null)
-            {
-                return false;
-            }
-            return true;
-        }
+        
 
         public static void GenerateIntoMapPreFix(Map map)
         {
@@ -257,31 +244,6 @@ namespace OHUShips
             {
                 ship.compShip.NotifyItemAdded(item, item.stackCount);
             }
-        }
-
-        static bool GetTicksPerMovePrefix(Caravan caravan, ref int __result, StringBuilder explanation = null)
-        {
-            if (caravan != null && caravan is LandedShip ship)
-            {
-                //__result = (int)(1 / ship.);
-                explanation = new StringBuilder();
-
-                explanation.Append("CaravanMovementSpeedFull".Translate() + ":");
-                float num = __result;
-                explanation.AppendLine();
-                explanation.Append(string.Concat(new string[]
-                {
-        "  ",
-        "Default".Translate(),
-        ": ",
-        num.ToString("0.#"),
-        " ",
-        "TilesPerDay".Translate()
-                }));
-                return false;
-            }
-
-            return true;
         }
 
         public static void HandleWorldClicksPostfix()

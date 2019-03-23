@@ -9,24 +9,11 @@ using Verse.Sound;
 
 namespace OHUShips
 {
+    /// <summary>
+    /// Contains helper functions for the WorldShip class and WorldMap interactions
+    /// </summary>
     public static class WorldShipUtility
-    {
-        public static IEnumerable<WorldShip> AllWorldShips
-        {
-            get
-            {
-                return Find.WorldObjects.AllWorldObjects.Where(o => o is WorldShip).Cast<WorldShip>();
-            }
-        }
-
-        public static void SortPawnsAndCargoIntoCaravan(WorldShip worldShip, ShipBase ship)
-        {
-            foreach (Thing t in ship.GetDirectlyHeldThings())
-            {
-                //worldShip.AddPawnOrItem(t, true);
-            }
-        }
-
+    {       
 
         public static Command TradeCommand(WorldShip worldShip)
         {
@@ -96,7 +83,7 @@ namespace OHUShips
             for (int i = 0; i < allWorldObjects.Count; i++)
             {
                 WorldObject worldObject = allWorldObjects[i];
-                if ((worldObject.Tile == worldShip.Tile && worldObject != worldShip && settlePermanent) || (worldObject is PeaceTalks))
+                if ((worldObject.Tile == worldShip.Tile && worldObject != worldShip && settlePermanent))
                 {
                     flag = true;
                     break;
@@ -132,7 +119,6 @@ namespace OHUShips
             }
             MapParent newWorldObject;
             Map mapToDropIn = null;
-            bool foundMapParent = false;
             if (settlePermanent)
             {
                 newWorldObject = SettleUtility.AddNewHome(worldShip.Tile, faction);
@@ -140,11 +126,7 @@ namespace OHUShips
             else
             {
                 newWorldObject = Find.WorldObjects.MapParentAt(worldShip.Tile);
-                if (newWorldObject != null)
-                {
-                    foundMapParent = true;
-                }
-                else
+                if (newWorldObject == null)
                 {
                     newWorldObject = (ShipDropSite)WorldObjectMaker.MakeWorldObject(ShipNamespaceDefOfs.ShipDropSite);
                     newWorldObject.SetFaction(faction);
@@ -160,7 +142,7 @@ namespace OHUShips
                     vec3 = Find.World.info.initialMapSize;
                     mapToDropIn = MapGenerator.GenerateMap(vec3, newWorldObject, MapGeneratorDefOf.Base_Player, null, null);
                 }
-                else if (newWorldObject != null && foundMapParent)
+                else if (newWorldObject != null)
                 {
                     if (newWorldObject.HasMap)
                     {
@@ -190,7 +172,7 @@ namespace OHUShips
             LongEventHandler.QueueLongEvent(delegate
             {
                 Map map = newWorldObject.Map;
-                TravelingShipsUtility.EnterMapWithShip(worldShip, map, IntVec3.Zero, ShipArrivalAction.EnterMapFriendly, arrivalMode);
+                WorldShipUtility.EnterMapWithShip(worldShip, map, IntVec3.Zero, ShipArrivalAction.EnterMapFriendly, arrivalMode);
                 Find.CameraDriver.JumpToCurrentMapLoc(map.Center);
                 Find.MainTabsRoot.EscapeCurrentTab(false);
             }, "SpawningColonists", true, new Action<Exception>(GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap));
@@ -230,7 +212,7 @@ namespace OHUShips
 
             return IntVec3.Zero;
         }
-
+        
         private static IntVec3 EdgeCell(Map map)
         {
             IntVec3 cell;
@@ -252,20 +234,6 @@ namespace OHUShips
             }
             return true;
         }
-
-        public static IntVec3 CenterCell(Map map)
-        {
-            IntVec3 result;
-            TraverseParms traverseParms = TraverseParms.For(TraverseMode.NoPassClosedDoors, Danger.Deadly, false);
-            Predicate<IntVec3> baseValidator = (IntVec3 x) => x.Standable(map) && map.reachability.CanReachMapEdge(x, traverseParms) && !(x.Roofed(map) && x.GetRoof(map).isThickRoof);
-            if (RCellFinder.TryFindRandomCellNearTheCenterOfTheMapWith(baseValidator, map, out result))
-            {
-                return result;
-            }
-            Log.Warning("Could not find any valid cell.");
-            return CellFinder.RandomCell(map);
-        }
-
 
         public static IntVec3 TryFindValidTargetCell(ShipBase ship, IntVec3 targetCell, Map map)
         {
@@ -306,6 +274,30 @@ namespace OHUShips
             return MapGeneratorDefOf.Base_Player;
         }
 
+
+        private static IntVec3 DistantCell(Map map)
+        {
+            IntVec3 cell;
+
+            cell = DropCellFinder.FindRaidDropCenterDistant(map);
+
+            return cell;
+
+        }
+
+        public static IntVec3 CenterCell(Map map)
+        {
+            IntVec3 result;
+            TraverseParms traverseParms = TraverseParms.For(TraverseMode.NoPassClosedDoors, Danger.Deadly, false);
+            Predicate<IntVec3> baseValidator = (IntVec3 x) => x.Standable(map) && map.reachability.CanReachMapEdge(x, traverseParms) && !(x.Roofed(map) && x.GetRoof(map).isThickRoof && !x.Fogged(map));
+            if (RCellFinder.TryFindRandomCellNearTheCenterOfTheMapWith(baseValidator, map, out result))
+            {
+                return result;
+            }
+            Log.Warning("Could not find any valid cell.");
+            return CellFinder.RandomCell(map);
+        }
+       
     }
 
 }

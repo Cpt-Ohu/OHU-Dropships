@@ -187,7 +187,7 @@ namespace OHUShips
                     }
                     LongEventHandler.QueueLongEvent(delegate
                     {
-                        TravelingShipsUtility.EnterMapWithShip(this, map, targetCell, arrivalAction, mapArrivalMode);
+                        WorldShipUtility.EnterMapWithShip(this, map, targetCell, arrivalAction, mapArrivalMode);
                     }, "SpawningColonists", true, new Action<Exception>(GameAndMapInitExceptionHandlers.ErrorWhileGeneratingMap));
                 }
             }
@@ -273,7 +273,7 @@ namespace OHUShips
                 {
                     yield return WorldShipUtility.ShipTouchdownCommand(this, true);
                     yield return WorldShipUtility.ShipTouchdownCommand(this, false);
-
+                    
                     Command_Action command_Action = new Command_Action();
                     command_Action.defaultLabel = "CommandLaunchShip".Translate();
                     command_Action.defaultDesc = "CommandLaunchShipDesc".Translate();

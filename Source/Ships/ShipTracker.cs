@@ -8,6 +8,9 @@ using Verse;
 
 namespace OHUShips
 {
+    /// <summary>
+    /// Keeps track of all WorldShips for consistency and fleet management.
+    /// </summary>
     public class ShipTracker : WorldComponent
     {
 
@@ -38,24 +41,6 @@ namespace OHUShips
         {
             this.WorldShipPathFinder = new WorldShipPathFinder();
         }
-
-        public List<LandedShip> AllLandedShips
-        {
-            get
-            {
-                List<LandedShip> tmp = new List<LandedShip>();
-                for (int i = 0; i < Find.WorldObjects.AllWorldObjects.Count; i++)
-                {
-                    LandedShip ship = Find.WorldObjects.AllWorldObjects[i] as LandedShip;
-                    if (ship != null)
-                    {
-                        tmp.Add(ship);
-                    }
-                }
-                return tmp;
-            }
-        }
-        
 
         public void RemoveShip(ShipBase ship)
         {
@@ -113,7 +98,6 @@ namespace OHUShips
         {
             return this.AllPlanetShips.FindAll(x => x.fleetID == ID);
         }
-
                 
         public override void ExposeData()
         {

@@ -8,6 +8,9 @@ using Verse;
 
 namespace OHUShips
 {
+    /// <summary>
+    /// Calculates cells within a Runway zone for a ship to drop in.
+    /// </summary>
     public static class RunwayUtility
     {
 

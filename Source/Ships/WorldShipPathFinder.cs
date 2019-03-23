@@ -8,7 +8,9 @@ using Verse;
 
 namespace OHUShips
 {
-
+    /// <summary>
+    /// Emulates the pathfinding mechanism of the Caravan system, but ignores passability.
+    /// </summary>
     public class WorldShipPathFinder
     {
         private struct CostNode
@@ -247,8 +249,7 @@ namespace OHUShips
         private int CalculateHeuristicStrength(int startTile, int destTile)
         {
             return 1;
-            float x = Find.WorldGrid.ApproxDistanceInTiles(startTile, destTile);
-            return Mathf.RoundToInt(WorldShipPathFinder.HeuristicStrength_DistanceCurve.Evaluate(x));
+            //return Mathf.RoundToInt(WorldShipPathFinder.HeuristicStrength_DistanceCurve.Evaluate(x));
         }
     }
 
